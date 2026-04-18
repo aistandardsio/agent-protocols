@@ -1,0 +1,134 @@
+# ID-JAG Token Exchange Sequence Diagram
+# Shows the complete flow from assertion creation to API access
+# https://github.com/grokify/agent-protocols
+
+shape: sequence_diagram
+
+# ============================================================================
+# Actors / Lifelines
+# ============================================================================
+
+agent: AI Agent {
+  style: {
+    fill: "#e3f2fd"
+    stroke: "#1565c0"
+    stroke-width: 2
+  }
+}
+
+issuer: Assertion Issuer {
+  style: {
+    fill: "#fff8e1"
+    stroke: "#f9a825"
+    stroke-width: 2
+  }
+}
+
+auth: Authorization Server {
+  style: {
+    fill: "#fff3e0"
+    stroke: "#e65100"
+    stroke-width: 2
+  }
+}
+
+jwks: JWKS Endpoint {
+  style: {
+    fill: "#f3e5f5"
+    stroke: "#7b1fa2"
+    stroke-width: 2
+  }
+}
+
+resource: Resource Server {
+  style: {
+    fill: "#e8f5e9"
+    stroke: "#2e7d32"
+    stroke-width: 2
+  }
+}
+
+# ============================================================================
+# Phase 1: Assertion Creation
+# ============================================================================
+
+agent -> issuer: 1. Request identity assertion {
+  style.stroke: "#1565c0"
+}
+
+issuer -> issuer: 2. Create JWT claims\n(iss, sub, aud, exp, act) {
+  style.stroke: "#f9a825"
+}
+
+issuer -> issuer: 3. Sign with private key (RS256) {
+  style.stroke: "#f9a825"
+}
+
+issuer -> agent: 4. Signed JWT assertion {
+  style.stroke: "#f9a825"
+  style.stroke-width: 2
+}
+
+# ============================================================================
+# Phase 2: Token Exchange
+# ============================================================================
+
+agent -> auth: 5. POST /token\ngrant_type=token-exchange\nsubject_token=<JWT> {
+  style.stroke: "#1565c0"
+  style.stroke-width: 2
+}
+
+auth -> jwks: 6. GET /.well-known/jwks.json {
+  style.stroke: "#7b1fa2"
+  style.stroke-dash: 3
+}
+
+jwks -> auth: 7. Public keys (JWK Set) {
+  style.stroke: "#7b1fa2"
+  style.stroke-dash: 3
+}
+
+auth -> auth: 8. Verify signature\nValidate claims (iss, aud, exp)\nCheck actor if present {
+  style.stroke: "#e65100"
+}
+
+auth -> auth: 9. Apply authorization policies {
+  style.stroke: "#e65100"
+}
+
+auth -> auth: 10. Issue access token {
+  style.stroke: "#e65100"
+}
+
+auth -> agent: 11. 200 OK\naccess_token=<JWT>\ntoken_type=Bearer\nexpires_in=3600 {
+  style.stroke: "#e65100"
+  style.stroke-width: 2
+}
+
+# ============================================================================
+# Phase 3: Resource Access
+# ============================================================================
+
+agent -> resource: 12. GET /api/data\nAuthorization: Bearer <token> {
+  style.stroke: "#1565c0"
+  style.stroke-width: 2
+}
+
+resource -> jwks: 13. Verify access token {
+  style.stroke: "#7b1fa2"
+  style.stroke-dash: 3
+}
+
+jwks -> resource: 14. Public keys {
+  style.stroke: "#7b1fa2"
+  style.stroke-dash: 3
+}
+
+resource -> resource: 15. Validate token\nCheck scope\nExtract subject & actor {
+  style.stroke: "#2e7d32"
+}
+
+resource -> agent: 16. 200 OK\nProtected data {
+  style.stroke: "#2e7d32"
+  style.stroke-width: 2
+}

@@ -1,0 +1,94 @@
+# ID-JAG Nested Delegation - Multi-Agent Chain
+# User delegates to orchestrator, which delegates to worker
+
+direction: down
+
+title: {
+  label: ID-JAG Nested Delegation Chain
+  near: top-center
+  shape: text
+  style.font-size: 24
+  style.bold: true
+}
+
+# Delegation Chain
+human: {
+  label: Human User\n(Bob)
+  shape: person
+  style.fill: "#FCE4EC"
+  style.stroke: "#C2185B"
+}
+
+orchestrator: {
+  label: Orchestrator Agent
+  shape: hexagon
+  style.fill: "#E3F2FD"
+  style.stroke: "#1565C0"
+}
+
+worker: {
+  label: Worker Agent
+  shape: hexagon
+  style.fill: "#E8EAF6"
+  style.stroke: "#3F51B5"
+}
+
+resource: {
+  label: Resource Server
+  shape: rectangle
+  style.fill: "#E8F5E9"
+  style.stroke: "#2E7D32"
+}
+
+# Delegation arrows
+human -> orchestrator: {
+  label: "1. Delegates to"
+  style.stroke: "#C2185B"
+  style.stroke-width: 2
+}
+
+orchestrator -> worker: {
+  label: "2. Sub-delegates to"
+  style.stroke: "#1565C0"
+  style.stroke-width: 2
+}
+
+worker -> resource: {
+  label: "3. Accesses on behalf of"
+  style.stroke: "#3F51B5"
+  style.stroke-width: 2
+}
+
+# JWT Structure
+jwt-box: {
+  label: |md
+    **Nested Delegation JWT**
+    ```json
+    {
+      "iss": "https://issuer.example.com",
+      "sub": "user:bob",
+      "aud": "https://auth.example.com",
+      "act": {
+        "sub": "agent:orchestrator",
+        "act": {
+          "sub": "agent:worker"
+        }
+      }
+    }
+    ```
+
+    **Delegation Chain:**
+    `user:bob` → `agent:orchestrator` → `agent:worker`
+  |
+  shape: rectangle
+  style.fill: "#ECEFF1"
+  style.stroke: "#546E7A"
+  width: 400
+}
+
+# Layout
+human: { near: top-center }
+orchestrator: { near: center-left }
+worker: { near: center-right }
+resource: { near: bottom-center }
+jwt-box: { near: bottom-right }

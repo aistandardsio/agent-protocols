@@ -1,0 +1,72 @@
+site_name: agent-protocols
+site_description: Go implementation of agent-to-agent communication protocols
+site_url: https://grokify.github.io/agent-protocols/
+repo_url: https://github.com/grokify/agent-protocols
+repo_name: grokify/agent-protocols
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - content.code.copy
+    - content.code.annotate
+    - content.tabs.link
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - admonition
+  - pymdownx.details
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+
+nav:
+  - Home: index.md
+  - Getting Started: getting-started.md
+  - Protocol Overview: protocol-overview.md
+  - Examples: examples.md
+  - API Reference: api-reference.md
+  - Presentations:
+    - ID-JAG Introduction: presentations/idjag-intro.md
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/grokify/agent-protocols
+
+plugins:
+  - search
+
+# Ensure diagrams are copied
+extra_css: []
+extra_javascript: []

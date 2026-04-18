@@ -1,0 +1,108 @@
+# ID-JAG Simple Flow - Agent-Only Authentication
+# Agent authenticates as itself without human delegation
+
+direction: right
+
+title: {
+  label: ID-JAG Simple Flow
+  near: top-center
+  shape: text
+  style.font-size: 24
+  style.bold: true
+}
+
+# Actors
+agent: {
+  label: Agent
+  shape: person
+  style.fill: "#E3F2FD"
+  style.stroke: "#1565C0"
+}
+
+# Services
+auth-server: {
+  label: Authorization Server
+  shape: rectangle
+  style.fill: "#FFF3E0"
+  style.stroke: "#E65100"
+
+  token-endpoint: {
+    label: /token
+    shape: rectangle
+    style.fill: "#FFE0B2"
+  }
+}
+
+resource-server: {
+  label: Resource Server
+  shape: rectangle
+  style.fill: "#E8F5E9"
+  style.stroke: "#2E7D32"
+
+  api: {
+    label: /api/data
+    shape: rectangle
+    style.fill: "#C8E6C9"
+  }
+}
+
+jwks: {
+  label: JWKS Endpoint
+  shape: cylinder
+  style.fill: "#F3E5F5"
+  style.stroke: "#7B1FA2"
+}
+
+# Flow
+agent -> auth-server.token-endpoint: {
+  label: "1. POST /token\n   grant_type=token-exchange\n   subject_token=<JWT>"
+  style.stroke: "#1565C0"
+  style.font-size: 12
+}
+
+auth-server.token-endpoint -> jwks: {
+  label: "2. Fetch public key"
+  style.stroke: "#7B1FA2"
+  style.stroke-dash: 3
+}
+
+auth-server.token-endpoint -> agent: {
+  label: "3. Access Token"
+  style.stroke: "#E65100"
+}
+
+agent -> resource-server.api: {
+  label: "4. GET /api/data\n   Authorization: Bearer <token>"
+  style.stroke: "#1565C0"
+}
+
+resource-server.api -> jwks: {
+  label: "5. Verify token"
+  style.stroke: "#7B1FA2"
+  style.stroke-dash: 3
+}
+
+resource-server.api -> agent: {
+  label: "6. Protected Data"
+  style.stroke: "#2E7D32"
+}
+
+# JWT Structure Box
+jwt-box: {
+  label: |md
+    **Identity Assertion JWT**
+    ```json
+    {
+      "iss": "https://issuer.example.com",
+      "sub": "agent:calendar-bot",
+      "aud": "https://auth.example.com",
+      "iat": 1609459200,
+      "exp": 1609459500
+    }
+    ```
+  |
+  shape: rectangle
+  style.fill: "#ECEFF1"
+  style.stroke: "#546E7A"
+  near: bottom-center
+}
