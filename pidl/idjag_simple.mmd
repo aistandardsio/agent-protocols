@@ -1,0 +1,36 @@
+sequenceDiagram
+    title ID-JAG Simple Flow (Agent-Only)
+    autonumber
+
+    participant agent as AI Agent
+    participant issuer as Assertion Issuer
+    participant auth_server as Authorization Server
+    participant jwks as JWKS Endpoint
+    participant resource_server as Resource Server
+
+    rect rgb(240, 240, 240)
+    note right of agent: Assertion Creation
+    agent->>issuer: Request Identity Assertion
+    issuer->>issuer: Create JWT Claims (iss, sub, aud, exp)
+    issuer->>issuer: Sign with Private Key (RS256/ES256)
+    issuer-->>agent: Signed JWT Assertion
+    end
+
+    rect rgb(240, 240, 240)
+    note right of agent: Token Exchange
+    agent->>auth_server: POST /token (grant_type=token-exchange, subject_token=JWT)
+    auth_server->>jwks: GET /.well-known/jwks.json
+    jwks-->>auth_server: JWK Set (Public Keys)
+    auth_server->>auth_server: Verify Signature + Validate Claims (iss, aud, exp)
+    auth_server->>auth_server: Issue Access Token
+    auth_server-->>agent: 200 OK (access_token, token_type=Bearer, expires_in)
+    end
+
+    rect rgb(240, 240, 240)
+    note right of agent: Resource Access
+    agent->>resource_server: GET /api/data (Authorization&&#35;58; Bearer <token>)
+    resource_server->>jwks: Verify Access Token Signature
+    jwks-->>resource_server: Public Keys
+    resource_server->>resource_server: Validate Token + Check Scope + Extract Subject
+    resource_server-->>agent: 200 OK (Protected Data)
+    end

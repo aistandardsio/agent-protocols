@@ -1,0 +1,46 @@
+sequenceDiagram
+    title ID-JAG Delegation Flow (Human-to-Agent)
+    autonumber
+
+    participant user as Human User
+    participant idp as Identity Provider
+    participant agent as AI Agent
+    participant issuer as Assertion Issuer
+    participant auth_server as Authorization Server
+    participant jwks as JWKS Endpoint
+    participant resource_server as Resource Server
+
+    rect rgb(240, 240, 240)
+    note right of user: User Authentication
+    user->>idp: Authenticate (OAuth/OIDC/SAML)
+    idp-->>user: Identity Verified + Session Established
+    end
+
+    rect rgb(240, 240, 240)
+    note right of user: Delegation Setup
+    user->>agent: Request Agent Action
+    agent->>issuer: Request Delegated Assertion (user_id, agent_id)
+    issuer->>issuer: Create JWT&&#35;58; sub=user, act={sub&&#35;58; agent}
+    issuer->>issuer: Sign with Private Key (RS256/ES256)
+    issuer-->>agent: Signed Delegated JWT Assertion
+    end
+
+    rect rgb(240, 240, 240)
+    note right of user: Token Exchange
+    agent->>auth_server: POST /token (grant_type=token-exchange, subject_token=JWT)
+    auth_server->>jwks: GET /.well-known/jwks.json
+    jwks-->>auth_server: JWK Set (Public Keys)
+    auth_server->>auth_server: Verify Signature + Validate Claims + Check Actor
+    auth_server->>auth_server: Apply Delegation Policies
+    auth_server->>auth_server: Issue Access Token (preserves act claim)
+    auth_server-->>agent: 200 OK (access_token with sub + act, expires_in)
+    end
+
+    rect rgb(240, 240, 240)
+    note right of user: Delegated Resource Access
+    agent->>resource_server: GET /api/calendar (Authorization&&#35;58; Bearer <token>)
+    resource_server->>resource_server: Validate Token + Extract sub (user) + Extract act (agent)
+    resource_server->>resource_server: Authorize&&#35;58; User has access + Agent allowed to act
+    resource_server-->>agent: 200 OK (User's Protected Data)
+    agent-->>user: Task Completed (Result Summary)
+    end

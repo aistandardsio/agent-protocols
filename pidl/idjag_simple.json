@@ -1,0 +1,201 @@
+{
+  "$schema": "https://raw.githubusercontent.com/grokify/pidl/main/schema/pidl.schema.json",
+  "protocol": {
+    "id": "idjag-simple",
+    "name": "ID-JAG Simple Flow (Agent-Only)",
+    "version": "1.0",
+    "description": "Identity Assertion JWT Authorization Grant without human delegation. The agent authenticates as itself using a signed JWT assertion.",
+    "category": "auth",
+    "references": [
+      {
+        "name": "draft-ietf-oauth-identity-assertion-authz-grant",
+        "url": "https://datatracker.ietf.org/doc/draft-ietf-oauth-identity-assertion-authz-grant/"
+      },
+      {
+        "name": "RFC 8693 - OAuth 2.0 Token Exchange",
+        "url": "https://tools.ietf.org/html/rfc8693"
+      },
+      {
+        "name": "RFC 7523 - JWT Bearer Assertion",
+        "url": "https://tools.ietf.org/html/rfc7523"
+      }
+    ]
+  },
+  "entities": [
+    {
+      "id": "agent",
+      "name": "AI Agent",
+      "type": "agent",
+      "description": "Autonomous agent authenticating to access protected resources"
+    },
+    {
+      "id": "issuer",
+      "name": "Assertion Issuer",
+      "type": "server",
+      "description": "Service that creates and signs JWT identity assertions"
+    },
+    {
+      "id": "auth_server",
+      "name": "Authorization Server",
+      "type": "authorization_server",
+      "description": "Validates assertions and issues access tokens"
+    },
+    {
+      "id": "jwks",
+      "name": "JWKS Endpoint",
+      "type": "server",
+      "description": "Distributes public keys for signature verification"
+    },
+    {
+      "id": "resource_server",
+      "name": "Resource Server",
+      "type": "resource_server",
+      "description": "Hosts protected APIs that require valid access tokens"
+    }
+  ],
+  "phases": [
+    {
+      "id": "assertion_creation",
+      "name": "Assertion Creation",
+      "description": "Agent requests and receives a signed identity assertion"
+    },
+    {
+      "id": "token_exchange",
+      "name": "Token Exchange",
+      "description": "Agent exchanges assertion for access token per RFC 8693"
+    },
+    {
+      "id": "resource_access",
+      "name": "Resource Access",
+      "description": "Agent accesses protected resources with Bearer token"
+    }
+  ],
+  "flows": [
+    {
+      "from": "agent",
+      "to": "issuer",
+      "action": "request_assertion",
+      "label": "Request Identity Assertion",
+      "mode": "request",
+      "phase": "assertion_creation",
+      "description": "Agent requests an assertion claiming its own identity"
+    },
+    {
+      "from": "issuer",
+      "to": "issuer",
+      "action": "create_claims",
+      "label": "Create JWT Claims (iss, sub, aud, exp)",
+      "mode": "request",
+      "phase": "assertion_creation",
+      "description": "Build JWT with issuer, subject (agent ID), audience, and expiration"
+    },
+    {
+      "from": "issuer",
+      "to": "issuer",
+      "action": "sign_jwt",
+      "label": "Sign with Private Key (RS256/ES256)",
+      "mode": "request",
+      "phase": "assertion_creation",
+      "description": "Sign the assertion using asymmetric cryptography"
+    },
+    {
+      "from": "issuer",
+      "to": "agent",
+      "action": "return_assertion",
+      "label": "Signed JWT Assertion",
+      "mode": "response",
+      "phase": "assertion_creation"
+    },
+    {
+      "from": "agent",
+      "to": "auth_server",
+      "action": "token_exchange_request",
+      "label": "POST /token (grant_type=token-exchange, subject_token=JWT)",
+      "mode": "request",
+      "phase": "token_exchange",
+      "description": "Exchange assertion for access token per RFC 8693"
+    },
+    {
+      "from": "auth_server",
+      "to": "jwks",
+      "action": "fetch_keys",
+      "label": "GET /.well-known/jwks.json",
+      "mode": "request",
+      "phase": "token_exchange",
+      "description": "Fetch public keys to verify assertion signature"
+    },
+    {
+      "from": "jwks",
+      "to": "auth_server",
+      "action": "return_keys",
+      "label": "JWK Set (Public Keys)",
+      "mode": "response",
+      "phase": "token_exchange"
+    },
+    {
+      "from": "auth_server",
+      "to": "auth_server",
+      "action": "verify_assertion",
+      "label": "Verify Signature + Validate Claims (iss, aud, exp)",
+      "mode": "request",
+      "phase": "token_exchange",
+      "description": "Cryptographically verify signature and validate all claims"
+    },
+    {
+      "from": "auth_server",
+      "to": "auth_server",
+      "action": "issue_token",
+      "label": "Issue Access Token",
+      "mode": "request",
+      "phase": "token_exchange"
+    },
+    {
+      "from": "auth_server",
+      "to": "agent",
+      "action": "token_response",
+      "label": "200 OK (access_token, token_type=Bearer, expires_in)",
+      "mode": "response",
+      "phase": "token_exchange"
+    },
+    {
+      "from": "agent",
+      "to": "resource_server",
+      "action": "api_request",
+      "label": "GET /api/data (Authorization: Bearer <token>)",
+      "mode": "request",
+      "phase": "resource_access"
+    },
+    {
+      "from": "resource_server",
+      "to": "jwks",
+      "action": "verify_access_token",
+      "label": "Verify Access Token Signature",
+      "mode": "request",
+      "phase": "resource_access"
+    },
+    {
+      "from": "jwks",
+      "to": "resource_server",
+      "action": "return_keys_for_token",
+      "label": "Public Keys",
+      "mode": "response",
+      "phase": "resource_access"
+    },
+    {
+      "from": "resource_server",
+      "to": "resource_server",
+      "action": "validate_token",
+      "label": "Validate Token + Check Scope + Extract Subject",
+      "mode": "request",
+      "phase": "resource_access"
+    },
+    {
+      "from": "resource_server",
+      "to": "agent",
+      "action": "api_response",
+      "label": "200 OK (Protected Data)",
+      "mode": "response",
+      "phase": "resource_access"
+    }
+  ]
+}

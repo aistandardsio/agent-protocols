@@ -1,0 +1,256 @@
+{
+  "$schema": "https://raw.githubusercontent.com/grokify/pidl/main/schema/pidl.schema.json",
+  "protocol": {
+    "id": "idjag-delegation",
+    "name": "ID-JAG Delegation Flow (Human-to-Agent)",
+    "version": "1.0",
+    "description": "Identity Assertion JWT Authorization Grant with human delegation. The agent acts on behalf of a human user using the actor (act) claim to preserve both identities.",
+    "category": "auth",
+    "references": [
+      {
+        "name": "draft-ietf-oauth-identity-assertion-authz-grant",
+        "url": "https://datatracker.ietf.org/doc/draft-ietf-oauth-identity-assertion-authz-grant/"
+      },
+      {
+        "name": "RFC 8693 - OAuth 2.0 Token Exchange",
+        "url": "https://tools.ietf.org/html/rfc8693"
+      },
+      {
+        "name": "RFC 7519 Section 4.3 - Actor Claim",
+        "url": "https://tools.ietf.org/html/rfc7519"
+      }
+    ]
+  },
+  "entities": [
+    {
+      "id": "user",
+      "name": "Human User",
+      "type": "user",
+      "description": "The principal whose identity is delegated to the agent"
+    },
+    {
+      "id": "idp",
+      "name": "Identity Provider",
+      "type": "identity_provider",
+      "description": "Authenticates the human user and provides identity claims"
+    },
+    {
+      "id": "agent",
+      "name": "AI Agent",
+      "type": "agent",
+      "description": "Agent acting on behalf of the human user"
+    },
+    {
+      "id": "issuer",
+      "name": "Assertion Issuer",
+      "type": "server",
+      "description": "Creates delegated assertions with actor (act) claim"
+    },
+    {
+      "id": "auth_server",
+      "name": "Authorization Server",
+      "type": "authorization_server",
+      "description": "Validates assertions and issues access tokens preserving delegation"
+    },
+    {
+      "id": "jwks",
+      "name": "JWKS Endpoint",
+      "type": "server",
+      "description": "Distributes public keys for signature verification"
+    },
+    {
+      "id": "resource_server",
+      "name": "Resource Server",
+      "type": "resource_server",
+      "description": "Authorizes based on both user identity and actor"
+    }
+  ],
+  "phases": [
+    {
+      "id": "user_authentication",
+      "name": "User Authentication",
+      "description": "Human user authenticates with identity provider"
+    },
+    {
+      "id": "delegation_setup",
+      "name": "Delegation Setup",
+      "description": "Create delegated assertion with user as subject and agent as actor"
+    },
+    {
+      "id": "token_exchange",
+      "name": "Token Exchange",
+      "description": "Agent exchanges delegated assertion for access token"
+    },
+    {
+      "id": "delegated_access",
+      "name": "Delegated Resource Access",
+      "description": "Agent accesses resources on behalf of user"
+    }
+  ],
+  "flows": [
+    {
+      "from": "user",
+      "to": "idp",
+      "action": "authenticate",
+      "label": "Authenticate (OAuth/OIDC/SAML)",
+      "mode": "interactive",
+      "phase": "user_authentication",
+      "description": "User authenticates using standard identity protocols"
+    },
+    {
+      "from": "idp",
+      "to": "user",
+      "action": "identity_verified",
+      "label": "Identity Verified + Session Established",
+      "mode": "response",
+      "phase": "user_authentication"
+    },
+    {
+      "from": "user",
+      "to": "agent",
+      "action": "delegate_task",
+      "label": "Request Agent Action",
+      "mode": "interactive",
+      "phase": "delegation_setup",
+      "description": "User asks agent to perform an action on their behalf"
+    },
+    {
+      "from": "agent",
+      "to": "issuer",
+      "action": "request_delegated_assertion",
+      "label": "Request Delegated Assertion (user_id, agent_id)",
+      "mode": "request",
+      "phase": "delegation_setup",
+      "description": "Agent requests assertion with user as subject and itself as actor"
+    },
+    {
+      "from": "issuer",
+      "to": "issuer",
+      "action": "create_delegated_claims",
+      "label": "Create JWT: sub=user, act={sub: agent}",
+      "mode": "request",
+      "phase": "delegation_setup",
+      "description": "Build assertion with human identity in 'sub' and agent identity in nested 'act' claim"
+    },
+    {
+      "from": "issuer",
+      "to": "issuer",
+      "action": "sign_delegated_jwt",
+      "label": "Sign with Private Key (RS256/ES256)",
+      "mode": "request",
+      "phase": "delegation_setup"
+    },
+    {
+      "from": "issuer",
+      "to": "agent",
+      "action": "return_delegated_assertion",
+      "label": "Signed Delegated JWT Assertion",
+      "mode": "response",
+      "phase": "delegation_setup"
+    },
+    {
+      "from": "agent",
+      "to": "auth_server",
+      "action": "token_exchange_request",
+      "label": "POST /token (grant_type=token-exchange, subject_token=JWT)",
+      "mode": "request",
+      "phase": "token_exchange",
+      "description": "Exchange delegated assertion for access token"
+    },
+    {
+      "from": "auth_server",
+      "to": "jwks",
+      "action": "fetch_keys",
+      "label": "GET /.well-known/jwks.json",
+      "mode": "request",
+      "phase": "token_exchange"
+    },
+    {
+      "from": "jwks",
+      "to": "auth_server",
+      "action": "return_keys",
+      "label": "JWK Set (Public Keys)",
+      "mode": "response",
+      "phase": "token_exchange"
+    },
+    {
+      "from": "auth_server",
+      "to": "auth_server",
+      "action": "verify_delegated_assertion",
+      "label": "Verify Signature + Validate Claims + Check Actor",
+      "mode": "request",
+      "phase": "token_exchange",
+      "description": "Verify signature, validate claims, and ensure actor delegation is authorized"
+    },
+    {
+      "from": "auth_server",
+      "to": "auth_server",
+      "action": "apply_delegation_policies",
+      "label": "Apply Delegation Policies",
+      "mode": "request",
+      "phase": "token_exchange",
+      "description": "Check if agent is allowed to act for this user with requested scope"
+    },
+    {
+      "from": "auth_server",
+      "to": "auth_server",
+      "action": "issue_delegated_token",
+      "label": "Issue Access Token (preserves act claim)",
+      "mode": "request",
+      "phase": "token_exchange",
+      "description": "Access token contains both user subject and agent actor"
+    },
+    {
+      "from": "auth_server",
+      "to": "agent",
+      "action": "token_response",
+      "label": "200 OK (access_token with sub + act, expires_in)",
+      "mode": "response",
+      "phase": "token_exchange"
+    },
+    {
+      "from": "agent",
+      "to": "resource_server",
+      "action": "delegated_api_request",
+      "label": "GET /api/calendar (Authorization: Bearer <token>)",
+      "mode": "request",
+      "phase": "delegated_access",
+      "description": "Agent calls API on behalf of user"
+    },
+    {
+      "from": "resource_server",
+      "to": "resource_server",
+      "action": "validate_delegated_token",
+      "label": "Validate Token + Extract sub (user) + Extract act (agent)",
+      "mode": "request",
+      "phase": "delegated_access",
+      "description": "Resource server sees both who authorized and who is acting"
+    },
+    {
+      "from": "resource_server",
+      "to": "resource_server",
+      "action": "authorize_request",
+      "label": "Authorize: User has access + Agent allowed to act",
+      "mode": "request",
+      "phase": "delegated_access",
+      "description": "Authorization based on user permissions and agent trust level"
+    },
+    {
+      "from": "resource_server",
+      "to": "agent",
+      "action": "delegated_api_response",
+      "label": "200 OK (User's Protected Data)",
+      "mode": "response",
+      "phase": "delegated_access"
+    },
+    {
+      "from": "agent",
+      "to": "user",
+      "action": "return_result",
+      "label": "Task Completed (Result Summary)",
+      "mode": "response",
+      "phase": "delegated_access",
+      "description": "Agent returns the result of the delegated action to the user"
+    }
+  ]
+}
