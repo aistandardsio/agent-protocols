@@ -1,4 +1,4 @@
-# agent-protocols
+# Agent Protocols
 
 Go implementation of agent-to-agent communication protocols.
 
@@ -7,105 +7,98 @@ Go implementation of agent-to-agent communication protocols.
 
 ## Overview
 
-This repository provides Go libraries for emerging agent-to-agent protocols:
+This repository provides Go libraries for emerging AI agent authentication and authorization protocols. As AI agents become more prevalent, standardized approaches to agent identity and authentication are critical for secure multi-agent systems.
 
-- **ID-JAG** - Identity Assertion JWT Authorization Grant for OAuth 2.0 token exchange
-- **AIMS** - Agent Identity Management System using SPIFFE and WIMSE standards
+## Protocols
 
-![ID-JAG Architecture](idjag/diagrams/architecture.svg)
+<div class="grid cards" markdown>
 
-## What is ID-JAG?
+-   :material-key-chain:{ .lg .middle } **ID-JAG**
 
-ID-JAG enables secure token exchange where an agent presents a signed JWT assertion to obtain an access token. It solves key challenges in agent authentication:
+    ---
 
-| Challenge | ID-JAG Solution |
-|-----------|-----------------|
-| Agent needs its own identity | Agents authenticate with their own credentials |
-| Agent acts on behalf of human | Delegation via `act` claim preserves human identity |
-| Multi-agent workflows | Nested delegation chains track full authorization path |
-| Audit requirements | Both user and actor identities available for logging |
+    Identity Assertion JWT Authorization Grant for OAuth 2.0 token exchange.
 
-## Two Authentication Modes
+    Best for: OAuth 2.0 environments, human-to-agent delegation, existing IdP integration.
 
-### Simple Mode (Agent-Only)
+    [:octicons-arrow-right-24: Learn more](idjag/protocol-overview.md)
 
-The agent authenticates as itself without human delegation:
+-   :material-shield-account:{ .lg .middle } **AIMS**
 
-```json
-{
-  "iss": "https://issuer.example.com",
-  "sub": "agent:calendar-bot",
-  "aud": "https://auth.example.com"
-}
-```
+    ---
 
-### Delegation Mode (Human-to-Agent)
+    Agent Identity Management System using SPIFFE and WIMSE standards.
 
-The agent acts on behalf of a human user:
+    Best for: Kubernetes/cloud-native, mTLS environments, workload identity.
 
-```json
-{
-  "iss": "https://issuer.example.com",
-  "sub": "user:alice",
-  "act": {
-    "sub": "agent:calendar-bot"
-  }
-}
-```
+    [:octicons-arrow-right-24: Learn more](aims/overview.md)
 
-## Quick Start
+</div>
+
+## Choosing a Protocol
+
+| Aspect | ID-JAG | AIMS |
+|--------|--------|------|
+| **Type** | Protocol (specific flow) | Framework (composable standards) |
+| **Identity Model** | OAuth JWT assertions | SPIFFE IDs |
+| **Credential Format** | Signed JWT assertions | X.509 SVIDs, JWT-SVIDs, WITs |
+| **Authentication** | Token exchange (RFC 8693) | mTLS or WIT/WPT |
+| **Delegation** | `act` claim for human-to-agent | SPIFFE path conventions |
+| **Best For** | OAuth 2.0 environments | Kubernetes/cloud-native |
+| **Standards** | RFC 8693, RFC 7523 | SPIFFE, WIMSE |
+
+## Installation
 
 ```bash
 go get github.com/grokify/agent-protocols
 ```
 
-```go
-package main
+## Quick Examples
 
-import (
-    "time"
-    "github.com/grokify/agent-protocols/idjag"
-)
+=== "ID-JAG"
 
-func main() {
-    // Simple: Agent authenticates as itself
+    ```go
+    import "github.com/grokify/agent-protocols/idjag"
+
+    // Agent authenticates as itself
     assertion := idjag.NewAssertion(
         "https://issuer.example.com",
-        "agent:my-agent",
+        "agent:calendar-bot",
         []string{"https://auth.example.com"},
         5 * time.Minute,
     )
 
-    // Delegation: Agent acts on behalf of user
-    delegated := idjag.NewDelegatedAssertion(
-        "https://issuer.example.com",
-        "user:alice",           // Human user
-        "agent:calendar-bot",   // Acting agent
-        []string{"https://auth.example.com"},
-        5 * time.Minute,
-    )
-}
-```
+    // Exchange for access token
+    client := idjag.NewTokenExchangeClient("https://auth.example.com/token")
+    resp, err := client.ExchangeAssertion(ctx, signedAssertion, "read:data")
+    ```
 
-## Features
+=== "AIMS"
 
-| Feature | Description |
-|---------|-------------|
-| **Assertion Creation** | Build and sign ID-JAG assertions |
-| **Token Exchange** | Exchange assertions for access tokens |
-| **JWT Verification** | Verify assertions and access tokens |
-| **JWKS Support** | Fetch and cache public keys from JWKS endpoints |
-| **Server Components** | Ready-to-use authorization and resource server handlers |
-| **Delegation Chains** | Support for nested delegation (`act` claim) |
+    ```go
+    import "github.com/grokify/agent-protocols/aims"
+
+    // Create SPIFFE ID for agent
+    spiffeID, _ := aims.NewSPIFFEID("example.com", "/agent/calendar-bot")
+
+    // Create Workload Identity Token
+    wit := aims.NewWIT(spiffeID, []string{"https://api.example.com"}, 1*time.Hour)
+    signedWIT, _ := wit.Sign(privateKey, "key-1")
+
+    // Create proof token for specific request
+    wpt := aims.NewWPTForRequest(spiffeID.String(), "https://api.example.com", req)
+    wpt.BindToRequest(req, privateKey, "key-1")
+    ```
 
 ## Documentation
 
 ### ID-JAG
 
+- [Protocol Overview](idjag/protocol-overview.md) - How ID-JAG works
 - [Getting Started](idjag/getting-started.md) - Installation and first steps
-- [Protocol Overview](idjag/protocol-overview.md) - How ID-JAG works with diagrams
 - [Examples](idjag/examples.md) - Running the demo applications
-- [API Reference](idjag/api-reference.md) - Complete Go package documentation
+- [Diagrams](idjag/diagrams.md) - Sequence and architecture diagrams
+- [API Reference](idjag/api-reference.md) - Go package documentation
 
 ### AIMS
 
@@ -117,10 +110,9 @@ func main() {
 
 ### ID-JAG
 
-- [draft-ietf-oauth-identity-assertion-authz-grant](https://datatracker.ietf.org/doc/draft-ietf-oauth-identity-assertion-authz-grant/)
-- [RFC 8693 - OAuth 2.0 Token Exchange](https://tools.ietf.org/html/rfc8693)
-- [RFC 7519 - JSON Web Token](https://tools.ietf.org/html/rfc7519)
-- [RFC 7523 - JWT Bearer Assertion](https://tools.ietf.org/html/rfc7523)
+- [draft-ietf-oauth-identity-assertion-authz-grant](https://datatracker.ietf.org/doc/draft-ietf-oauth-identity-assertion-authz-grant/) - ID-JAG specification
+- [RFC 8693](https://tools.ietf.org/html/rfc8693) - OAuth 2.0 Token Exchange
+- [RFC 7523](https://tools.ietf.org/html/rfc7523) - JWT Bearer Assertion
 
 ### AIMS
 
