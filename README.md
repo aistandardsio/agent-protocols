@@ -37,6 +37,10 @@ This repository provides Go libraries for emerging agent-to-agent protocols:
   - [Examples](./idjag/examples/) - Working demos
   - [PIDL Definitions](./idjag/pidl/) - Protocol diagrams
 
+- **[aims](./aims/)** - Agent Identity Management System (AIMS) based on [draft-klrc-aiagent-auth-00](https://datatracker.ietf.org/doc/html/draft-klrc-aiagent-auth-00)
+  - [Examples](./aims/examples/) - Working demos (simple WIT/WPT, mTLS)
+  - [PIDL Definitions](./aims/pidl/) - Protocol diagrams
+
 ## Installation
 
 ```bash
@@ -120,6 +124,9 @@ go run ./idjag/examples/simple
 ## Related Specifications
 
 - [draft-ietf-oauth-identity-assertion-authz-grant](https://datatracker.ietf.org/doc/draft-ietf-oauth-identity-assertion-authz-grant/) - ID-JAG specification
+- [draft-klrc-aiagent-auth-00](https://datatracker.ietf.org/doc/html/draft-klrc-aiagent-auth-00) - AIMS specification
+- [draft-ietf-wimse-s2s-protocol](https://datatracker.ietf.org/doc/draft-ietf-wimse-s2s-protocol/) - WIMSE S2S Protocol (WIT/WPT)
+- [SPIFFE](https://spiffe.io/) - Secure Production Identity Framework For Everyone
 - [RFC 8693](https://tools.ietf.org/html/rfc8693) - OAuth 2.0 Token Exchange
 
 ## License

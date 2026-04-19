@@ -7,7 +7,10 @@ Go implementation of agent-to-agent communication protocols.
 
 ## Overview
 
-This repository provides Go libraries for emerging agent-to-agent protocols, starting with **ID-JAG** (Identity Assertion JWT Authorization Grant).
+This repository provides Go libraries for emerging agent-to-agent protocols:
+
+- **ID-JAG** - Identity Assertion JWT Authorization Grant for OAuth 2.0 token exchange
+- **AIMS** - Agent Identity Management System using SPIFFE and WIMSE standards
 
 ![ID-JAG Architecture](idjag/diagrams/architecture.svg)
 
@@ -104,9 +107,23 @@ func main() {
 - [Examples](idjag/examples.md) - Running the demo applications
 - [API Reference](idjag/api-reference.md) - Complete Go package documentation
 
+### AIMS
+
+- [Overview](aims/overview.md) - AIMS framework introduction
+- [Getting Started](aims/getting-started.md) - Installation and first steps
+- [Examples](aims/examples.md) - Running the demo applications
+
 ## Related Specifications
+
+### ID-JAG
 
 - [draft-ietf-oauth-identity-assertion-authz-grant](https://datatracker.ietf.org/doc/draft-ietf-oauth-identity-assertion-authz-grant/)
 - [RFC 8693 - OAuth 2.0 Token Exchange](https://tools.ietf.org/html/rfc8693)
 - [RFC 7519 - JSON Web Token](https://tools.ietf.org/html/rfc7519)
 - [RFC 7523 - JWT Bearer Assertion](https://tools.ietf.org/html/rfc7523)
+
+### AIMS
+
+- [draft-klrc-aiagent-auth-00](https://datatracker.ietf.org/doc/html/draft-klrc-aiagent-auth-00) - AIMS specification
+- [draft-ietf-wimse-s2s-protocol](https://datatracker.ietf.org/doc/draft-ietf-wimse-s2s-protocol/) - WIMSE S2S Protocol
+- [SPIFFE](https://spiffe.io/) - Secure Production Identity Framework For Everyone

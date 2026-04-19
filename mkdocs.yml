@@ -60,6 +60,10 @@ nav:
     - API Reference: idjag/api-reference.md
     - Presentations:
       - Introduction: idjag/presentations/idjag-intro.md
+  - AIMS:
+    - Overview: aims/overview.md
+    - Getting Started: aims/getting-started.md
+    - Examples: aims/examples.md
 
 extra:
   social:
