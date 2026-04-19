@@ -841,6 +841,52 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../diagrams/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Diagrams
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    API Reference
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -997,6 +1043,22 @@
 </div>
 <h2 id="what-is-aims">What is AIMS?<a class="headerlink" href="#what-is-aims" title="Permanent link">&para;</a></h2>
 <p>Unlike ID-JAG (which is a specific protocol), AIMS is a <strong>framework</strong> that composes multiple identity and security standards:</p>
+<pre class="mermaid"><code>flowchart LR
+    subgraph Trust Domain
+        SPIRE[SPIRE Server]
+        Agent[AI Agent]
+    end
+
+    subgraph Target
+        Service[Target Service]
+    end
+
+    Agent --&gt;|1. Attest &amp; Get WIT| SPIRE
+    SPIRE --&gt;|2. WIT with cnf| Agent
+    Agent --&gt;|3. Create WPT| Agent
+    Agent --&gt;|4. Request + WIT + WPT| Service
+    Service --&gt;|5. Verify &amp; Authorize| Service
+    Service --&gt;|6. Response| Agent</code></pre>
 <table>
 <thead>
 <tr>
@@ -1021,6 +1083,23 @@
 </table>
 <h2 id="the-nine-layers">The Nine Layers<a class="headerlink" href="#the-nine-layers" title="Permanent link">&para;</a></h2>
 <p>AIMS defines nine architectural layers for agent identity management:</p>
+<pre class="mermaid"><code>block-beta
+    columns 1
+    block:core["Core Identity"]
+        L1["1. Identifiers&lt;br/&gt;SPIFFE IDs"]
+        L2["2. Credentials&lt;br/&gt;X.509, JWT-SVID, WIT"]
+        L3["3. Attestation&lt;br/&gt;TPM, SGX, Cloud"]
+    end
+    block:ops["Operations"]
+        L4["4. Provisioning&lt;br/&gt;SPIRE, Cloud-native"]
+        L5["5. Authentication&lt;br/&gt;mTLS, WIT/WPT"]
+        L6["6. Authorization&lt;br/&gt;Policy-based"]
+    end
+    block:governance["Governance"]
+        L7["7. Monitoring&lt;br/&gt;Audit, Telemetry"]
+        L8["8. Policy&lt;br/&gt;Centralized Mgmt"]
+        L9["9. Compliance&lt;br/&gt;Regulatory"]
+    end</code></pre>
 <table>
 <thead>
 <tr>
