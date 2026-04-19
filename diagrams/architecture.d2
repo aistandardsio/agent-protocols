@@ -1,0 +1,115 @@
+# ID-JAG Architecture Overview
+# Shows the relationship between all components
+
+direction: right
+
+title: {
+  label: ID-JAG Architecture
+  near: top-center
+  shape: text
+  style.font-size: 28
+  style.bold: true
+}
+
+# Client Side
+clients: {
+  label: Clients
+  style.fill: "#E3F2FD"
+  style.stroke: "#1565C0"
+
+  human: {
+    label: Human User
+    shape: person
+    style.fill: "#FCE4EC"
+  }
+
+  agent: {
+    label: AI Agent
+    shape: hexagon
+    style.fill: "#E8EAF6"
+  }
+
+  human -> agent: delegates
+}
+
+# Identity Layer
+identity: {
+  label: Identity Layer
+  style.fill: "#FFF8E1"
+  style.stroke: "#F9A825"
+
+  idp: {
+    label: Identity Provider
+    shape: rectangle
+    style.fill: "#FFECB3"
+  }
+
+  assertion-issuer: {
+    label: Assertion Issuer
+    shape: rectangle
+    style.fill: "#FFECB3"
+  }
+
+  jwks: {
+    label: JWKS
+    shape: cylinder
+    style.fill: "#FFF9C4"
+  }
+
+  idp -> assertion-issuer
+  assertion-issuer -> jwks: publishes keys
+}
+
+# Authorization Layer
+authorization: {
+  label: Authorization Layer
+  style.fill: "#FFF3E0"
+  style.stroke: "#E65100"
+
+  auth-server: {
+    label: Authorization Server
+    shape: rectangle
+    style.fill: "#FFE0B2"
+
+    token-exchange: {
+      label: Token Exchange
+      shape: rectangle
+    }
+
+    policy: {
+      label: Policy Engine
+      shape: rectangle
+    }
+  }
+}
+
+# Resource Layer
+resources: {
+  label: Resource Layer
+  style.fill: "#E8F5E9"
+  style.stroke: "#2E7D32"
+
+  resource-server: {
+    label: Resource Server
+    shape: rectangle
+    style.fill: "#C8E6C9"
+  }
+
+  api: {
+    label: Protected APIs
+    shape: rectangle
+    style.fill: "#A5D6A7"
+  }
+
+  resource-server -> api
+}
+
+# Connections
+clients.agent -> identity.assertion-issuer: "1. Request assertion"
+identity.assertion-issuer -> clients.agent: "2. Signed JWT"
+clients.agent -> authorization.auth-server: "3. Token exchange"
+authorization.auth-server -> identity.jwks: "4. Verify signature"
+authorization.auth-server -> clients.agent: "5. Access token"
+clients.agent -> resources.resource-server: "6. API request"
+resources.resource-server -> identity.jwks: "7. Verify token"
+resources.resource-server -> clients.agent: "8. Response"
