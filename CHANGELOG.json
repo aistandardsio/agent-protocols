@@ -1,0 +1,63 @@
+{
+  "irVersion": "1.0",
+  "project": "agent-protocols",
+  "repository": "https://github.com/grokify/agent-protocols",
+  "versioning": "semver",
+  "commitConvention": "conventional",
+  "maintainers": ["grokify"],
+  "releases": [
+    {
+      "version": "v0.1.0",
+      "date": "2026-04-19",
+      "highlights": [
+        { "description": "Initial release with ID-JAG and AIMS protocol implementations for AI agent authentication" },
+        { "description": "ID-JAG: OAuth 2.0 token exchange with JWT assertions and human-to-agent delegation support" },
+        { "description": "AIMS: SPIFFE-based workload identity with WIT/WPT authentication per WIMSE specification" }
+      ],
+      "added": [
+        { "description": "ID-JAG library (`idjag/`) implementing draft-ietf-oauth-identity-assertion-authz-grant", "commit": "25c20f6" },
+        { "description": "JWT assertion creation and signing with RS256/ES256 support", "commit": "25c20f6" },
+        { "description": "Token exchange client for RFC 8693 token exchange flow", "commit": "25c20f6" },
+        { "description": "JWT Bearer client for RFC 7523 JWT bearer grant", "commit": "25c20f6" },
+        { "description": "Authorization server with JWKS endpoint for assertion verification", "commit": "25c20f6" },
+        { "description": "Resource server middleware for Bearer token validation", "commit": "25c20f6" },
+        { "description": "Actor claim (`act`) support for human-to-agent delegation chains", "commit": "25c20f6" },
+        { "description": "Static key and JWKS-based JWT verifiers", "commit": "25c20f6" },
+        { "description": "AIMS library (`aims/`) implementing draft-klrc-aiagent-auth-00", "commit": "f7165d3" },
+        { "description": "SPIFFE ID parsing and validation with trust domain support", "commit": "f7165d3" },
+        { "description": "Nine-layer AIMS architecture model", "commit": "f7165d3" },
+        { "description": "AgentIdentity type combining SPIFFE ID, credentials, and attestation", "commit": "f7165d3" },
+        { "description": "Workload Identity Token (WIT) per draft-ietf-wimse-s2s-protocol", "commit": "5479db2" },
+        { "description": "WIMSE Proof Token (WPT) with HTTP request binding", "commit": "5479db2" },
+        { "description": "X.509 SVID and JWT-SVID credential types", "commit": "f7165d3" },
+        { "description": "Attestation types: TPM, SGX, SEV-SNP, TDX, Kubernetes, AWS, GCP, Azure, GitHub", "commit": "f7165d3" },
+        { "description": "ID-JAG examples: simple agent flow and human-to-agent delegation", "commit": "e8a8ac8" },
+        { "description": "AIMS examples: simple WIT/WPT authentication and mTLS with X.509 SVID", "commit": "9fc6faa" },
+        { "description": "PIDL definitions for ID-JAG flows (simple, delegation, token exchange)", "commit": "445dd49" },
+        { "description": "PIDL definitions for AIMS flows (WIT issuance, WPT authentication)", "commit": "b03a5f1" }
+      ],
+      "fixed": [
+        { "description": "Resolve gosec lint errors (G101, G112, G117, G120, G704)", "commit": "d6960a4" }
+      ],
+      "documentation": [
+        { "description": "MkDocs documentation site with Material theme", "commit": "6b769c0" },
+        { "description": "Protocol overview with sequence diagrams for ID-JAG", "commit": "6b769c0" },
+        { "description": "Getting started guides for both ID-JAG and AIMS", "commit": "6b769c0" },
+        { "description": "API reference documentation for both packages", "commit": "c671ab4" },
+        { "description": "PIDL-generated Mermaid sequence diagrams", "commit": "16376ad" },
+        { "description": "Multi-protocol landing page with comparison table", "commit": "89b6813" },
+        { "description": "AIMS overview with 9-layer architecture diagram", "commit": "016d755" }
+      ],
+      "tests": [
+        { "description": "Comprehensive unit tests for AIMS package (SPIFFE, WIT, WPT, credentials, attestation)", "commit": "cd820eb" }
+      ],
+      "build": [
+        { "description": "GitHub Actions CI workflows for build, lint, and SAST", "commit": "81e1c3f" },
+        { "description": "golangci-lint configuration", "commit": "2c89238" }
+      ],
+      "changed": [
+        { "description": "Restructure repository for multiple protocols (idjag/, aims/)", "commit": "8c2ee5a" }
+      ]
+    }
+  ]
+}

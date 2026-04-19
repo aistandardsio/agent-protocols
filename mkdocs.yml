@@ -70,6 +70,8 @@ nav:
     - Examples: aims/examples.md
     - Diagrams: aims/diagrams.md
     - API Reference: aims/api-reference.md
+  - Releases:
+    - v0.1.0: releases/v0.1.0.md
 
 extra:
   social:

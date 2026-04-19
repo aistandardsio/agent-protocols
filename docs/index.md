@@ -105,6 +105,12 @@ go get github.com/grokify/agent-protocols
 - [Overview](aims/overview.md) - AIMS framework introduction
 - [Getting Started](aims/getting-started.md) - Installation and first steps
 - [Examples](aims/examples.md) - Running the demo applications
+- [Diagrams](aims/diagrams.md) - Sequence and architecture diagrams
+- [API Reference](aims/api-reference.md) - Go package documentation
+
+### Releases
+
+- [v0.1.0](releases/v0.1.0.md) - Initial release (2026-04-19)
 
 ## Related Specifications
 
