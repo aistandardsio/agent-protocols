@@ -385,60 +385,36 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#what-is-id-jag" class="md-nav__link">
+  <a href="#protocols" class="md-nav__link">
     <span class="md-ellipsis">
-      What is ID-JAG?
+      Protocols
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#two-authentication-modes" class="md-nav__link">
+  <a href="#choosing-a-protocol" class="md-nav__link">
     <span class="md-ellipsis">
-      Two Authentication Modes
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Two Authentication Modes">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#simple-mode-agent-only" class="md-nav__link">
-    <span class="md-ellipsis">
-      Simple Mode (Agent-Only)
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#delegation-mode-human-to-agent" class="md-nav__link">
-    <span class="md-ellipsis">
-      Delegation Mode (Human-to-Agent)
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#quick-start" class="md-nav__link">
-    <span class="md-ellipsis">
-      Quick Start
+      Choosing a Protocol
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#features" class="md-nav__link">
+  <a href="#installation" class="md-nav__link">
     <span class="md-ellipsis">
-      Features
+      Installation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick Examples
     </span>
   </a>
   
@@ -918,60 +894,36 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#what-is-id-jag" class="md-nav__link">
+  <a href="#protocols" class="md-nav__link">
     <span class="md-ellipsis">
-      What is ID-JAG?
+      Protocols
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#two-authentication-modes" class="md-nav__link">
+  <a href="#choosing-a-protocol" class="md-nav__link">
     <span class="md-ellipsis">
-      Two Authentication Modes
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Two Authentication Modes">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#simple-mode-agent-only" class="md-nav__link">
-    <span class="md-ellipsis">
-      Simple Mode (Agent-Only)
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#delegation-mode-human-to-agent" class="md-nav__link">
-    <span class="md-ellipsis">
-      Delegation Mode (Human-to-Agent)
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#quick-start" class="md-nav__link">
-    <span class="md-ellipsis">
-      Quick Start
+      Choosing a Protocol
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#features" class="md-nav__link">
+  <a href="#installation" class="md-nav__link">
     <span class="md-ellipsis">
-      Features
+      Installation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick Examples
     </span>
   </a>
   
@@ -1062,137 +1014,127 @@
   
 
 
-<h1 id="agent-protocols">agent-protocols<a class="headerlink" href="#agent-protocols" title="Permanent link">&para;</a></h1>
+<h1 id="agent-protocols">Agent Protocols<a class="headerlink" href="#agent-protocols" title="Permanent link">&para;</a></h1>
 <p>Go implementation of agent-to-agent communication protocols.</p>
 <div class="admonition warning">
 <p class="admonition-title">Experimental</p>
 <p>This library implements draft specifications that are subject to change.</p>
 </div>
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
-<p>This repository provides Go libraries for emerging agent-to-agent protocols:</p>
+<p>This repository provides Go libraries for emerging AI agent authentication and authorization protocols. As AI agents become more prevalent, standardized approaches to agent identity and authentication are critical for secure multi-agent systems.</p>
+<h2 id="protocols">Protocols<a class="headerlink" href="#protocols" title="Permanent link">&para;</a></h2>
+<div class="grid cards">
 <ul>
-<li><strong>ID-JAG</strong> - Identity Assertion JWT Authorization Grant for OAuth 2.0 token exchange</li>
-<li><strong>AIMS</strong> - Agent Identity Management System using SPIFFE and WIMSE standards</li>
+<li>
+<p><span class="twemoji lg middle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12.67 13.67c-.47.46-1.04.83-1.67 1.06V23H8v-2H5v-3h3v-3.28c-1.74-.62-3-2.26-3-4.22C5 8 7 6 9.5 6h.1c-.47.95-.68 2-.57 3.08-.59.2-1.03.76-1.03 1.42 0 .83.67 1.5 1.5 1.5.23 0 .45-.06.65-.15.64.84 1.52 1.47 2.52 1.82m8.06 5.77-2.76 1.16-.78-1.84-2.76 1.17-1.17-2.77L16.03 16l-1.27-3c-1.85.08-3.65-.95-4.41-2.75-.96-2.29.12-4.93 2.41-5.9.24-.1.5-.17.74-.23C12.84 2.87 11.5 2 10 2 7.79 2 6 3.79 6 6v.24c-.3.26-.6.58-.85.91C5.06 6.78 5 6.4 5 6c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.42-.6 2.67-1.55 3.57.42.43 1.05.56 1.63.31.77-.32 1.12-1.2.8-1.96a1 1 0 0 0-.14-.26C15.9 7.13 16 6.58 16 6c0-.63-.1-1.24-.28-1.81 1.28.36 2.38 1.25 2.93 2.57.76 1.8.24 3.81-1.15 5.05zM13 8.6c.37-.41.65-.89.82-1.42-.54.27-.85.82-.82 1.42"/></svg></span> <strong>ID-JAG</strong></p>
+<hr />
+<p>Identity Assertion JWT Authorization Grant for OAuth 2.0 token exchange.</p>
+<p>Best for: OAuth 2.0 environments, human-to-agent delegation, existing IdP integration.</p>
+<p><a href="idjag/protocol-overview/"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span> Learn more</a></p>
+</li>
+<li>
+<p><span class="twemoji lg middle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 1 3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5zm0 4a3 3 0 0 1 3 3 3 3 0 0 1-3 3 3 3 0 0 1-3-3 3 3 0 0 1 3-3m5.13 12A9.7 9.7 0 0 1 12 20.92 9.7 9.7 0 0 1 6.87 17c-.34-.5-.63-1-.87-1.53 0-1.65 2.71-3 6-3s6 1.32 6 3c-.24.53-.53 1.03-.87 1.53"/></svg></span> <strong>AIMS</strong></p>
+<hr />
+<p>Agent Identity Management System using SPIFFE and WIMSE standards.</p>
+<p>Best for: Kubernetes/cloud-native, mTLS environments, workload identity.</p>
+<p><a href="aims/overview/"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span> Learn more</a></p>
+</li>
 </ul>
-<p><img alt="ID-JAG Architecture" src="idjag/diagrams/architecture.svg" /></p>
-<h2 id="what-is-id-jag">What is ID-JAG?<a class="headerlink" href="#what-is-id-jag" title="Permanent link">&para;</a></h2>
-<p>ID-JAG enables secure token exchange where an agent presents a signed JWT assertion to obtain an access token. It solves key challenges in agent authentication:</p>
+</div>
+<h2 id="choosing-a-protocol">Choosing a Protocol<a class="headerlink" href="#choosing-a-protocol" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
-<th>Challenge</th>
-<th>ID-JAG Solution</th>
+<th>Aspect</th>
+<th>ID-JAG</th>
+<th>AIMS</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Agent needs its own identity</td>
-<td>Agents authenticate with their own credentials</td>
+<td><strong>Type</strong></td>
+<td>Protocol (specific flow)</td>
+<td>Framework (composable standards)</td>
 </tr>
 <tr>
-<td>Agent acts on behalf of human</td>
-<td>Delegation via <code>act</code> claim preserves human identity</td>
+<td><strong>Identity Model</strong></td>
+<td>OAuth JWT assertions</td>
+<td>SPIFFE IDs</td>
 </tr>
 <tr>
-<td>Multi-agent workflows</td>
-<td>Nested delegation chains track full authorization path</td>
+<td><strong>Credential Format</strong></td>
+<td>Signed JWT assertions</td>
+<td>X.509 SVIDs, JWT-SVIDs, WITs</td>
 </tr>
 <tr>
-<td>Audit requirements</td>
-<td>Both user and actor identities available for logging</td>
+<td><strong>Authentication</strong></td>
+<td>Token exchange (RFC 8693)</td>
+<td>mTLS or WIT/WPT</td>
+</tr>
+<tr>
+<td><strong>Delegation</strong></td>
+<td><code>act</code> claim for human-to-agent</td>
+<td>SPIFFE path conventions</td>
+</tr>
+<tr>
+<td><strong>Best For</strong></td>
+<td>OAuth 2.0 environments</td>
+<td>Kubernetes/cloud-native</td>
+</tr>
+<tr>
+<td><strong>Standards</strong></td>
+<td>RFC 8693, RFC 7523</td>
+<td>SPIFFE, WIMSE</td>
 </tr>
 </tbody>
 </table>
-<h2 id="two-authentication-modes">Two Authentication Modes<a class="headerlink" href="#two-authentication-modes" title="Permanent link">&para;</a></h2>
-<h3 id="simple-mode-agent-only">Simple Mode (Agent-Only)<a class="headerlink" href="#simple-mode-agent-only" title="Permanent link">&para;</a></h3>
-<p>The agent authenticates as itself without human delegation:</p>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="p">{</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nt">&quot;iss&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://issuer.example.com&quot;</span><span class="p">,</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="nt">&quot;sub&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;agent:calendar-bot&quot;</span><span class="p">,</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span><span class="nt">&quot;aud&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://auth.example.com&quot;</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="p">}</span>
+<h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h2>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>go<span class="w"> </span>get<span class="w"> </span>github.com/grokify/agent-protocols
 </span></code></pre></div>
-<h3 id="delegation-mode-human-to-agent">Delegation Mode (Human-to-Agent)<a class="headerlink" href="#delegation-mode-human-to-agent" title="Permanent link">&para;</a></h3>
-<p>The agent acts on behalf of a human user:</p>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="p">{</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="nt">&quot;iss&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://issuer.example.com&quot;</span><span class="p">,</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span><span class="nt">&quot;sub&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;user:alice&quot;</span><span class="p">,</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="nt">&quot;act&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="nt">&quot;sub&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;agent:calendar-bot&quot;</span>
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">  </span><span class="p">}</span>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="p">}</span>
+<h2 id="quick-examples">Quick Examples<a class="headerlink" href="#quick-examples" title="Permanent link">&para;</a></h2>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">ID-JAG</label><label for="__tabbed_1_2">AIMS</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="language-go highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">import</span><span class="w"> </span><span class="s">&quot;github.com/grokify/agent-protocols/idjag&quot;</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="c1">// Agent authenticates as itself</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="nx">assertion</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">idjag</span><span class="p">.</span><span class="nx">NewAssertion</span><span class="p">(</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="s">&quot;https://issuer.example.com&quot;</span><span class="p">,</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">    </span><span class="s">&quot;agent:calendar-bot&quot;</span><span class="p">,</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">    </span><span class="p">[]</span><span class="kt">string</span><span class="p">{</span><span class="s">&quot;https://auth.example.com&quot;</span><span class="p">},</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">    </span><span class="mi">5</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nx">time</span><span class="p">.</span><span class="nx">Minute</span><span class="p">,</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="p">)</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="c1">// Exchange for access token</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="nx">client</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">idjag</span><span class="p">.</span><span class="nx">NewTokenExchangeClient</span><span class="p">(</span><span class="s">&quot;https://auth.example.com/token&quot;</span><span class="p">)</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="nx">resp</span><span class="p">,</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">client</span><span class="p">.</span><span class="nx">ExchangeAssertion</span><span class="p">(</span><span class="nx">ctx</span><span class="p">,</span><span class="w"> </span><span class="nx">signedAssertion</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;read:data&quot;</span><span class="p">)</span>
 </span></code></pre></div>
-<h2 id="quick-start">Quick Start<a class="headerlink" href="#quick-start" title="Permanent link">&para;</a></h2>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>go<span class="w"> </span>get<span class="w"> </span>github.com/grokify/agent-protocols
+</div>
+<div class="tabbed-block">
+<div class="language-go highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">import</span><span class="w"> </span><span class="s">&quot;github.com/grokify/agent-protocols/aims&quot;</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="c1">// Create SPIFFE ID for agent</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="nx">spiffeID</span><span class="p">,</span><span class="w"> </span><span class="nx">_</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">aims</span><span class="p">.</span><span class="nx">NewSPIFFEID</span><span class="p">(</span><span class="s">&quot;example.com&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;/agent/calendar-bot&quot;</span><span class="p">)</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="c1">// Create Workload Identity Token</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="nx">wit</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">aims</span><span class="p">.</span><span class="nx">NewWIT</span><span class="p">(</span><span class="nx">spiffeID</span><span class="p">,</span><span class="w"> </span><span class="p">[]</span><span class="kt">string</span><span class="p">{</span><span class="s">&quot;https://api.example.com&quot;</span><span class="p">},</span><span class="w"> </span><span class="mi">1</span><span class="o">*</span><span class="nx">time</span><span class="p">.</span><span class="nx">Hour</span><span class="p">)</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="nx">signedWIT</span><span class="p">,</span><span class="w"> </span><span class="nx">_</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">wit</span><span class="p">.</span><span class="nx">Sign</span><span class="p">(</span><span class="nx">privateKey</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;key-1&quot;</span><span class="p">)</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="c1">// Create proof token for specific request</span>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="nx">wpt</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">aims</span><span class="p">.</span><span class="nx">NewWPTForRequest</span><span class="p">(</span><span class="nx">spiffeID</span><span class="p">.</span><span class="nx">String</span><span class="p">(),</span><span class="w"> </span><span class="s">&quot;https://api.example.com&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">req</span><span class="p">)</span>
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="nx">wpt</span><span class="p">.</span><span class="nx">BindToRequest</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span><span class="w"> </span><span class="nx">privateKey</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;key-1&quot;</span><span class="p">)</span>
 </span></code></pre></div>
-<div class="language-go highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">package</span><span class="w"> </span><span class="nx">main</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="kn">import</span><span class="w"> </span><span class="p">(</span>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">    </span><span class="s">&quot;time&quot;</span>
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">    </span><span class="s">&quot;github.com/grokify/agent-protocols/idjag&quot;</span>
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="p">)</span>
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="kd">func</span><span class="w"> </span><span class="nx">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">    </span><span class="c1">// Simple: Agent authenticates as itself</span>
-</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="w">    </span><span class="nx">assertion</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">idjag</span><span class="p">.</span><span class="nx">NewAssertion</span><span class="p">(</span>
-</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="w">        </span><span class="s">&quot;https://issuer.example.com&quot;</span><span class="p">,</span>
-</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="w">        </span><span class="s">&quot;agent:my-agent&quot;</span><span class="p">,</span>
-</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="w">        </span><span class="p">[]</span><span class="kt">string</span><span class="p">{</span><span class="s">&quot;https://auth.example.com&quot;</span><span class="p">},</span>
-</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="w">        </span><span class="mi">5</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nx">time</span><span class="p">.</span><span class="nx">Minute</span><span class="p">,</span>
-</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="w">    </span><span class="p">)</span>
-</span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a>
-</span><span id="__span-3-17"><a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a><span class="w">    </span><span class="c1">// Delegation: Agent acts on behalf of user</span>
-</span><span id="__span-3-18"><a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a><span class="w">    </span><span class="nx">delegated</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">idjag</span><span class="p">.</span><span class="nx">NewDelegatedAssertion</span><span class="p">(</span>
-</span><span id="__span-3-19"><a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a><span class="w">        </span><span class="s">&quot;https://issuer.example.com&quot;</span><span class="p">,</span>
-</span><span id="__span-3-20"><a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a><span class="w">        </span><span class="s">&quot;user:alice&quot;</span><span class="p">,</span><span class="w">           </span><span class="c1">// Human user</span>
-</span><span id="__span-3-21"><a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a><span class="w">        </span><span class="s">&quot;agent:calendar-bot&quot;</span><span class="p">,</span><span class="w">   </span><span class="c1">// Acting agent</span>
-</span><span id="__span-3-22"><a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a><span class="w">        </span><span class="p">[]</span><span class="kt">string</span><span class="p">{</span><span class="s">&quot;https://auth.example.com&quot;</span><span class="p">},</span>
-</span><span id="__span-3-23"><a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a><span class="w">        </span><span class="mi">5</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nx">time</span><span class="p">.</span><span class="nx">Minute</span><span class="p">,</span>
-</span><span id="__span-3-24"><a id="__codelineno-3-24" name="__codelineno-3-24" href="#__codelineno-3-24"></a><span class="w">    </span><span class="p">)</span>
-</span><span id="__span-3-25"><a id="__codelineno-3-25" name="__codelineno-3-25" href="#__codelineno-3-25"></a><span class="p">}</span>
-</span></code></pre></div>
-<h2 id="features">Features<a class="headerlink" href="#features" title="Permanent link">&para;</a></h2>
-<table>
-<thead>
-<tr>
-<th>Feature</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>Assertion Creation</strong></td>
-<td>Build and sign ID-JAG assertions</td>
-</tr>
-<tr>
-<td><strong>Token Exchange</strong></td>
-<td>Exchange assertions for access tokens</td>
-</tr>
-<tr>
-<td><strong>JWT Verification</strong></td>
-<td>Verify assertions and access tokens</td>
-</tr>
-<tr>
-<td><strong>JWKS Support</strong></td>
-<td>Fetch and cache public keys from JWKS endpoints</td>
-</tr>
-<tr>
-<td><strong>Server Components</strong></td>
-<td>Ready-to-use authorization and resource server handlers</td>
-</tr>
-<tr>
-<td><strong>Delegation Chains</strong></td>
-<td>Support for nested delegation (<code>act</code> claim)</td>
-</tr>
-</tbody>
-</table>
+</div>
+</div>
+</div>
 <h2 id="documentation">Documentation<a class="headerlink" href="#documentation" title="Permanent link">&para;</a></h2>
 <h3 id="id-jag">ID-JAG<a class="headerlink" href="#id-jag" title="Permanent link">&para;</a></h3>
 <ul>
+<li><a href="idjag/protocol-overview/">Protocol Overview</a> - How ID-JAG works</li>
 <li><a href="idjag/getting-started/">Getting Started</a> - Installation and first steps</li>
-<li><a href="idjag/protocol-overview/">Protocol Overview</a> - How ID-JAG works with diagrams</li>
 <li><a href="idjag/examples/">Examples</a> - Running the demo applications</li>
-<li><a href="idjag/api-reference/">API Reference</a> - Complete Go package documentation</li>
+<li><a href="idjag/diagrams/">Diagrams</a> - Sequence and architecture diagrams</li>
+<li><a href="idjag/api-reference/">API Reference</a> - Go package documentation</li>
 </ul>
 <h3 id="aims">AIMS<a class="headerlink" href="#aims" title="Permanent link">&para;</a></h3>
 <ul>
@@ -1203,10 +1145,9 @@
 <h2 id="related-specifications">Related Specifications<a class="headerlink" href="#related-specifications" title="Permanent link">&para;</a></h2>
 <h3 id="id-jag_1">ID-JAG<a class="headerlink" href="#id-jag_1" title="Permanent link">&para;</a></h3>
 <ul>
-<li><a href="https://datatracker.ietf.org/doc/draft-ietf-oauth-identity-assertion-authz-grant/">draft-ietf-oauth-identity-assertion-authz-grant</a></li>
-<li><a href="https://tools.ietf.org/html/rfc8693">RFC 8693 - OAuth 2.0 Token Exchange</a></li>
-<li><a href="https://tools.ietf.org/html/rfc7519">RFC 7519 - JSON Web Token</a></li>
-<li><a href="https://tools.ietf.org/html/rfc7523">RFC 7523 - JWT Bearer Assertion</a></li>
+<li><a href="https://datatracker.ietf.org/doc/draft-ietf-oauth-identity-assertion-authz-grant/">draft-ietf-oauth-identity-assertion-authz-grant</a> - ID-JAG specification</li>
+<li><a href="https://tools.ietf.org/html/rfc8693">RFC 8693</a> - OAuth 2.0 Token Exchange</li>
+<li><a href="https://tools.ietf.org/html/rfc7523">RFC 7523</a> - JWT Bearer Assertion</li>
 </ul>
 <h3 id="aims_1">AIMS<a class="headerlink" href="#aims_1" title="Permanent link">&para;</a></h3>
 <ul>
