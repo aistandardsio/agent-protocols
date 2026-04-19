@@ -223,11 +223,13 @@ func (v *JWKSVerifier) getKey(ctx context.Context, kid string) (crypto.PublicKey
 }
 
 func (v *JWKSVerifier) refresh(ctx context.Context) error {
+	//nolint:gosec // G704: JWKS URL is configured by application, not user input
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, v.jwksURL, nil)
 	if err != nil {
 		return err
 	}
 
+	//nolint:gosec // G704: JWKS URL is configured by application, not user input
 	resp, err := v.httpClient.Do(req)
 	if err != nil {
 		return err

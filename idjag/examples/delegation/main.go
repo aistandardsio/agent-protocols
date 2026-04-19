@@ -86,8 +86,9 @@ func main() {
 
 	// Start server in background
 	server := &http.Server{
-		Addr:    serverAddr,
-		Handler: mux,
+		Addr:              serverAddr,
+		Handler:           mux,
+		ReadHeaderTimeout: 10 * time.Second,
 	}
 
 	go func() {

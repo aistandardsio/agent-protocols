@@ -25,6 +25,8 @@ const (
 )
 
 // Grant types for token exchange.
+//
+//nolint:gosec // G101: OAuth URNs per RFC 8693/7523, not credentials
 const (
 	// GrantTypeTokenExchange is the grant type for RFC 8693 token exchange.
 	GrantTypeTokenExchange = "urn:ietf:params:oauth:grant-type:token-exchange"
@@ -34,6 +36,8 @@ const (
 )
 
 // Token types for token exchange requests.
+//
+//nolint:gosec // G101: OAuth URNs per RFC 8693, not credentials
 const (
 	// TokenTypeAccessToken indicates an OAuth 2.0 access token.
 	TokenTypeAccessToken = "urn:ietf:params:oauth:token-type:access_token"

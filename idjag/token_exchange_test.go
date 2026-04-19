@@ -14,18 +14,19 @@ func TestTokenExchangeClient_Exchange(t *testing.T) {
 			if r.Method != http.MethodPost {
 				t.Errorf("expected POST, got %s", r.Method)
 			}
+			//nolint:gosec // G120: Test uses httptest with controlled input
 			if err := r.ParseForm(); err != nil {
 				t.Fatalf("failed to parse form: %v", err)
 			}
 
-			if r.FormValue("grant_type") != GrantTypeTokenExchange {
-				t.Errorf("wrong grant_type: %s", r.FormValue("grant_type"))
+			if r.Form.Get("grant_type") != GrantTypeTokenExchange {
+				t.Errorf("wrong grant_type: %s", r.Form.Get("grant_type"))
 			}
-			if r.FormValue("subject_token") == "" {
+			if r.Form.Get("subject_token") == "" {
 				t.Error("missing subject_token")
 			}
-			if r.FormValue("subject_token_type") != TokenTypeJWT {
-				t.Errorf("wrong subject_token_type: %s", r.FormValue("subject_token_type"))
+			if r.Form.Get("subject_token_type") != TokenTypeJWT {
+				t.Errorf("wrong subject_token_type: %s", r.Form.Get("subject_token_type"))
 			}
 
 			resp := TokenExchangeResponse{
@@ -36,6 +37,7 @@ func TestTokenExchangeClient_Exchange(t *testing.T) {
 				Scope:           "read:data",
 			}
 			w.Header().Set("Content-Type", "application/json")
+			//nolint:gosec // G117: OAuth token response per RFC 6749
 			if err := json.NewEncoder(w).Encode(resp); err != nil {
 				http.Error(w, "internal error", http.StatusInternalServerError)
 			}
@@ -130,6 +132,7 @@ func TestTokenExchangeClient_Exchange(t *testing.T) {
 
 			resp := TokenExchangeResponse{AccessToken: "token"}
 			w.Header().Set("Content-Type", "application/json")
+			//nolint:gosec // G117: OAuth token response per RFC 6749
 			if err := json.NewEncoder(w).Encode(resp); err != nil {
 				http.Error(w, "internal error", http.StatusInternalServerError)
 			}
@@ -151,16 +154,18 @@ func TestTokenExchangeClient_Exchange(t *testing.T) {
 
 func TestTokenExchangeClient_ExchangeAssertion(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		//nolint:gosec // G120: Test uses httptest with controlled input
 		if err := r.ParseForm(); err != nil {
 			t.Fatalf("failed to parse form: %v", err)
 		}
 
-		if r.FormValue("subject_token_type") != TokenTypeJWT {
-			t.Errorf("expected JWT token type, got %s", r.FormValue("subject_token_type"))
+		if r.Form.Get("subject_token_type") != TokenTypeJWT {
+			t.Errorf("expected JWT token type, got %s", r.Form.Get("subject_token_type"))
 		}
 
 		resp := TokenExchangeResponse{AccessToken: "token"}
 		w.Header().Set("Content-Type", "application/json")
+		//nolint:gosec // G117: OAuth token response per RFC 6749
 		if err := json.NewEncoder(w).Encode(resp); err != nil {
 			http.Error(w, "internal error", http.StatusInternalServerError)
 		}
@@ -180,14 +185,15 @@ func TestTokenExchangeClient_ExchangeAssertion(t *testing.T) {
 
 func TestJWTBearerClient_Exchange(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		//nolint:gosec // G120: Test uses httptest with controlled input
 		if err := r.ParseForm(); err != nil {
 			t.Fatalf("failed to parse form: %v", err)
 		}
 
-		if r.FormValue("grant_type") != GrantTypeJWTBearer {
-			t.Errorf("expected JWT bearer grant type, got %s", r.FormValue("grant_type"))
+		if r.Form.Get("grant_type") != GrantTypeJWTBearer {
+			t.Errorf("expected JWT bearer grant type, got %s", r.Form.Get("grant_type"))
 		}
-		if r.FormValue("assertion") == "" {
+		if r.Form.Get("assertion") == "" {
 			t.Error("missing assertion")
 		}
 
@@ -196,6 +202,7 @@ func TestJWTBearerClient_Exchange(t *testing.T) {
 			TokenType:   "Bearer",
 		}
 		w.Header().Set("Content-Type", "application/json")
+		//nolint:gosec // G117: OAuth token response per RFC 6749
 		if err := json.NewEncoder(w).Encode(resp); err != nil {
 			http.Error(w, "internal error", http.StatusInternalServerError)
 		}

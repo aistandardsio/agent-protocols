@@ -60,12 +60,14 @@ func (s *AuthorizationServer) ServeHTTP(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
+	// Limit request body size to prevent memory exhaustion (G120)
+	r.Body = http.MaxBytesReader(w, r.Body, 1<<20) // 1MB
 	if err := r.ParseForm(); err != nil {
 		s.writeError(w, http.StatusBadRequest, ErrorInvalidRequest, "invalid request body")
 		return
 	}
 
-	grantType := r.FormValue("grant_type")
+	grantType := r.Form.Get("grant_type")
 
 	switch grantType {
 	case GrantTypeTokenExchange:
@@ -78,9 +80,9 @@ func (s *AuthorizationServer) ServeHTTP(w http.ResponseWriter, r *http.Request) 
 }
 
 func (s *AuthorizationServer) handleTokenExchange(w http.ResponseWriter, r *http.Request) {
-	subjectToken := r.FormValue("subject_token")
-	subjectTokenType := r.FormValue("subject_token_type")
-	scope := r.FormValue("scope")
+	subjectToken := r.Form.Get("subject_token")
+	subjectTokenType := r.Form.Get("subject_token_type")
+	scope := r.Form.Get("scope")
 
 	if subjectToken == "" {
 		s.writeError(w, http.StatusBadRequest, ErrorInvalidRequest, "subject_token required")
@@ -124,8 +126,8 @@ func (s *AuthorizationServer) handleTokenExchange(w http.ResponseWriter, r *http
 }
 
 func (s *AuthorizationServer) handleJWTBearer(w http.ResponseWriter, r *http.Request) {
-	assertion := r.FormValue("assertion")
-	scope := r.FormValue("scope")
+	assertion := r.Form.Get("assertion")
+	scope := r.Form.Get("scope")
 
 	if assertion == "" {
 		s.writeError(w, http.StatusBadRequest, ErrorInvalidRequest, "assertion required")
