@@ -1,0 +1,153 @@
+{
+  "$schema": "https://raw.githubusercontent.com/grokify/pidl/main/schema/pidl.schema.json",
+  "protocol": {
+    "id": "aims-wit-issuance",
+    "name": "AIMS WIT Issuance Flow",
+    "version": "1.0",
+    "description": "Agent Identity Management System - Workload Identity Token (WIT) issuance via SPIRE. An agent obtains a WIT credential bound to its SPIFFE ID through workload attestation.",
+    "category": "auth",
+    "references": [
+      {
+        "name": "draft-klrc-aiagent-auth-00",
+        "url": "https://datatracker.ietf.org/doc/html/draft-klrc-aiagent-auth-00"
+      },
+      {
+        "name": "draft-ietf-wimse-s2s-protocol",
+        "url": "https://datatracker.ietf.org/doc/draft-ietf-wimse-s2s-protocol/"
+      },
+      {
+        "name": "SPIFFE",
+        "url": "https://spiffe.io/"
+      }
+    ]
+  },
+  "entities": [
+    {
+      "id": "agent",
+      "name": "AI Agent Workload",
+      "type": "agent",
+      "description": "AI agent workload requesting identity credentials"
+    },
+    {
+      "id": "spire_agent",
+      "name": "SPIRE Agent",
+      "type": "server",
+      "description": "Local SPIRE agent that attests workloads and manages credentials"
+    },
+    {
+      "id": "spire_server",
+      "name": "SPIRE Server",
+      "type": "authorization_server",
+      "description": "Central SPIRE server that issues SVIDs and manages trust domain"
+    },
+    {
+      "id": "attestor",
+      "name": "Node/Workload Attestor",
+      "type": "server",
+      "description": "Attestation plugin that verifies workload identity (K8s, TPM, etc.)"
+    }
+  ],
+  "phases": [
+    {
+      "id": "attestation",
+      "name": "Workload Attestation",
+      "description": "Agent proves its runtime identity to SPIRE"
+    },
+    {
+      "id": "wit_issuance",
+      "name": "WIT Issuance",
+      "description": "SPIRE issues a JWT-SVID (WIT) bound to the agent's SPIFFE ID"
+    }
+  ],
+  "flows": [
+    {
+      "from": "agent",
+      "to": "spire_agent",
+      "action": "request_svid",
+      "label": "FetchJWTSVID (audience, SPIFFE ID)",
+      "mode": "request",
+      "phase": "attestation",
+      "description": "Agent requests a JWT-SVID via SPIRE Workload API"
+    },
+    {
+      "from": "spire_agent",
+      "to": "attestor",
+      "action": "attest_workload",
+      "label": "Attest Workload (PID, UID, K8s SA, etc.)",
+      "mode": "request",
+      "phase": "attestation",
+      "description": "SPIRE agent uses attestor plugin to verify workload identity"
+    },
+    {
+      "from": "attestor",
+      "to": "attestor",
+      "action": "gather_evidence",
+      "label": "Gather Attestation Evidence",
+      "mode": "request",
+      "phase": "attestation",
+      "description": "Collect platform evidence (K8s token, TPM quote, etc.)"
+    },
+    {
+      "from": "attestor",
+      "to": "spire_agent",
+      "action": "attestation_result",
+      "label": "Attestation Result + Selectors",
+      "mode": "response",
+      "phase": "attestation",
+      "description": "Return attested selectors (k8s:ns:default, k8s:sa:agent-sa)"
+    },
+    {
+      "from": "spire_agent",
+      "to": "spire_server",
+      "action": "fetch_svid",
+      "label": "FetchSVID Request (workload selectors)",
+      "mode": "request",
+      "phase": "wit_issuance",
+      "description": "Request SVID based on attested workload selectors"
+    },
+    {
+      "from": "spire_server",
+      "to": "spire_server",
+      "action": "match_registration",
+      "label": "Match Registration Entry",
+      "mode": "request",
+      "phase": "wit_issuance",
+      "description": "Find registration entry matching workload selectors"
+    },
+    {
+      "from": "spire_server",
+      "to": "spire_server",
+      "action": "create_wit",
+      "label": "Create WIT (iss, sub=SPIFFE ID, aud, exp, cnf)",
+      "mode": "request",
+      "phase": "wit_issuance",
+      "description": "Create JWT-SVID with SPIFFE ID as subject and key binding"
+    },
+    {
+      "from": "spire_server",
+      "to": "spire_server",
+      "action": "sign_wit",
+      "label": "Sign with Trust Domain Key",
+      "mode": "request",
+      "phase": "wit_issuance",
+      "description": "Sign WIT using trust domain signing key"
+    },
+    {
+      "from": "spire_server",
+      "to": "spire_agent",
+      "action": "return_svid",
+      "label": "JWT-SVID (WIT)",
+      "mode": "response",
+      "phase": "wit_issuance"
+    },
+    {
+      "from": "spire_agent",
+      "to": "agent",
+      "action": "return_wit",
+      "label": "Workload Identity Token",
+      "mode": "response",
+      "phase": "wit_issuance",
+      "description": "Return WIT with SPIFFE ID and audience binding"
+    }
+  ]
+}

@@ -1,0 +1,165 @@
+{
+  "$schema": "https://raw.githubusercontent.com/grokify/pidl/main/schema/pidl.schema.json",
+  "protocol": {
+    "id": "aims-wpt-authentication",
+    "name": "AIMS WPT Authentication Flow",
+    "version": "1.0",
+    "description": "Agent Identity Management System - WIMSE Proof Token (WPT) authentication. An agent uses its WIT and a request-bound WPT to authenticate to a target service.",
+    "category": "auth",
+    "references": [
+      {
+        "name": "draft-klrc-aiagent-auth-00",
+        "url": "https://datatracker.ietf.org/doc/html/draft-klrc-aiagent-auth-00"
+      },
+      {
+        "name": "draft-ietf-wimse-s2s-protocol",
+        "url": "https://datatracker.ietf.org/doc/draft-ietf-wimse-s2s-protocol/"
+      }
+    ]
+  },
+  "entities": [
+    {
+      "id": "agent",
+      "name": "AI Agent",
+      "type": "agent",
+      "description": "AI agent authenticating to access a target service"
+    },
+    {
+      "id": "target_service",
+      "name": "Target Service",
+      "type": "resource_server",
+      "description": "Service that the agent wants to access"
+    },
+    {
+      "id": "trust_bundle",
+      "name": "SPIFFE Trust Bundle",
+      "type": "server",
+      "description": "Distributes trust domain public keys for WIT verification"
+    }
+  ],
+  "phases": [
+    {
+      "id": "proof_creation",
+      "name": "Proof Token Creation",
+      "description": "Agent creates a WPT bound to the specific request"
+    },
+    {
+      "id": "request_submission",
+      "name": "Request Submission",
+      "description": "Agent sends request with WIT and WPT"
+    },
+    {
+      "id": "verification",
+      "name": "Verification",
+      "description": "Target service verifies WIT and WPT"
+    }
+  ],
+  "flows": [
+    {
+      "from": "agent",
+      "to": "agent",
+      "action": "create_wpt",
+      "label": "Create WPT (iss=SPIFFE ID, aud, htm, htu, nonce)",
+      "mode": "request",
+      "phase": "proof_creation",
+      "description": "Create WIMSE Proof Token binding to specific HTTP request"
+    },
+    {
+      "from": "agent",
+      "to": "agent",
+      "action": "sign_wpt",
+      "label": "Sign WPT with Agent Key",
+      "mode": "request",
+      "phase": "proof_creation",
+      "description": "Sign WPT with the key bound in the WIT's cnf claim"
+    },
+    {
+      "from": "agent",
+      "to": "target_service",
+      "action": "api_request",
+      "label": "POST /api/action (Authorization: Bearer WIT, Workload-Identity-Token: WPT)",
+      "mode": "request",
+      "phase": "request_submission",
+      "description": "Send request with WIT as Bearer token and WPT in header"
+    },
+    {
+      "from": "target_service",
+      "to": "trust_bundle",
+      "action": "fetch_bundle",
+      "label": "GET /trust-bundle (Trust Domain Keys)",
+      "mode": "request",
+      "phase": "verification",
+      "description": "Fetch SPIFFE trust bundle for WIT verification"
+    },
+    {
+      "from": "trust_bundle",
+      "to": "target_service",
+      "action": "return_bundle",
+      "label": "Trust Bundle (JWKS)",
+      "mode": "response",
+      "phase": "verification"
+    },
+    {
+      "from": "target_service",
+      "to": "target_service",
+      "action": "verify_wit",
+      "label": "Verify WIT Signature + Validate Claims",
+      "mode": "request",
+      "phase": "verification",
+      "description": "Verify WIT signature with trust bundle and validate iss, sub, aud, exp"
+    },
+    {
+      "from": "target_service",
+      "to": "target_service",
+      "action": "extract_cnf",
+      "label": "Extract cnf Claim (Proof Key)",
+      "mode": "request",
+      "phase": "verification",
+      "description": "Extract the confirmation key from WIT for WPT verification"
+    },
+    {
+      "from": "target_service",
+      "to": "target_service",
+      "action": "verify_wpt",
+      "label": "Verify WPT Signature with cnf Key",
+      "mode": "request",
+      "phase": "verification",
+      "description": "Verify WPT was signed by the key bound in WIT"
+    },
+    {
+      "from": "target_service",
+      "to": "target_service",
+      "action": "validate_binding",
+      "label": "Validate Request Binding (htm, htu, nonce)",
+      "mode": "request",
+      "phase": "verification",
+      "description": "Verify WPT htm/htu match actual request method/URI"
+    },
+    {
+      "from": "target_service",
+      "to": "target_service",
+      "action": "check_replay",
+      "label": "Check Replay (jti, nonce, iat)",
+      "mode": "request",
+      "phase": "verification",
+      "description": "Ensure WPT hasn't been replayed using jti/nonce/iat"
+    },
+    {
+      "from": "target_service",
+      "to": "target_service",
+      "action": "authorize",
+      "label": "Authorize Based on SPIFFE ID",
+      "mode": "request",
+      "phase": "verification",
+      "description": "Apply authorization policy based on agent's SPIFFE ID"
+    },
+    {
+      "from": "target_service",
+      "to": "agent",
+      "action": "api_response",
+      "label": "200 OK (Response Data)",
+      "mode": "response",
+      "phase": "verification"
+    }
+  ]
+}
