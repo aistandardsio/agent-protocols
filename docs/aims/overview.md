@@ -9,6 +9,25 @@ Agent Identity Management System (AIMS) is a framework for AI agent authenticati
 
 Unlike ID-JAG (which is a specific protocol), AIMS is a **framework** that composes multiple identity and security standards:
 
+```mermaid
+flowchart LR
+    subgraph Trust Domain
+        SPIRE[SPIRE Server]
+        Agent[AI Agent]
+    end
+
+    subgraph Target
+        Service[Target Service]
+    end
+
+    Agent -->|1. Attest & Get WIT| SPIRE
+    SPIRE -->|2. WIT with cnf| Agent
+    Agent -->|3. Create WPT| Agent
+    Agent -->|4. Request + WIT + WPT| Service
+    Service -->|5. Verify & Authorize| Service
+    Service -->|6. Response| Agent
+```
+
 | Standard | Purpose |
 |----------|---------|
 | **SPIFFE** | Workload identity (SPIFFE IDs as canonical identifiers) |
@@ -18,6 +37,26 @@ Unlike ID-JAG (which is a specific protocol), AIMS is a **framework** that compo
 ## The Nine Layers
 
 AIMS defines nine architectural layers for agent identity management:
+
+```mermaid
+block-beta
+    columns 1
+    block:core["Core Identity"]
+        L1["1. Identifiers<br/>SPIFFE IDs"]
+        L2["2. Credentials<br/>X.509, JWT-SVID, WIT"]
+        L3["3. Attestation<br/>TPM, SGX, Cloud"]
+    end
+    block:ops["Operations"]
+        L4["4. Provisioning<br/>SPIRE, Cloud-native"]
+        L5["5. Authentication<br/>mTLS, WIT/WPT"]
+        L6["6. Authorization<br/>Policy-based"]
+    end
+    block:governance["Governance"]
+        L7["7. Monitoring<br/>Audit, Telemetry"]
+        L8["8. Policy<br/>Centralized Mgmt"]
+        L9["9. Compliance<br/>Regulatory"]
+    end
+```
 
 | Layer | Name | Description |
 |-------|------|-------------|
