@@ -100,40 +100,25 @@
         logoUrl: 'https://aistandardsio.github.io/icon.png',
         logoAlt: 'AIStandards.io',
         title: 'AI',
-        titleSecondary: 'Standards.io',
-        titleGradient: true,
+        titlePrimary: 'Standards',
+        titleMuted: '.io',
         homeUrl: 'https://aistandardsio.github.io'
       },
       menu: [
         {
-          type: 'dropdown',
-          label: 'Protocols',
-          items: [
-            { label: 'AAuth', url: 'https://aistandardsio.github.io/agent-protocols/aauth/overview/' },
-            { label: 'ID-JAG', url: 'https://aistandardsio.github.io/agent-protocols/idjag/protocol-overview/' },
-            { label: 'AIMS', url: 'https://aistandardsio.github.io/agent-protocols/aims/overview/' }
-          ]
+          type: 'link',
+          label: 'Standards',
+          url: 'https://aistandardsio.github.io/standards'
         },
         {
           type: 'link',
-          label: 'Projects',
-          url: 'https://aistandardsio.github.io/projects'
+          label: 'Implementations',
+          url: 'https://aistandardsio.github.io/implementations'
         },
         {
-          type: 'dropdown',
-          label: 'Developers',
-          items: [
-            { label: 'Getting Started', url: 'https://aistandardsio.github.io/agent-protocols/' },
-            { label: 'API Reference', url: 'https://aistandardsio.github.io/agent-protocols/aauth/api-reference/' },
-            { label: 'Examples', url: 'https://aistandardsio.github.io/agent-protocols/aauth/examples/' }
-          ]
-        },
-        {
-          type: 'dropdown',
-          label: 'Community',
-          items: [
-            { label: 'Releases', url: 'https://aistandardsio.github.io/agent-protocols/releases/v0.2.0/' }
-          ]
+          type: 'link',
+          label: 'About',
+          url: 'https://aistandardsio.github.io/about'
         }
       ],
       github: {
@@ -146,8 +131,7 @@
         backgroundColor: '#0a0a0f',
         textColor: '#e4e4ed',
         mutedColor: '#8888a0',
-        borderColor: '#1e1e2e',
-        titleGradient: 'linear-gradient(135deg, #ff6b00, #00d4ff)'
+        borderColor: '#1e1e2e'
       }
     };
     container.appendChild(navbar);
