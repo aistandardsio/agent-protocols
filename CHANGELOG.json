@@ -7,6 +7,36 @@
   "maintainers": ["grokify"],
   "releases": [
     {
+      "version": "v0.3.0",
+      "date": "2026-05-11",
+      "commit": "d9fc824",
+      "highlights": [
+        { "description": "SharkAuth adapter: Agent delegation with may_act_grants and DPoP proof-of-possession" },
+        { "description": "Ory adapter: Fosite custom OAuth handlers and Hydra client for production integration" }
+      ],
+      "added": [
+        { "description": "SharkAuth adapter (`adapters/sharkauth/`) for agent delegation infrastructure", "commit": "1fa75e7" },
+        { "description": "RFC 8693 Token Exchange client for SharkAuth", "commit": "1fa75e7" },
+        { "description": "DPoP proof-of-possession binding per RFC 9449", "commit": "1fa75e7" },
+        { "description": "`may_act_grants` API for structured delegation with cascade revocation", "commit": "1fa75e7" },
+        { "description": "SharkAuth example: AAuth agent integration with delegation grants", "commit": "1fa75e7" },
+        { "description": "Ory adapter (`adapters/ory/`) for Fosite and Hydra integration", "commit": "4512cad" },
+        { "description": "Custom Fosite OAuth handlers for ID-JAG assertions and AAuth tokens", "commit": "4512cad" },
+        { "description": "Token storage interface with in-memory implementation for Fosite", "commit": "4512cad" },
+        { "description": "Hydra client for public and admin APIs with token exchange support", "commit": "4512cad" },
+        { "description": "JWT Bearer grant support (RFC 7523) for Hydra", "commit": "4512cad" },
+        { "description": "Token introspection with actor claim support for delegation", "commit": "4512cad" },
+        { "description": "Ory example: ID-JAG assertion exchange with mock Hydra server", "commit": "4512cad" }
+      ],
+      "documentation": [
+        { "description": "Update three-tier architecture plan with adapter completion status", "commit": "d9fc824" }
+      ],
+      "tests": [
+        { "description": "Unit tests for SharkAuth client, delegation, and DPoP", "commit": "1fa75e7" },
+        { "description": "Unit tests for Ory Fosite handlers and Hydra client", "commit": "4512cad" }
+      ]
+    },
+    {
       "version": "v0.2.0",
       "date": "2026-05-11",
       "commit": "0f644d7",
