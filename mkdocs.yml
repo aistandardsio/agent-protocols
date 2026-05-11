@@ -7,26 +7,31 @@ repo_name: aistandardsio/agent-protocols
 theme:
   name: material
   palette:
-    - scheme: default
-      primary: indigo
-      accent: indigo
-      toggle:
-        icon: material/brightness-7
-        name: Switch to dark mode
+    # Dark mode first (AIStandards.io default)
     - scheme: slate
-      primary: indigo
-      accent: indigo
+      primary: custom
+      accent: custom
       toggle:
         icon: material/brightness-4
         name: Switch to light mode
+    - scheme: default
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
   features:
     - navigation.tabs
     - navigation.sections
     - navigation.expand
     - navigation.top
+    - search.highlight
     - content.code.copy
     - content.code.annotate
     - content.tabs.link
+
+extra_css:
+  - https://aistandardsio.github.io/docs/css/aistandardsio-mkdocs.css
 
 markdown_extensions:
   - pymdownx.highlight:
@@ -93,7 +98,3 @@ extra:
 
 plugins:
   - search
-
-# Ensure diagrams are copied
-extra_css: []
-extra_javascript: []
