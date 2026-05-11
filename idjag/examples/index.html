@@ -89,12 +89,14 @@
     
     
 <!-- AIStandards.io Unified Navigation -->
-<script type="module" src="https://aistandardsio.github.io/js/lit-navbar.js"></script>
-<lit-navbar id="ais-navbar"></lit-navbar>
+<div id="ais-navbar-container"></div>
 <script type="module">
-  // Wait for custom element to be defined
+  import 'https://aistandardsio.github.io/js/lit-navbar.js';
+
+  // Create and configure navbar after component is loaded
   customElements.whenDefined('lit-navbar').then(() => {
-    const navbar = document.getElementById('ais-navbar');
+    const container = document.getElementById('ais-navbar-container');
+    const navbar = document.createElement('lit-navbar');
     navbar.config = {
       baseUrl: 'https://aistandardsio.github.io',
       brand: {
@@ -151,6 +153,7 @@
         titleGradient: 'linear-gradient(135deg, #ff6b00, #00d4ff)'
       }
     };
+    container.appendChild(navbar);
   });
 </script>
 
