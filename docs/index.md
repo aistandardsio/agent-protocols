@@ -118,6 +118,22 @@ go get github.com/aistandardsio/agent-protocols
     wpt.BindToRequest(req, privateKey, "key-1")
     ```
 
+## Adapters
+
+Production-ready integrations with identity infrastructure.
+
+<div class="grid cards" markdown>
+
+-   :material-server:{ .lg .middle } **Zitadel**
+
+    ---
+
+    Integration with Zitadel OIDC infrastructure for all three protocols.
+
+    [:octicons-arrow-right-24: Learn more](adapters/zitadel/overview.md)
+
+</div>
+
 ## Documentation
 
 ### AAuth
@@ -144,8 +160,13 @@ go get github.com/aistandardsio/agent-protocols
 - [Diagrams](aims/diagrams.md) - Sequence and architecture diagrams
 - [API Reference](aims/api-reference.md) - Go package documentation
 
+### Adapters
+
+- [Zitadel](adapters/zitadel/overview.md) - Integration with Zitadel OIDC infrastructure
+
 ### Releases
 
+- [v0.2.0](releases/v0.2.0.md) - Zitadel adapter (2026-05-10)
 - [v0.1.0](releases/v0.1.0.md) - Initial release (2026-04-19)
 
 ## Related Specifications

@@ -76,7 +76,14 @@ nav:
     - Examples: aims/examples.md
     - Diagrams: aims/diagrams.md
     - API Reference: aims/api-reference.md
+  - Adapters:
+    - Zitadel:
+      - Overview: adapters/zitadel/overview.md
+      - Getting Started: adapters/zitadel/getting-started.md
+      - Examples: adapters/zitadel/examples.md
+      - API Reference: adapters/zitadel/api-reference.md
   - Releases:
+    - v0.2.0: releases/v0.2.0.md
     - v0.1.0: releases/v0.1.0.md
 
 extra:
