@@ -2,73 +2,69 @@
 
 {% block header %}
 <!-- AIStandards.io Unified Navigation -->
-<div id="ais-nav-root"></div>
+<script type="module" src="https://aistandardsio.github.io/js/lit-navbar.js"></script>
+<lit-navbar id="ais-navbar"></lit-navbar>
 <script type="module">
-  // Load navbar component from CDN
-  import 'https://aistandardsio.github.io/js/lit-navbar.js';
-
-  // Navbar configuration for agent-protocols
-  const config = {
-    baseUrl: 'https://aistandardsio.github.io',
-    brand: {
-      logoUrl: 'https://aistandardsio.github.io/icon.png',
-      logoAlt: 'AIStandards.io',
-      title: 'AI',
-      titleSecondary: 'Standards.io',
-      titleGradient: true,
-      homeUrl: 'https://aistandardsio.github.io'
-    },
-    menu: [
-      {
-        type: 'dropdown',
-        label: 'Protocols',
-        items: [
-          { label: 'AAuth', url: 'https://aistandardsio.github.io/agent-protocols/aauth/overview/' },
-          { label: 'ID-JAG', url: 'https://aistandardsio.github.io/agent-protocols/idjag/protocol-overview/' },
-          { label: 'AIMS', url: 'https://aistandardsio.github.io/agent-protocols/aims/overview/' }
-        ]
+  // Wait for custom element to be defined
+  customElements.whenDefined('lit-navbar').then(() => {
+    const navbar = document.getElementById('ais-navbar');
+    navbar.config = {
+      baseUrl: 'https://aistandardsio.github.io',
+      brand: {
+        logoUrl: 'https://aistandardsio.github.io/icon.png',
+        logoAlt: 'AIStandards.io',
+        title: 'AI',
+        titleSecondary: 'Standards.io',
+        titleGradient: true,
+        homeUrl: 'https://aistandardsio.github.io'
       },
-      {
-        type: 'link',
-        label: 'Projects',
-        url: 'https://aistandardsio.github.io/projects'
+      menu: [
+        {
+          type: 'dropdown',
+          label: 'Protocols',
+          items: [
+            { label: 'AAuth', url: 'https://aistandardsio.github.io/agent-protocols/aauth/overview/' },
+            { label: 'ID-JAG', url: 'https://aistandardsio.github.io/agent-protocols/idjag/protocol-overview/' },
+            { label: 'AIMS', url: 'https://aistandardsio.github.io/agent-protocols/aims/overview/' }
+          ]
+        },
+        {
+          type: 'link',
+          label: 'Projects',
+          url: 'https://aistandardsio.github.io/projects'
+        },
+        {
+          type: 'dropdown',
+          label: 'Developers',
+          items: [
+            { label: 'Getting Started', url: 'https://aistandardsio.github.io/agent-protocols/' },
+            { label: 'API Reference', url: 'https://aistandardsio.github.io/agent-protocols/aauth/api-reference/' },
+            { label: 'Examples', url: 'https://aistandardsio.github.io/agent-protocols/aauth/examples/' }
+          ]
+        },
+        {
+          type: 'dropdown',
+          label: 'Community',
+          items: [
+            { label: 'Releases', url: 'https://aistandardsio.github.io/agent-protocols/releases/v0.2.0/' }
+          ]
+        }
+      ],
+      github: {
+        url: 'https://github.com/aistandardsio',
+        label: 'GitHub'
       },
-      {
-        type: 'dropdown',
-        label: 'Developers',
-        items: [
-          { label: 'Getting Started', url: 'https://aistandardsio.github.io/agent-protocols/' },
-          { label: 'API Reference', url: 'https://aistandardsio.github.io/agent-protocols/aauth/api-reference/' },
-          { label: 'Examples', url: 'https://aistandardsio.github.io/agent-protocols/aauth/examples/' }
-        ]
-      },
-      {
-        type: 'dropdown',
-        label: 'Community',
-        items: [
-          { label: 'Releases', url: 'https://aistandardsio.github.io/agent-protocols/releases/v0.2.0/' }
-        ]
+      theme: {
+        primaryColor: '#ff6b00',
+        secondaryColor: '#00d4ff',
+        backgroundColor: '#0a0a0f',
+        textColor: '#e4e4ed',
+        mutedColor: '#8888a0',
+        borderColor: '#1e1e2e',
+        titleGradient: 'linear-gradient(135deg, #ff6b00, #00d4ff)'
       }
-    ],
-    github: {
-      url: 'https://github.com/aistandardsio',
-      label: 'GitHub'
-    },
-    theme: {
-      primaryColor: '#ff6b00',
-      secondaryColor: '#00d4ff',
-      backgroundColor: '#0a0a0f',
-      textColor: '#e4e4ed',
-      mutedColor: '#8888a0',
-      borderColor: '#1e1e2e',
-      titleGradient: 'linear-gradient(135deg, #ff6b00, #00d4ff)'
-    }
-  };
-
-  // Create and configure navbar
-  const navbar = document.createElement('lit-navbar');
-  navbar.config = config;
-  document.getElementById('ais-nav-root').appendChild(navbar);
+    };
+  });
 </script>
 
 {{ super() }}
