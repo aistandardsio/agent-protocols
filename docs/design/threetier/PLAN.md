@@ -1,7 +1,8 @@
 # Three-Tier Architecture Plan
 
-**Status**: Draft
+**Status**: In Progress
 **Created**: 2026-05-10
+**Updated**: 2026-05-11
 
 ## Overview
 
@@ -324,63 +325,74 @@ demos/production/
 
 ## Implementation Order
 
-### Phase 1: Complete Core (Current → Week 8)
+### Phase 1: Complete Core ✅ COMPLETE (v0.1.0)
 
 1. ~~ID-JAG~~ (complete)
 2. ~~AIMS~~ (complete)
-3. ~~AAuth~~ (complete)
+3. ~~AAuth~~ (complete - v0.2.0)
 
-### Phase 2: Protocol Examples (Weeks 9-10)
+### Phase 2: Protocol Examples ✅ COMPLETE (v0.2.0)
 
 Protocol-specific examples live within each protocol's `examples/` directory.
 
-| Example | Week | Location |
-|---------|------|----------|
-| `idjag/examples/simple` | 9 | ID-JAG basic flow |
-| `idjag/examples/delegation` | 9 | ID-JAG delegation |
-| `aims/examples/simple` | 9 | AIMS WIT/WPT flow |
-| `aims/examples/mtls` | 9 | AIMS mTLS with X.509 |
-| `aauth/examples/simple` | 10 | AAuth identity-only |
-| `aauth/examples/resource-managed` | 10 | AAuth challenge-response |
-| `aauth/examples/delegation` | 10 | AAuth delegation |
-| `demos/multi-protocol` | 10 | Cross-protocol integration |
+| Example | Status | Location |
+|---------|--------|----------|
+| `idjag/examples/simple` | ✅ | ID-JAG basic flow |
+| `idjag/examples/delegation` | ✅ | ID-JAG delegation |
+| `aims/examples/simple` | ✅ | AIMS WIT/WPT flow |
+| `aims/examples/mtls` | ✅ | AIMS mTLS with X.509 |
+| `aauth/examples/simple` | ✅ | AAuth identity-only |
+| `aauth/examples/resource-managed` | ✅ | AAuth challenge-response |
+| `aauth/examples/delegation` | ✅ | AAuth delegation |
+| `demos/multi-protocol` | ✅ | Cross-protocol integration |
 
-### Phase 3: Zitadel Adapter (Weeks 11-13)
+### Phase 3: Zitadel Adapter ✅ COMPLETE (v0.2.0)
 
-| Component | Week |
-|-----------|------|
-| `adapters/zitadel/client.go` | 11 |
-| `adapters/zitadel/token_exchange.go` | 11 |
-| `adapters/zitadel/jwt_profile.go` | 12 |
-| `adapters/zitadel/middleware.go` | 12 |
-| `adapters/zitadel/examples/` | 13 |
+| Component | Status |
+|-----------|--------|
+| `adapters/zitadel/token_exchange.go` | ✅ |
+| `adapters/zitadel/jwt_profile.go` | ✅ |
+| `adapters/zitadel/verifier.go` | ✅ |
+| `adapters/zitadel/middleware.go` | ✅ |
+| `adapters/zitadel/examples/` | ✅ |
 
-### Phase 4: Production Demos (Weeks 14-16)
+### Phase 4: SharkAuth Adapter ✅ COMPLETE (v0.3.0)
 
-| Component | Week |
-|-----------|------|
-| Docker Compose base | 14 |
-| Zitadel setup | 14 |
-| Agent services | 15 |
-| Scenarios | 15 |
-| Observability | 16 |
-| Documentation | 16 |
+| Component | Status |
+|-----------|--------|
+| `adapters/sharkauth/doc.go` | ✅ |
+| `adapters/sharkauth/errors.go` | ✅ |
+| `adapters/sharkauth/client.go` | ✅ |
+| `adapters/sharkauth/delegation.go` | ✅ |
+| `adapters/sharkauth/dpop.go` | ✅ |
+| `adapters/sharkauth/client_test.go` | ✅ |
+| `adapters/sharkauth/delegation_test.go` | ✅ |
+| `adapters/sharkauth/dpop_test.go` | ✅ |
+| `adapters/sharkauth/examples/aauth/` | ✅ |
 
-### Phase 5: SharkAuth Adapter (Weeks 17-18)
+### Phase 5: Ory Adapter ✅ COMPLETE (v0.3.0)
 
-| Component | Week |
-|-----------|------|
-| `adapters/sharkauth/delegation.go` | 17 |
-| `adapters/sharkauth/dpop.go` | 17 |
-| `adapters/sharkauth/examples/` | 18 |
+| Component | Status |
+|-----------|--------|
+| `adapters/ory/doc.go` | ✅ |
+| `adapters/ory/fosite/handler.go` | ✅ |
+| `adapters/ory/fosite/storage.go` | ✅ |
+| `adapters/ory/fosite/handler_test.go` | ✅ |
+| `adapters/ory/fosite/storage_test.go` | ✅ |
+| `adapters/ory/hydra/client.go` | ✅ |
+| `adapters/ory/hydra/client_test.go` | ✅ |
+| `adapters/ory/examples/idjag/` | ✅ |
 
-### Phase 6: Ory Adapter (Weeks 19-20)
+### Phase 6: Production Demos ⏳ PLANNED (v0.4.0)
 
-| Component | Week |
-|-----------|------|
-| `adapters/ory/fosite/handler.go` | 19 |
-| `adapters/ory/hydra/client.go` | 19 |
-| `adapters/ory/examples/` | 20 |
+| Component | Status |
+|-----------|--------|
+| Docker Compose base | ⏳ |
+| Zitadel setup | ⏳ |
+| Agent services | ⏳ |
+| Scenarios | ⏳ |
+| Observability | ⏳ |
+| Documentation | ⏳ |
 
 ---
 
