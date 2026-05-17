@@ -1,16 +1,24 @@
 // Package main demonstrates ID-JAG with human-to-agent delegation.
 //
-// This example shows how an agent can act on behalf of a human user
-// using the "act" (actor) claim per RFC 8693.
+// This example shows the IETF-compliant flow per draft-ietf-oauth-identity-assertion-authz-grant:
 //
-// The assertion structure with delegation:
+//  1. Agent requests ID-JAG from IdP using token exchange (grant_type=token-exchange,
+//     requested_token_type=id-jag)
+//  2. Agent exchanges ID-JAG at Resource AS using JWT bearer (grant_type=jwt-bearer)
+//  3. Agent calls protected resource with access token
 //
-//	{
-//	  "iss": "https://issuer.example.com",
-//	  "sub": "user:alice",           // Human identity
-//	  "act": {
-//	    "sub": "agent:calendar-bot"  // Acting agent
-//	  }
+// The ID-JAG structure per IETF draft:
+//
+//	Header: {"typ": "oauth-id-jag+jwt", "alg": "RS256"}
+//	Payload: {
+//	  "iss": "https://idp.example.com",
+//	  "sub": "user:alice",
+//	  "aud": "https://api.example.com",
+//	  "client_id": "agent-client-123",
+//	  "jti": "unique-token-id",
+//	  "exp": 1699900000,
+//	  "iat": 1699896400,
+//	  "act": {"sub": "agent:calendar-bot"}  // Optional per RFC 8693
 //	}
 //
 // # EXPERIMENTAL
@@ -38,12 +46,12 @@ import (
 const (
 	serverAddr = "localhost:18081"
 	keyID      = "demo-key-1"
-	issuer     = "https://issuer.example.com"
-	audience   = "http://localhost:18081"
+	idpIssuer  = "https://idp.example.com"
+	authServer = "http://localhost:18081"
 )
 
 func main() {
-	// Generate RSA key pair for signing
+	// Generate RSA key pair for signing (shared by IdP and Auth Server in this demo)
 	privateKey, err := rsa.GenerateKey(rand.Reader, 2048)
 	if err != nil {
 		log.Fatalf("Failed to generate key: %v", err)
@@ -57,32 +65,41 @@ func main() {
 		},
 	}
 
-	// Create verifier for the authorization server
-	verifier := idjag.NewStaticKeyVerifier(publicKey, keyID, idjag.VerifierOptions{
-		ExpectedIssuer:   issuer,
-		ExpectedAudience: audience,
-	})
+	// === IdP Authorization Server ===
+	// Issues ID-JAG assertions via OAuth token exchange
+	idpServer := idjag.NewIdPAuthorizationServer(idpIssuer, jwt.SigningMethodRS256, privateKey, keyID)
+	idpServer.AssertionTTL = 5 * time.Minute
+	idpServer.DelegationPolicy = func(ctx context.Context, req *idjag.IDJAGRequest) error {
+		log.Printf("   [IdP] Validating delegation for client: %s", req.ClientID)
+		return nil // In production: verify user authorized this agent
+	}
 
-	// Create authorization server
-	authServer := idjag.NewAuthorizationServer(
-		verifier,
+	// === Resource Authorization Server ===
+	// Exchanges ID-JAG for access tokens via JWT bearer
+	resourceVerifier := idjag.NewStaticKeyVerifier(publicKey, keyID, idjag.VerifierOptions{
+		ExpectedIssuer:   idpIssuer,
+		ExpectedAudience: authServer,
+	})
+	resourceAuthServer := idjag.NewAuthorizationServer(
+		resourceVerifier,
 		jwt.SigningMethodRS256,
 		privateKey,
 		keyID,
-		audience,
+		authServer,
 	)
-	authServer.TokenTTL = 1 * time.Hour
+	resourceAuthServer.TokenTTL = 1 * time.Hour
 
-	// Create verifier for the resource server
-	resourceVerifier := idjag.NewStaticKeyVerifier(publicKey, keyID, idjag.VerifierOptions{
-		ExpectedIssuer: audience,
+	// === Resource Server ===
+	accessTokenVerifier := idjag.NewStaticKeyVerifier(publicKey, keyID, idjag.VerifierOptions{
+		ExpectedIssuer: authServer,
 	})
-	resourceServer := idjag.NewResourceServer(resourceVerifier)
+	resourceServer := idjag.NewResourceServer(accessTokenVerifier)
 
 	// Set up HTTP handlers
 	mux := http.NewServeMux()
 	mux.HandleFunc("GET /.well-known/jwks.json", idjag.NewJWKSHandler(jwks).ServeHTTP)
-	mux.HandleFunc("POST /token", authServer.ServeHTTP)
+	mux.HandleFunc("POST /idp/token", idpServer.ServeHTTP)      // IdP token endpoint
+	mux.HandleFunc("POST /token", resourceAuthServer.ServeHTTP) // Resource AS token endpoint
 	mux.HandleFunc("GET /calendar", resourceServer.Middleware(http.HandlerFunc(handleCalendar)).ServeHTTP)
 
 	// Start server in background
@@ -99,7 +116,6 @@ func main() {
 		}
 	}()
 
-	// Give server time to start
 	time.Sleep(100 * time.Millisecond)
 
 	// Run the demo
@@ -113,107 +129,78 @@ func main() {
 func runDemo(privateKey *rsa.PrivateKey) error {
 	ctx := context.Background()
 
-	log.Println("\n=== ID-JAG Delegation Demo ===")
-	log.Println("This demo shows an agent acting on behalf of a human user.")
+	log.Println("\n=== ID-JAG IETF-Compliant Delegation Demo ===")
+	log.Println("This demo shows the two-step IETF draft flow:")
+	log.Println("  Step 1: token-exchange with requested_token_type=id-jag (IdP)")
+	log.Println("  Step 2: jwt-bearer with assertion=ID-JAG (Resource AS)")
 
-	// Step 1: Create delegated assertion
-	log.Println("\n1. Creating delegated assertion...")
-	assertion := idjag.NewDelegatedAssertion(
-		issuer,
-		"user:alice",         // Human user
-		"agent:calendar-bot", // Acting agent
-		[]string{audience},
-		5*time.Minute,
-	)
+	// Simulate: User has already authenticated and we have their ID token
+	// In production, this would come from OIDC authentication
+	userIDToken := createMockUserIDToken(privateKey)
+	log.Println("\n0. User has authenticated (simulated ID token)")
 
-	// Sign the assertion
-	signedAssertion, err := assertion.Sign(jwt.SigningMethodRS256, privateKey, keyID)
+	// Step 1: Request ID-JAG from IdP using OAuth token exchange
+	log.Println("\n1. Agent requesting ID-JAG from IdP...")
+	log.Println("   grant_type=token-exchange")
+	log.Println("   requested_token_type=urn:ietf:params:oauth:token-type:id-jag")
+
+	idpClient := idjag.NewIDJAGClient(fmt.Sprintf("http://%s/idp/token", serverAddr))
+	idjagResp, err := idpClient.RequestIDJAG(ctx, &idjag.IDJAGRequest{
+		SubjectToken:     userIDToken,
+		SubjectTokenType: idjag.TokenTypeIDToken,
+		Audience:         authServer,
+		ClientID:         "agent:calendar-bot",
+		Scope:            "calendar:read",
+	})
 	if err != nil {
-		return fmt.Errorf("failed to sign assertion: %w", err)
+		return fmt.Errorf("failed to get ID-JAG: %w", err)
 	}
-	log.Printf("   Subject (human): %s", assertion.Subject)
-	log.Printf("   Actor (agent):   %s", assertion.Actor.Subject)
-	log.Printf("   Assertion created (JWT length: %d)", len(signedAssertion))
+	log.Printf("   ID-JAG received (issued_token_type=%s)", idjagResp.IssuedTokenType)
+	log.Printf("   Token type: %s (N_A per RFC 8693)", idjagResp.TokenType)
 
-	// Step 2: Exchange assertion for access token
-	log.Println("\n2. Exchanging delegated assertion for access token...")
-	client := idjag.NewTokenExchangeClient(fmt.Sprintf("http://%s/token", serverAddr))
-	tokenResp, err := client.ExchangeAssertion(ctx, signedAssertion, "calendar:read")
+	// Verify the ID-JAG has the correct typ header
+	parsed, _ := idjag.ParseAssertion(idjagResp.AccessToken)
+	log.Printf("   ID-JAG subject: %s", parsed.Subject)
+	log.Printf("   ID-JAG client_id: %s", parsed.ClientID)
+
+	// Step 2: Exchange ID-JAG at Resource Authorization Server
+	log.Println("\n2. Exchanging ID-JAG for access token at Resource AS...")
+	log.Println("   grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer")
+
+	jwtBearerClient := idjag.NewJWTBearerClient(fmt.Sprintf("http://%s/token", serverAddr))
+	tokenResp, err := jwtBearerClient.Exchange(ctx, idjagResp.AccessToken, "calendar:read")
 	if err != nil {
-		return fmt.Errorf("token exchange failed: %w", err)
+		return fmt.Errorf("JWT bearer exchange failed: %w", err)
 	}
 	log.Printf("   Access token received (length: %d)", len(tokenResp.AccessToken))
-	log.Printf("   Scope: %s", tokenResp.Scope)
+	log.Printf("   Token type: %s", tokenResp.TokenType)
 
 	// Step 3: Call protected resource
-	log.Println("\n3. Agent calling calendar API on behalf of user...")
+	log.Println("\n3. Agent calling calendar API with access token...")
 	data, err := callCalendarAPI(tokenResp.AccessToken)
 	if err != nil {
 		return fmt.Errorf("calendar API call failed: %w", err)
 	}
 	log.Printf("   Response: %s", data)
-
-	// Demonstrate nested delegation
-	log.Println("\n4. Demonstrating nested delegation (User -> Agent1 -> Agent2)...")
-	if err := demoNestedDelegation(privateKey); err != nil {
-		return fmt.Errorf("nested delegation demo failed: %w", err)
-	}
 
 	return nil
 }
 
-func demoNestedDelegation(privateKey *rsa.PrivateKey) error {
-	ctx := context.Background()
-
-	// Create assertion with nested delegation chain
-	assertion := idjag.NewAssertion(
-		issuer,
-		"user:bob",
-		[]string{audience},
-		5*time.Minute,
-	)
-	assertion.Actor = &idjag.Actor{
-		Subject: "agent:orchestrator",
-		Actor: &idjag.Actor{
-			Subject: "agent:calendar-worker",
-		},
+// createMockUserIDToken simulates an OIDC ID token from user authentication
+func createMockUserIDToken(privateKey *rsa.PrivateKey) string {
+	now := time.Now()
+	claims := jwt.MapClaims{
+		"iss": idpIssuer,
+		"sub": "user:alice",
+		"aud": idpIssuer,
+		"exp": jwt.NewNumericDate(now.Add(1 * time.Hour)),
+		"iat": jwt.NewNumericDate(now),
 	}
 
-	signedAssertion, err := assertion.Sign(jwt.SigningMethodRS256, privateKey, keyID)
-	if err != nil {
-		return fmt.Errorf("failed to sign assertion: %w", err)
-	}
-
-	log.Printf("   Subject (human):      %s", assertion.Subject)
-	log.Printf("   Actor 1 (orchestrator): %s", assertion.Actor.Subject)
-	log.Printf("   Actor 2 (worker):       %s", assertion.Actor.Actor.Subject)
-
-	// Parse it back to verify the chain
-	parsed, err := idjag.ParseAssertion(signedAssertion)
-	if err != nil {
-		return fmt.Errorf("failed to parse assertion: %w", err)
-	}
-
-	chain := parsed.DelegationChain()
-	log.Printf("   Delegation chain depth: %d", len(chain))
-	for i, actor := range chain {
-		log.Printf("   Level %d: %s", i+1, actor.Subject)
-	}
-
-	// Exchange and call API
-	client := idjag.NewTokenExchangeClient(fmt.Sprintf("http://%s/token", serverAddr))
-	tokenResp, err := client.ExchangeAssertion(ctx, signedAssertion, "calendar:read")
-	if err != nil {
-		return fmt.Errorf("token exchange failed: %w", err)
-	}
-
-	data, err := callCalendarAPI(tokenResp.AccessToken)
-	if err != nil {
-		return fmt.Errorf("calendar API call failed: %w", err)
-	}
-	log.Printf("   Response: %s", data)
-
-	return nil
+	token := jwt.NewWithClaims(jwt.SigningMethodRS256, claims)
+	token.Header["kid"] = keyID
+	signedToken, _ := token.SignedString(privateKey)
+	return signedToken
 }
 
 func callCalendarAPI(accessToken string) (string, error) {
@@ -256,7 +243,6 @@ func handleCalendar(w http.ResponseWriter, r *http.Request) {
 		"timestamp": time.Now().Format(time.RFC3339),
 	}
 
-	// Include delegation chain if present
 	if assertion.IsDelegated() {
 		chain := assertion.DelegationChain()
 		actors := make([]string, len(chain))
@@ -266,7 +252,6 @@ func handleCalendar(w http.ResponseWriter, r *http.Request) {
 		response["acting_as"] = actors
 	}
 
-	// Mock calendar events
 	response["events"] = []map[string]string{
 		{"title": "Team Standup", "time": "09:00"},
 		{"title": "Project Review", "time": "14:00"},
