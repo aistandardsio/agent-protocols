@@ -51,11 +51,21 @@ const (
 	// TokenTypeJWT indicates a JWT token.
 	TokenTypeJWT = "urn:ietf:params:oauth:token-type:jwt"
 
+	// TokenTypeIDJAG indicates an ID-JAG assertion per draft-ietf-oauth-identity-assertion-authz-grant.
+	TokenTypeIDJAG = "urn:ietf:params:oauth:token-type:id-jag"
+
 	// TokenTypeSAML1 indicates a SAML 1.1 assertion.
 	TokenTypeSAML1 = "urn:ietf:params:oauth:token-type:saml1"
 
 	// TokenTypeSAML2 indicates a SAML 2.0 assertion.
 	TokenTypeSAML2 = "urn:ietf:params:oauth:token-type:saml2"
+)
+
+// JWT header types per IETF specifications.
+const (
+	// JWTTypeIDJAG is the typ header value for ID-JAG assertions
+	// per draft-ietf-oauth-identity-assertion-authz-grant.
+	JWTTypeIDJAG = "oauth-id-jag+jwt"
 )
 
 // Supported JWT signing algorithms.
