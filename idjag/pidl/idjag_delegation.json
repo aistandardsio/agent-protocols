@@ -3,8 +3,8 @@
   "protocol": {
     "id": "idjag-delegation",
     "name": "ID-JAG Delegation Flow (Human-to-Agent)",
-    "version": "1.0",
-    "description": "Identity Assertion JWT Authorization Grant with human delegation. The agent acts on behalf of a human user using the actor (act) claim to preserve both identities.",
+    "version": "1.1",
+    "description": "Identity Assertion JWT Authorization Grant with human delegation per draft-ietf-oauth-identity-assertion-authz-grant. Uses OAuth token exchange to obtain ID-JAG from IdP, then JWT bearer assertion to exchange for access token at Resource AS.",
     "category": "auth",
     "references": [
       {
@@ -16,7 +16,11 @@
         "url": "https://tools.ietf.org/html/rfc8693"
       },
       {
-        "name": "RFC 7519 Section 4.3 - Actor Claim",
+        "name": "RFC 7523 - JWT Bearer Assertion",
+        "url": "https://tools.ietf.org/html/rfc7523"
+      },
+      {
+        "name": "RFC 7519 - JSON Web Token (JWT)",
         "url": "https://tools.ietf.org/html/rfc7519"
       }
     ]
@@ -29,10 +33,10 @@
       "description": "The principal whose identity is delegated to the agent"
     },
     {
-      "id": "idp",
-      "name": "Identity Provider",
-      "type": "identity_provider",
-      "description": "Authenticates the human user and provides identity claims"
+      "id": "idp_auth_server",
+      "name": "IdP Authorization Server",
+      "type": "authorization_server",
+      "description": "Issues ID-JAG assertions via OAuth token exchange (grant_type=token-exchange, requested_token_type=id-jag)"
     },
     {
       "id": "agent",
@@ -41,16 +45,10 @@
       "description": "Agent acting on behalf of the human user"
     },
     {
-      "id": "issuer",
-      "name": "Assertion Issuer",
-      "type": "server",
-      "description": "Creates delegated assertions with actor (act) claim"
-    },
-    {
-      "id": "auth_server",
-      "name": "Authorization Server",
+      "id": "resource_auth_server",
+      "name": "Resource Authorization Server",
       "type": "authorization_server",
-      "description": "Validates assertions and issues access tokens preserving delegation"
+      "description": "Exchanges ID-JAG for access tokens via JWT bearer grant (grant_type=jwt-bearer)"
     },
     {
       "id": "jwks",
@@ -69,17 +67,17 @@
     {
       "id": "user_authentication",
       "name": "User Authentication",
-      "description": "Human user authenticates with identity provider"
+      "description": "Human user authenticates with IdP and authorizes agent"
     },
     {
-      "id": "delegation_setup",
-      "name": "Delegation Setup",
-      "description": "Create delegated assertion with user as subject and agent as actor"
+      "id": "idjag_issuance",
+      "name": "ID-JAG Issuance",
+      "description": "Agent requests ID-JAG from IdP via OAuth token exchange"
     },
     {
       "id": "token_exchange",
-      "name": "Token Exchange",
-      "description": "Agent exchanges delegated assertion for access token"
+      "name": "Access Token Exchange",
+      "description": "Agent exchanges ID-JAG for access token at Resource AS via JWT bearer"
     },
     {
       "id": "delegated_access",
@@ -90,121 +88,142 @@
   "flows": [
     {
       "from": "user",
-      "to": "idp",
+      "to": "idp_auth_server",
       "action": "authenticate",
       "label": "Authenticate (OAuth/OIDC/SAML)",
       "mode": "interactive",
       "phase": "user_authentication",
-      "description": "User authenticates using standard identity protocols"
+      "description": "User authenticates and receives ID token or refresh token"
     },
     {
-      "from": "idp",
+      "from": "idp_auth_server",
       "to": "user",
       "action": "identity_verified",
-      "label": "Identity Verified + Session Established",
+      "label": "ID Token / Refresh Token",
       "mode": "response",
-      "phase": "user_authentication"
+      "phase": "user_authentication",
+      "description": "User receives identity token for later delegation"
     },
     {
       "from": "user",
       "to": "agent",
       "action": "delegate_task",
-      "label": "Request Agent Action",
+      "label": "Delegate Task + Provide ID Token",
       "mode": "interactive",
-      "phase": "delegation_setup",
-      "description": "User asks agent to perform an action on their behalf"
+      "phase": "user_authentication",
+      "description": "User provides agent with task and identity token for delegation"
     },
     {
       "from": "agent",
-      "to": "issuer",
-      "action": "request_delegated_assertion",
-      "label": "Request Delegated Assertion (user_id, agent_id)",
+      "to": "idp_auth_server",
+      "action": "request_idjag",
+      "label": "POST /token (grant_type=token-exchange, requested_token_type=id-jag, subject_token=ID_TOKEN)",
       "mode": "request",
-      "phase": "delegation_setup",
-      "description": "Agent requests assertion with user as subject and itself as actor"
+      "phase": "idjag_issuance",
+      "description": "Agent requests ID-JAG using OAuth token exchange per IETF draft"
     },
     {
-      "from": "issuer",
-      "to": "issuer",
-      "action": "create_delegated_claims",
-      "label": "Create JWT: sub=user, act={sub: agent}",
+      "from": "idp_auth_server",
+      "to": "idp_auth_server",
+      "action": "validate_subject_token",
+      "label": "Validate subject_token (ID Token/Refresh Token)",
       "mode": "request",
-      "phase": "delegation_setup",
-      "description": "Build assertion with human identity in 'sub' and agent identity in nested 'act' claim"
+      "phase": "idjag_issuance",
+      "description": "IdP validates the user's identity from subject_token"
     },
     {
-      "from": "issuer",
-      "to": "issuer",
-      "action": "sign_delegated_jwt",
-      "label": "Sign with Private Key (RS256/ES256)",
+      "from": "idp_auth_server",
+      "to": "idp_auth_server",
+      "action": "check_delegation_policy",
+      "label": "Check Delegation Policy",
       "mode": "request",
-      "phase": "delegation_setup"
+      "phase": "idjag_issuance",
+      "description": "Verify agent is authorized to act for this user"
     },
     {
-      "from": "issuer",
+      "from": "idp_auth_server",
+      "to": "idp_auth_server",
+      "action": "create_idjag",
+      "label": "Create ID-JAG JWT (typ=oauth-id-jag+jwt, iss, sub, aud, client_id, jti, exp, iat)",
+      "mode": "request",
+      "phase": "idjag_issuance",
+      "description": "Build ID-JAG with required claims per IETF draft; optionally include act claim per RFC 8693"
+    },
+    {
+      "from": "idp_auth_server",
+      "to": "idp_auth_server",
+      "action": "sign_idjag",
+      "label": "Sign ID-JAG (RS256/ES256)",
+      "mode": "request",
+      "phase": "idjag_issuance"
+    },
+    {
+      "from": "idp_auth_server",
       "to": "agent",
-      "action": "return_delegated_assertion",
-      "label": "Signed Delegated JWT Assertion",
+      "action": "return_idjag",
+      "label": "200 OK (access_token=ID-JAG, issued_token_type=id-jag, token_type=N_A)",
       "mode": "response",
-      "phase": "delegation_setup"
+      "phase": "idjag_issuance",
+      "description": "Return ID-JAG in token exchange response format"
     },
     {
       "from": "agent",
-      "to": "auth_server",
-      "action": "token_exchange_request",
-      "label": "POST /token (grant_type=token-exchange, subject_token=JWT)",
+      "to": "resource_auth_server",
+      "action": "jwt_bearer_request",
+      "label": "POST /token (grant_type=jwt-bearer, assertion=ID-JAG)",
       "mode": "request",
       "phase": "token_exchange",
-      "description": "Exchange delegated assertion for access token"
+      "description": "Exchange ID-JAG for access token using JWT bearer grant per RFC 7523"
     },
     {
-      "from": "auth_server",
+      "from": "resource_auth_server",
       "to": "jwks",
       "action": "fetch_keys",
       "label": "GET /.well-known/jwks.json",
       "mode": "request",
-      "phase": "token_exchange"
+      "phase": "token_exchange",
+      "description": "Fetch IdP's public keys for ID-JAG verification"
     },
     {
       "from": "jwks",
-      "to": "auth_server",
+      "to": "resource_auth_server",
       "action": "return_keys",
       "label": "JWK Set (Public Keys)",
       "mode": "response",
       "phase": "token_exchange"
     },
     {
-      "from": "auth_server",
-      "to": "auth_server",
-      "action": "verify_delegated_assertion",
-      "label": "Verify Signature + Validate Claims + Check Actor",
+      "from": "resource_auth_server",
+      "to": "resource_auth_server",
+      "action": "verify_idjag",
+      "label": "Verify ID-JAG: signature, typ=oauth-id-jag+jwt, claims",
       "mode": "request",
       "phase": "token_exchange",
-      "description": "Verify signature, validate claims, and ensure actor delegation is authorized"
+      "description": "Verify signature, check typ header, validate required claims (iss, sub, aud, client_id, jti, exp, iat)"
     },
     {
-      "from": "auth_server",
-      "to": "auth_server",
-      "action": "apply_delegation_policies",
-      "label": "Apply Delegation Policies",
+      "from": "resource_auth_server",
+      "to": "resource_auth_server",
+      "action": "apply_authorization_policies",
+      "label": "Apply Authorization Policies",
       "mode": "request",
       "phase": "token_exchange",
-      "description": "Check if agent is allowed to act for this user with requested scope"
+      "description": "Check if user+agent combination is allowed requested scope"
     },
     {
-      "from": "auth_server",
-      "to": "auth_server",
-      "action": "issue_delegated_token",
-      "label": "Issue Access Token (preserves act claim)",
+      "from": "resource_auth_server",
+      "to": "resource_auth_server",
+      "action": "issue_access_token",
+      "label": "Issue Access Token (preserves sub, optionally act)",
       "mode": "request",
       "phase": "token_exchange",
-      "description": "Access token contains both user subject and agent actor"
+      "description": "Access token contains user identity; may include actor if present in ID-JAG"
     },
     {
-      "from": "auth_server",
+      "from": "resource_auth_server",
       "to": "agent",
       "action": "token_response",
-      "label": "200 OK (access_token with sub + act, expires_in)",
+      "label": "200 OK (access_token, token_type=Bearer, expires_in)",
       "mode": "response",
       "phase": "token_exchange"
     },
@@ -212,7 +231,7 @@
       "from": "agent",
       "to": "resource_server",
       "action": "delegated_api_request",
-      "label": "GET /api/calendar (Authorization: Bearer <token>)",
+      "label": "GET /api/resource (Authorization: Bearer <access_token>)",
       "mode": "request",
       "phase": "delegated_access",
       "description": "Agent calls API on behalf of user"
@@ -220,20 +239,20 @@
     {
       "from": "resource_server",
       "to": "resource_server",
-      "action": "validate_delegated_token",
-      "label": "Validate Token + Extract sub (user) + Extract act (agent)",
+      "action": "validate_access_token",
+      "label": "Validate Access Token + Extract sub (user)",
       "mode": "request",
       "phase": "delegated_access",
-      "description": "Resource server sees both who authorized and who is acting"
+      "description": "Resource server validates token and extracts user identity"
     },
     {
       "from": "resource_server",
       "to": "resource_server",
       "action": "authorize_request",
-      "label": "Authorize: User has access + Agent allowed to act",
+      "label": "Authorize: Check user permissions",
       "mode": "request",
       "phase": "delegated_access",
-      "description": "Authorization based on user permissions and agent trust level"
+      "description": "Authorization based on user permissions"
     },
     {
       "from": "resource_server",
