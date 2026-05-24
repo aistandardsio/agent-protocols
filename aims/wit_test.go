@@ -234,3 +234,203 @@ func TestGenerateJTI(t *testing.T) {
 		t.Errorf("GenerateJTI() length = %d, want 32", len(jti1))
 	}
 }
+
+func TestParseWIT(t *testing.T) {
+	// Create and sign a WIT
+	spiffeID, _ := NewSPIFFEID("example.com", "/agent/test")
+	originalWIT := NewWIT(spiffeID, []string{"https://api.example.com"}, 1*time.Hour,
+		WithWITJTI("test-jti"),
+		WithWITCNF(&CNF{Kid: "key-1"}),
+	)
+
+	privateKey, err := ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
+	if err != nil {
+		t.Fatalf("Failed to generate key: %v", err)
+	}
+
+	signed, err := originalWIT.Sign(privateKey, "test-key-1")
+	if err != nil {
+		t.Fatalf("Sign() error = %v", err)
+	}
+
+	// Parse the signed WIT
+	parsed, err := ParseWIT(signed)
+	if err != nil {
+		t.Fatalf("ParseWIT() error = %v", err)
+	}
+
+	// Verify parsed values match original
+	if parsed.Issuer != originalWIT.Issuer {
+		t.Errorf("Issuer = %q, want %q", parsed.Issuer, originalWIT.Issuer)
+	}
+	if parsed.Subject != originalWIT.Subject {
+		t.Errorf("Subject = %q, want %q", parsed.Subject, originalWIT.Subject)
+	}
+	if len(parsed.Audience) != len(originalWIT.Audience) {
+		t.Errorf("Audience length = %d, want %d", len(parsed.Audience), len(originalWIT.Audience))
+	}
+	if parsed.JWTID != originalWIT.JWTID {
+		t.Errorf("JWTID = %q, want %q", parsed.JWTID, originalWIT.JWTID)
+	}
+	if parsed.CNF == nil || parsed.CNF.Kid != "key-1" {
+		t.Error("CNF.Kid should be 'key-1'")
+	}
+}
+
+func TestParseWIT_InvalidToken(t *testing.T) {
+	_, err := ParseWIT("not-a-valid-jwt")
+	if err == nil {
+		t.Error("ParseWIT() should return error for invalid token")
+	}
+}
+
+func TestParseWIT_WrongTypHeader(t *testing.T) {
+	// Create a WPT and try to parse it as WIT
+	wpt := NewWPT("spiffe://example.com/agent/test", "https://api.example.com", "GET", "/api/v1/resource")
+
+	privateKey, err := ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
+	if err != nil {
+		t.Fatalf("Failed to generate key: %v", err)
+	}
+
+	signed, err := wpt.Sign(privateKey, "test-key-1")
+	if err != nil {
+		t.Fatalf("Sign() error = %v", err)
+	}
+
+	// Try to parse WPT as WIT - should fail due to typ mismatch
+	_, err = ParseWIT(signed)
+	if err == nil {
+		t.Error("ParseWIT() should return error for WPT token")
+	}
+}
+
+func TestWITVerifier_Verify(t *testing.T) {
+	// Generate key pair
+	privateKey, err := ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
+	if err != nil {
+		t.Fatalf("Failed to generate key: %v", err)
+	}
+
+	// Create and sign WIT
+	spiffeID, _ := NewSPIFFEID("example.com", "/agent/test")
+	wit := NewWIT(spiffeID, []string{"https://api.example.com"}, 1*time.Hour)
+	signed, err := wit.Sign(privateKey, "test-key-1")
+	if err != nil {
+		t.Fatalf("Sign() error = %v", err)
+	}
+
+	// Verify with correct public key
+	verifier := NewWITVerifier(&privateKey.PublicKey)
+	verified, err := verifier.Verify(signed)
+	if err != nil {
+		t.Fatalf("Verify() error = %v", err)
+	}
+
+	if verified.Subject != wit.Subject {
+		t.Errorf("Subject = %q, want %q", verified.Subject, wit.Subject)
+	}
+}
+
+func TestWITVerifier_VerifyWithExpectedIssuer(t *testing.T) {
+	privateKey, err := ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
+	if err != nil {
+		t.Fatalf("Failed to generate key: %v", err)
+	}
+
+	spiffeID, _ := NewSPIFFEID("example.com", "/agent/test")
+	wit := NewWIT(spiffeID, []string{"https://api.example.com"}, 1*time.Hour)
+	signed, err := wit.Sign(privateKey, "test-key-1")
+	if err != nil {
+		t.Fatalf("Sign() error = %v", err)
+	}
+
+	// Verify with correct issuer
+	verifier := NewWITVerifier(&privateKey.PublicKey).
+		WithExpectedIssuer("https://example.com")
+	_, err = verifier.Verify(signed)
+	if err != nil {
+		t.Errorf("Verify() with correct issuer error = %v", err)
+	}
+
+	// Verify with wrong issuer should fail
+	verifier = NewWITVerifier(&privateKey.PublicKey).
+		WithExpectedIssuer("https://wrong.com")
+	_, err = verifier.Verify(signed)
+	if err == nil {
+		t.Error("Verify() should fail with wrong issuer")
+	}
+}
+
+func TestWITVerifier_VerifyWithExpectedAudience(t *testing.T) {
+	privateKey, err := ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
+	if err != nil {
+		t.Fatalf("Failed to generate key: %v", err)
+	}
+
+	spiffeID, _ := NewSPIFFEID("example.com", "/agent/test")
+	wit := NewWIT(spiffeID, []string{"https://api.example.com"}, 1*time.Hour)
+	signed, err := wit.Sign(privateKey, "test-key-1")
+	if err != nil {
+		t.Fatalf("Sign() error = %v", err)
+	}
+
+	// Verify with correct audience
+	verifier := NewWITVerifier(&privateKey.PublicKey).
+		WithExpectedAudience("https://api.example.com")
+	_, err = verifier.Verify(signed)
+	if err != nil {
+		t.Errorf("Verify() with correct audience error = %v", err)
+	}
+
+	// Verify with wrong audience should fail
+	verifier = NewWITVerifier(&privateKey.PublicKey).
+		WithExpectedAudience("https://wrong.example.com")
+	_, err = verifier.Verify(signed)
+	if err == nil {
+		t.Error("Verify() should fail with wrong audience")
+	}
+}
+
+func TestWITVerifier_VerifyExpired(t *testing.T) {
+	privateKey, err := ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
+	if err != nil {
+		t.Fatalf("Failed to generate key: %v", err)
+	}
+
+	spiffeID, _ := NewSPIFFEID("example.com", "/agent/test")
+	// Create expired WIT
+	wit := &WorkloadIdentityToken{
+		Issuer:   "https://example.com",
+		Subject:  spiffeID.String(),
+		Audience: []string{"https://api.example.com"},
+		IssuedAt: time.Now().Add(-2 * time.Hour),
+		Expiry:   time.Now().Add(-1 * time.Hour),
+	}
+	signed, err := wit.Sign(privateKey, "test-key-1")
+	if err != nil {
+		t.Fatalf("Sign() error = %v", err)
+	}
+
+	verifier := NewWITVerifier(&privateKey.PublicKey)
+	_, err = verifier.Verify(signed)
+	if err != ErrWITExpired {
+		t.Errorf("Verify() error = %v, want ErrWITExpired", err)
+	}
+}
+
+func TestWITVerifier_VerifyWrongKey(t *testing.T) {
+	privateKey1, _ := ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
+	privateKey2, _ := ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
+
+	spiffeID, _ := NewSPIFFEID("example.com", "/agent/test")
+	wit := NewWIT(spiffeID, []string{"https://api.example.com"}, 1*time.Hour)
+	signed, _ := wit.Sign(privateKey1, "test-key-1")
+
+	// Verify with wrong public key should fail
+	verifier := NewWITVerifier(&privateKey2.PublicKey)
+	_, err := verifier.Verify(signed)
+	if err == nil {
+		t.Error("Verify() should fail with wrong key")
+	}
+}
