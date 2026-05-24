@@ -49,6 +49,20 @@
 //	client := &http.Client{Transport: agent.Transport()}
 //	resp, err := client.Get("https://api.example.com/calendar")
 //
+// # Token Verification
+//
+// All verify methods accept a context for proper cancellation and timeout handling:
+//
+//	// Verify tokens on a resource server
+//	rs := aauth.NewResourceServer(...)
+//	agentToken, err := rs.VerifyAgentToken(ctx, tokenString)
+//	authToken, err := rs.VerifyAuthToken(ctx, tokenString)
+//
+//	// Parse tokens for inspection (without verification)
+//	agentToken, err := aauth.ParseAgentToken(tokenString)
+//	authToken, err := aauth.ParseAuthToken(tokenString)
+//	resourceToken, err := aauth.ParseResourceToken(tokenString)
+//
 // # References
 //
 //   - AAuth Protocol: https://datatracker.ietf.org/doc/html/draft-hardt-oauth-aauth-protocol
