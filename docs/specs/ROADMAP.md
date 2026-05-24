@@ -182,19 +182,19 @@ Enable interoperability between protocols for mixed environments.
 
 | Component | Status | Description |
 |-----------|--------|-------------|
-| ID-JAG → AAuth bridge | Planned | Convert JWT assertion to AAuth agent token |
-| AIMS → ID-JAG bridge | Planned | Convert WIT to JWT assertion |
-| AAuth → AIMS bridge | Planned | Convert agent token to WIT |
-| Bidirectional adapters | Planned | Two-way protocol translation |
+| ID-JAG → AAuth bridge | ✅ | `bridge.FromIDJAG()` + `identity.ToAAuth()` |
+| AIMS → ID-JAG bridge | ✅ | `bridge.FromWIT()` + `identity.ToIDJAG()` |
+| AAuth → AIMS bridge | ✅ | `bridge.FromAAuth()` + `identity.ToWIT()` |
+| Bidirectional adapters | ✅ | Full two-way protocol translation via `bridge/` package |
 
 #### Gateway Patterns
 
 | Component | Status | Description |
 |-----------|--------|-------------|
-| Multi-protocol middleware | Planned | Accept any protocol token type |
-| Protocol detection | Planned | Auto-detect token type from headers |
-| Unified identity context | Planned | Common identity representation |
-| Token normalization | Planned | Convert to canonical internal format |
+| Multi-protocol middleware | ✅ | `bridge.MultiProtocolMiddleware()` HTTP handler |
+| Protocol detection | ✅ | `bridge.DetectProtocol()` from JWT typ header |
+| Unified identity context | ✅ | `bridge.Identity` canonical representation |
+| Token normalization | ✅ | `bridge.Parse()` extracts to canonical format |
 
 #### Bridge Examples
 
