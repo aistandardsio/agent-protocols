@@ -111,12 +111,25 @@ Improvements to core packages identified during verification review.
 | Tests for changes | ✅ | Unit tests for new functionality |
 | Lint warning fix | ✅ | Suppress gosec false positive |
 
+#### SharkAuth Adapter Fixes
+
+| Component | Status | Description |
+|-----------|--------|-------------|
+| DPoP JWK parsing | ✅ | Proper RSA/EC/Ed25519 key parsing |
+| DPoP verification tests | ✅ | End-to-end proof verification |
+
 #### Documentation Updates
 
 | Component | Status | Description |
 |-----------|--------|-------------|
 | AIMS verifier docs | ✅ | Document WITVerifier/WPTVerifier |
 | AAuth context docs | ✅ | Document context propagation |
+
+#### CI/Testing Improvements
+
+| Component | Status | Description |
+|-----------|--------|-------------|
+| Integration test script | ✅ | `scripts/integration-test.sh` runs all examples |
 
 ---
 

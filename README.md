@@ -161,6 +161,22 @@ go run ./adapters/ory/examples/idjag  # ID-JAG with Hydra
 - [Changelog](./CHANGELOG.md)
 - [Full Documentation](https://aistandards.io/agent-protocols/)
 
+## Development
+
+```bash
+# Run unit tests
+go test ./...
+
+# Run linter
+golangci-lint run
+
+# Run integration tests (all protocol examples)
+./scripts/integration-test.sh
+
+# Run integration tests (quick mode - core protocols only)
+./scripts/integration-test.sh --quick
+```
+
 ## Related Specifications
 
 - [draft-hardt-oauth-aauth-protocol](https://datatracker.ietf.org/doc/draft-hardt-oauth-aauth-protocol/) - AAuth Protocol specification
