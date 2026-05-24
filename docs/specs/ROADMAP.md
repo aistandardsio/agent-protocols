@@ -136,67 +136,248 @@ Improvements to core packages identified during verification review.
 
 ## Current Phase
 
-### Phase 6: Production Demos (v0.4.0)
+### Phase 6: Production Infrastructure (v0.5.0)
 
-Full infrastructure with Docker Compose, observability, and scenario testing.
+Full infrastructure with Docker Compose, configuration management, and multi-service demos.
 
 #### Docker Compose Setup
 
 | Component | Status | Description |
 |-----------|--------|-------------|
-| Base infrastructure | Planned | Docker Compose orchestration |
-| Zitadel setup | Planned | IdP configuration and init scripts |
-| Agent services | Planned | Example agent A, agent B |
-| Resource API | Planned | Protected resource server |
+| `docker-compose.yml` | Planned | Multi-service orchestration |
+| Zitadel container | Planned | Pre-configured IdP with init scripts |
+| Agent A service | Planned | Example requesting agent |
+| Agent B service | Planned | Example delegated agent |
+| Resource API service | Planned | Protected resource server |
+| Person Server | Planned | AAuth token exchange server |
+| Network configuration | Planned | Service discovery and DNS |
 
-#### Scenarios
-
-| Scenario | Status | Description |
-|----------|--------|-------------|
-| ID-JAG token exchange | Planned | End-to-end token exchange flow |
-| AIMS K8s workload | Planned | Kubernetes workload identity |
-| AAuth multi-agent | Planned | Delegation chain demonstration |
-| Cross-protocol bridge | Planned | Protocol interoperability |
-
-#### Observability
+#### Production Configuration
 
 | Component | Status | Description |
 |-----------|--------|-------------|
-| Jaeger | Planned | Distributed tracing |
-| Prometheus | Planned | Metrics collection |
-| Grafana | Planned | Dashboards and visualization |
+| Environment variables | Planned | `.env.example` with all config options |
+| Config file templates | Planned | YAML/JSON configuration examples |
+| 12-factor app guide | Planned | Best practices for cloud deployment |
+| Secrets management | Planned | Integration with Vault/K8s secrets |
+| Multi-environment setup | Planned | Dev/staging/prod configuration |
+
+#### End-to-End Scenarios
+
+| Scenario | Status | Description |
+|----------|--------|-------------|
+| ID-JAG token exchange | Planned | Agent → IdP → Resource with real Zitadel |
+| AAuth multi-agent | Planned | Delegation chain: Human → Agent A → Agent B |
+| AAuth resource-managed | Planned | Resource issues token, PS exchanges |
+| AIMS workload auth | Planned | WIT/WPT flow with mTLS |
+| Mixed protocol gateway | Planned | Single service accepting multiple protocols |
+
+---
+
+### Phase 7: Cross-Protocol Bridging (v0.6.0)
+
+Enable interoperability between protocols for mixed environments.
+
+#### Token Conversion
+
+| Component | Status | Description |
+|-----------|--------|-------------|
+| ID-JAG → AAuth bridge | Planned | Convert JWT assertion to AAuth agent token |
+| AIMS → ID-JAG bridge | Planned | Convert WIT to JWT assertion |
+| AAuth → AIMS bridge | Planned | Convert agent token to WIT |
+| Bidirectional adapters | Planned | Two-way protocol translation |
+
+#### Gateway Patterns
+
+| Component | Status | Description |
+|-----------|--------|-------------|
+| Multi-protocol middleware | Planned | Accept any protocol token type |
+| Protocol detection | Planned | Auto-detect token type from headers |
+| Unified identity context | Planned | Common identity representation |
+| Token normalization | Planned | Convert to canonical internal format |
+
+#### Bridge Examples
+
+| Example | Status | Description |
+|---------|--------|-------------|
+| `demos/protocol-bridge/` | Planned | Working cross-protocol demo |
+| OAuth → Agent migration | Planned | Gradual migration path |
+| Hybrid authentication | Planned | Support legacy + new protocols |
+
+---
+
+### Phase 8: Observability & Operations (v0.7.0)
+
+Production monitoring, debugging, and operational tooling.
+
+#### Distributed Tracing
+
+| Component | Status | Description |
+|-----------|--------|-------------|
+| OpenTelemetry SDK | Planned | Instrumentation for all packages |
+| Jaeger integration | Planned | Trace visualization |
+| Trace context propagation | Planned | Cross-service correlation |
+| Token flow tracing | Planned | Track tokens through exchanges |
+
+#### Metrics & Monitoring
+
+| Component | Status | Description |
+|-----------|--------|-------------|
+| Prometheus metrics | Planned | Token counts, latencies, errors |
+| Grafana dashboards | Planned | Pre-built visualization |
+| Alert rules | Planned | Common failure detection |
+| Health endpoints | Planned | `/health`, `/ready` for all services |
+
+#### Debugging Tools
+
+| Component | Status | Description |
+|-----------|--------|-------------|
+| Token inspector CLI | Planned | Decode and validate tokens |
+| Request debugger | Planned | Trace HTTP signature verification |
+| Log correlation | Planned | Structured logging with trace IDs |
+| Troubleshooting guide | Planned | Common issues and solutions |
+
+---
+
+### Phase 9: Kubernetes & Cloud Native (v0.8.0)
+
+Native Kubernetes integration and cloud provider support.
 
 #### Kubernetes Integration
 
 | Component | Status | Description |
 |-----------|--------|-------------|
-| AIMS workload identity | Planned | Native K8s integration |
-| SPIRE integration | Planned | SPIFFE runtime patterns |
-| Service mesh examples | Planned | Istio/Linkerd integration |
+| K8s manifests | Planned | Deployment, Service, ConfigMap |
+| Helm charts | Planned | Parameterized deployment |
+| AIMS workload identity | Planned | Pod identity with WIT/WPT |
+| Service account tokens | Planned | K8s SA → protocol token bridge |
+
+#### SPIFFE/SPIRE Integration
+
+| Component | Status | Description |
+|-----------|--------|-------------|
+| SPIRE agent sidecar | Planned | Automatic SVID rotation |
+| Workload attestation | Planned | K8s, Docker, process attestors |
+| Federation examples | Planned | Cross-cluster identity |
+| SPIFFE ID patterns | Planned | Best practices for agent IDs |
+
+#### Service Mesh
+
+| Component | Status | Description |
+|-----------|--------|-------------|
+| Istio integration | Planned | mTLS with AIMS |
+| Linkerd integration | Planned | Lightweight service mesh |
+| Envoy filters | Planned | Protocol-aware proxying |
+| Traffic policies | Planned | Authorization based on agent identity |
+
+#### Cloud Providers
+
+| Component | Status | Description |
+|-----------|--------|-------------|
+| AWS IAM integration | Planned | AssumeRole with agent tokens |
+| GCP Workload Identity | Planned | GKE service account binding |
+| Azure Managed Identity | Planned | AKS pod identity |
+
+---
+
+### Phase 10: Security Hardening (v0.9.0)
+
+Security best practices, compliance, and hardening guides.
+
+#### Security Documentation
+
+| Component | Status | Description |
+|-----------|--------|-------------|
+| Security best practices | Planned | Comprehensive security guide |
+| Threat model | Planned | Attack vectors and mitigations |
+| Token security | Planned | Lifetime, rotation, revocation |
+| Key management | Planned | HSM, KMS integration patterns |
+
+#### TLS & Certificates
+
+| Component | Status | Description |
+|-----------|--------|-------------|
+| TLS configuration guide | Planned | Cipher suites, versions |
+| Certificate rotation | Planned | Automated cert renewal |
+| mTLS examples | Planned | Client certificate authentication |
+| CA integration | Planned | Let's Encrypt, internal CA |
+
+#### Compliance
+
+| Component | Status | Description |
+|-----------|--------|-------------|
+| Audit logging | Planned | Token issuance/usage logs |
+| Token revocation | Planned | Revocation list/endpoint |
+| Compliance checklist | Planned | SOC2, GDPR considerations |
+| Penetration testing | Planned | Security assessment guide |
+
+---
+
+### Phase 11: Enhanced Documentation (v1.0.0)
+
+Comprehensive documentation for production readiness.
+
+#### User Documentation
+
+| Component | Status | Description |
+|-----------|--------|-------------|
+| Interactive tutorials | Planned | Step-by-step learning paths |
+| Protocol comparison guide | Planned | When to use which protocol |
+| Migration guides | Planned | OAuth → ID-JAG, etc. |
+| FAQ and troubleshooting | Planned | Common questions answered |
+
+#### Developer Documentation
+
+| Component | Status | Description |
+|-----------|--------|-------------|
+| Architecture deep-dive | Planned | Internal design documentation |
+| Extension guide | Planned | How to add custom adapters |
+| Contributing guide | Planned | Code style, PR process |
+| API versioning policy | Planned | Stability guarantees |
+
+#### Operations Documentation
+
+| Component | Status | Description |
+|-----------|--------|-------------|
+| Deployment guide | Planned | Step-by-step production setup |
+| Upgrade procedures | Planned | Version migration paths |
+| Rollback procedures | Planned | Recovery from failed upgrades |
+| Disaster recovery | Planned | Backup and restore |
 
 ---
 
 ## Future Phases
 
-### Phase 7: Enhanced Documentation
+### Phase 12: Integration Patterns
 
-- [ ] Interactive API documentation
-- [ ] Protocol comparison guides
-- [ ] Migration guides between protocols
-- [ ] Security best practices
+| Component | Status | Description |
+|-----------|--------|-------------|
+| gRPC support | Planned | Protocol Buffers + gRPC transport |
+| Message queue auth | Planned | Kafka, RabbitMQ, NATS patterns |
+| API gateway integration | Planned | Kong, Ambassador, Traefik |
+| GraphQL authentication | Planned | Agent auth for GraphQL APIs |
+| WebSocket support | Planned | Long-lived connection auth |
 
-### Phase 8: Additional Adapters
+### Phase 13: Additional Adapters
 
-- [ ] Keycloak adapter
-- [ ] Auth0 adapter
-- [ ] AWS Cognito adapter
-- [ ] Azure AD adapter
+| Adapter | Status | Description |
+|---------|--------|-------------|
+| Keycloak | Planned | Red Hat SSO integration |
+| Auth0 | Planned | Auth0 tenant integration |
+| AWS Cognito | Planned | AWS identity pools |
+| Azure AD | Planned | Microsoft Entra ID |
+| Okta | Planned | Workforce/customer identity |
+| PingIdentity | Planned | Enterprise IAM |
 
-### Phase 9: SDK Extensions
+### Phase 14: SDK Extensions
 
-- [ ] Python SDK
-- [ ] TypeScript/JavaScript SDK
-- [ ] Rust SDK
+| SDK | Status | Description |
+|-----|--------|-------------|
+| Python SDK | Planned | Native Python implementation |
+| TypeScript SDK | Planned | Browser and Node.js support |
+| Rust SDK | Planned | High-performance implementation |
+| Java SDK | Planned | JVM ecosystem support |
+| .NET SDK | Planned | C# implementation |
 
 ---
 
