@@ -11,6 +11,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/aistandardsio/agent-protocols/aauth"
 	"github.com/golang-jwt/jwt/v5"
 )
 
@@ -230,21 +231,19 @@ func VerifyDPoPProof(proof, expectedMethod, expectedURI string) (*DPoPClaims, er
 	return claims, nil
 }
 
-// parseJWKPublicKey parses a public key from a JWK.
-// Note: This is a placeholder for testing. In production, use a proper JWK library.
-//
-//nolint:unparam // Placeholder returns nil; production should use proper JWK parsing.
-func parseJWKPublicKey(jwk map[string]interface{}) (interface{}, error) {
-	kty, _ := jwk["kty"].(string)
-
-	switch kty {
-	case "RSA":
-		// Simplified RSA parsing - in production use a proper JWK library
-		return nil, fmt.Errorf("RSA JWK parsing not implemented")
-	case "EC":
-		// Simplified EC parsing - in production use a proper JWK library
-		return nil, fmt.Errorf("EC JWK parsing not implemented")
-	default:
-		return nil, fmt.Errorf("unsupported key type: %s", kty)
+// parseJWKPublicKey parses a public key from a JWK map.
+// Uses the aauth.JWK implementation for proper RSA, EC, and OKP key parsing.
+func parseJWKPublicKey(jwkMap map[string]interface{}) (crypto.PublicKey, error) {
+	// Convert map to JSON and parse into aauth.JWK
+	jwkJSON, err := json.Marshal(jwkMap)
+	if err != nil {
+		return nil, fmt.Errorf("failed to marshal JWK: %w", err)
 	}
+
+	jwk, err := aauth.ParseJWK(jwkJSON)
+	if err != nil {
+		return nil, fmt.Errorf("failed to parse JWK: %w", err)
+	}
+
+	return aauth.JWKToPublicKey(jwk)
 }
