@@ -5,6 +5,7 @@ import (
 	"crypto/sha256"
 	"encoding/base64"
 	"errors"
+	"fmt"
 	"net/http"
 	"strings"
 	"time"
@@ -19,7 +20,11 @@ var (
 	ErrWPTMissingHTM      = errors.New("WPT must have HTTP method (htm)")
 	ErrWPTMissingHTU      = errors.New("WPT must have HTTP URI (htu)")
 	ErrWPTExpired         = errors.New("WPT has expired")
+	ErrWPTInvalidType     = errors.New("WPT has invalid typ header")
 )
+
+// TokenTypeWPT is the JWT typ header value for WIMSE Proof Tokens.
+const TokenTypeWPT = "wimse-proof+jwt" //nolint:gosec // G101: This is a token type identifier, not a credential
 
 // WPT header name per draft-ietf-wimse-s2s-protocol.
 const (
@@ -172,8 +177,8 @@ func (p *WIMSEProofToken) Sign(signer crypto.Signer, keyID string) (string, erro
 	}
 
 	token := jwt.NewWithClaims(method, claims)
+	token.Header["typ"] = TokenTypeWPT
 	token.Header["kid"] = keyID
-	token.Header["typ"] = "wimse-proof+jwt"
 
 	return token.SignedString(signer)
 }
@@ -220,4 +225,165 @@ func hashAccessToken(token string) string {
 // WPTFromHeader extracts a WPT JWT from an HTTP header.
 func WPTFromHeader(r *http.Request) string {
 	return r.Header.Get(HeaderWPT)
+}
+
+// ParseWPT parses a JWT string into a WIMSEProofToken without verification.
+// Use this for inspection only; always verify tokens in production.
+func ParseWPT(tokenString string) (*WIMSEProofToken, error) {
+	parser := jwt.NewParser(jwt.WithoutClaimsValidation())
+	token, _, err := parser.ParseUnverified(tokenString, jwt.MapClaims{})
+	if err != nil {
+		return nil, fmt.Errorf("failed to parse WPT: %w", err)
+	}
+
+	// Validate typ header if present
+	if typ, ok := token.Header["typ"].(string); ok && typ != "" {
+		if typ != TokenTypeWPT {
+			return nil, fmt.Errorf("%w: expected %s, got %s", ErrWPTInvalidType, TokenTypeWPT, typ)
+		}
+	}
+
+	claims, ok := token.Claims.(jwt.MapClaims)
+	if !ok {
+		return nil, fmt.Errorf("invalid claims type")
+	}
+
+	return wptFromClaims(claims)
+}
+
+// wptFromClaims extracts a WIMSEProofToken from JWT claims.
+func wptFromClaims(claims jwt.MapClaims) (*WIMSEProofToken, error) {
+	p := &WIMSEProofToken{}
+
+	// Extract standard claims
+	if iss, ok := claims["iss"].(string); ok {
+		p.Issuer = iss
+	}
+	if aud, ok := claims["aud"].(string); ok {
+		p.Audience = aud
+	}
+	if jti, ok := claims["jti"].(string); ok {
+		p.JWTID = jti
+	}
+	if nonce, ok := claims["nonce"].(string); ok {
+		p.Nonce = nonce
+	}
+
+	// Extract HTTP binding claims
+	if htm, ok := claims["htm"].(string); ok {
+		p.HTM = htm
+	}
+	if htu, ok := claims["htu"].(string); ok {
+		p.HTU = htu
+	}
+	if ath, ok := claims["ath"].(string); ok {
+		p.ATH = ath
+	}
+
+	// Extract timestamps
+	if iat, err := claims.GetIssuedAt(); err == nil && iat != nil {
+		p.IssuedAt = iat.Time
+	}
+	if exp, err := claims.GetExpirationTime(); err == nil && exp != nil {
+		p.Expiry = exp.Time
+	}
+
+	return p, nil
+}
+
+// WPTVerifier verifies WIMSE Proof Tokens.
+type WPTVerifier struct {
+	// PublicKey is the public key used to verify signatures.
+	PublicKey crypto.PublicKey
+
+	// ExpectedIssuer is the required issuer claim value (optional).
+	// Should match the WIT's subject (SPIFFE ID of the caller).
+	ExpectedIssuer string
+
+	// ExpectedAudience is the required audience claim value (optional).
+	ExpectedAudience string
+
+	// ClockSkew allows for clock differences between systems.
+	ClockSkew time.Duration
+}
+
+// NewWPTVerifier creates a new WPT verifier with a public key.
+func NewWPTVerifier(publicKey crypto.PublicKey) *WPTVerifier {
+	return &WPTVerifier{
+		PublicKey: publicKey,
+	}
+}
+
+// WithExpectedIssuer sets the expected issuer for verification.
+func (v *WPTVerifier) WithExpectedIssuer(issuer string) *WPTVerifier {
+	v.ExpectedIssuer = issuer
+	return v
+}
+
+// WithExpectedAudience sets the expected audience for verification.
+func (v *WPTVerifier) WithExpectedAudience(audience string) *WPTVerifier {
+	v.ExpectedAudience = audience
+	return v
+}
+
+// WithClockSkew sets the allowed clock skew for time validation.
+func (v *WPTVerifier) WithClockSkew(skew time.Duration) *WPTVerifier {
+	v.ClockSkew = skew
+	return v
+}
+
+// Verify verifies a WPT JWT string and returns the parsed token.
+//
+//nolint:dupl // WIT and WPT verifiers have similar structure but different token types and errors
+func (v *WPTVerifier) Verify(tokenString string) (*WIMSEProofToken, error) {
+	keyFunc := func(token *jwt.Token) (interface{}, error) {
+		// Validate typ header if present
+		if typ, ok := token.Header["typ"].(string); ok && typ != "" {
+			if typ != TokenTypeWPT {
+				return nil, fmt.Errorf("%w: expected %s, got %s", ErrWPTInvalidType, TokenTypeWPT, typ)
+			}
+		}
+		return v.PublicKey, nil
+	}
+
+	var parserOpts []jwt.ParserOption
+	if v.ClockSkew > 0 {
+		parserOpts = append(parserOpts, jwt.WithLeeway(v.ClockSkew))
+	}
+	if v.ExpectedIssuer != "" {
+		parserOpts = append(parserOpts, jwt.WithIssuer(v.ExpectedIssuer))
+	}
+	if v.ExpectedAudience != "" {
+		parserOpts = append(parserOpts, jwt.WithAudience(v.ExpectedAudience))
+	}
+
+	parser := jwt.NewParser(parserOpts...)
+	token, err := parser.Parse(tokenString, keyFunc)
+	if err != nil {
+		if errors.Is(err, jwt.ErrTokenExpired) {
+			return nil, ErrWPTExpired
+		}
+		return nil, fmt.Errorf("WPT verification failed: %w", err)
+	}
+
+	claims, ok := token.Claims.(jwt.MapClaims)
+	if !ok || !token.Valid {
+		return nil, fmt.Errorf("invalid WPT claims")
+	}
+
+	return wptFromClaims(claims)
+}
+
+// VerifyRequest verifies a WPT and checks it matches the given HTTP request.
+func (v *WPTVerifier) VerifyRequest(tokenString string, r *http.Request) (*WIMSEProofToken, error) {
+	wpt, err := v.Verify(tokenString)
+	if err != nil {
+		return nil, err
+	}
+
+	if !wpt.MatchesRequest(r) {
+		return nil, fmt.Errorf("WPT does not match request: method=%s uri=%s", r.Method, r.URL.Path)
+	}
+
+	return wpt, nil
 }

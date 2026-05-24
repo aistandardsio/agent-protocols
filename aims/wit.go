@@ -2,7 +2,10 @@ package aims
 
 import (
 	"crypto"
+	"crypto/ecdsa"
+	"crypto/ed25519"
 	"crypto/rand"
+	"crypto/rsa"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -18,7 +21,11 @@ var (
 	ErrWITMissingAudience = errors.New("WIT must have at least one audience")
 	ErrWITExpired         = errors.New("WIT has expired")
 	ErrWITNotYetValid     = errors.New("WIT is not yet valid")
+	ErrWITInvalidType     = errors.New("WIT has invalid typ header")
 )
+
+// TokenTypeWIT is the JWT typ header value for Workload Identity Tokens.
+const TokenTypeWIT = "wimse-id+jwt" //nolint:gosec // G101: This is a token type identifier, not a credential
 
 // WorkloadIdentityToken (WIT) is a JWT representing workload identity.
 // Per draft-ietf-wimse-s2s-protocol, a WIT is bound to a specific key
@@ -166,6 +173,7 @@ func (w *WorkloadIdentityToken) Sign(signer crypto.Signer, keyID string) (string
 	}
 
 	token := jwt.NewWithClaims(method, claims)
+	token.Header["typ"] = TokenTypeWIT
 	token.Header["kid"] = keyID
 
 	return token.SignedString(signer)
@@ -203,12 +211,25 @@ func (w *WorkloadIdentityToken) ExpiresAt() time.Time {
 // signingMethodForKey determines the appropriate JWT signing method for a key.
 func signingMethodForKey(signer crypto.Signer) jwt.SigningMethod {
 	pub := signer.Public()
-	switch pub.(type) {
-	case interface{ Size() int }:
-		// RSA key - use RS256 by default
+	switch k := pub.(type) {
+	case *rsa.PublicKey:
 		return jwt.SigningMethodRS256
+	case *ecdsa.PublicKey:
+		// Choose algorithm based on curve size
+		switch k.Curve.Params().BitSize {
+		case 256:
+			return jwt.SigningMethodES256
+		case 384:
+			return jwt.SigningMethodES384
+		case 521:
+			return jwt.SigningMethodES512
+		default:
+			return jwt.SigningMethodES256
+		}
+	case ed25519.PublicKey:
+		return jwt.SigningMethodEdDSA
 	default:
-		// For other key types, try ES256 (common for EC keys)
+		// Fallback to ES256 for unknown key types
 		return jwt.SigningMethodES256
 	}
 }
@@ -220,4 +241,186 @@ func GenerateJTI() string {
 		return ""
 	}
 	return fmt.Sprintf("%x", b)
+}
+
+// ParseWIT parses a JWT string into a WorkloadIdentityToken without verification.
+// Use this for inspection only; always verify tokens in production.
+func ParseWIT(tokenString string) (*WorkloadIdentityToken, error) {
+	parser := jwt.NewParser(jwt.WithoutClaimsValidation())
+	token, _, err := parser.ParseUnverified(tokenString, jwt.MapClaims{})
+	if err != nil {
+		return nil, fmt.Errorf("failed to parse WIT: %w", err)
+	}
+
+	// Validate typ header if present
+	if typ, ok := token.Header["typ"].(string); ok && typ != "" {
+		if typ != TokenTypeWIT {
+			return nil, fmt.Errorf("%w: expected %s, got %s", ErrWITInvalidType, TokenTypeWIT, typ)
+		}
+	}
+
+	claims, ok := token.Claims.(jwt.MapClaims)
+	if !ok {
+		return nil, fmt.Errorf("invalid claims type")
+	}
+
+	return witFromClaims(claims)
+}
+
+// witFromClaims extracts a WorkloadIdentityToken from JWT claims.
+func witFromClaims(claims jwt.MapClaims) (*WorkloadIdentityToken, error) {
+	w := &WorkloadIdentityToken{}
+
+	// Extract standard claims
+	if iss, ok := claims["iss"].(string); ok {
+		w.Issuer = iss
+	}
+	if sub, ok := claims["sub"].(string); ok {
+		w.Subject = sub
+	}
+	if jti, ok := claims["jti"].(string); ok {
+		w.JWTID = jti
+	}
+
+	// Extract audience (can be string or []interface{})
+	w.Audience = extractAudience(claims)
+
+	// Extract timestamps
+	if iat, err := claims.GetIssuedAt(); err == nil && iat != nil {
+		w.IssuedAt = iat.Time
+	}
+	if exp, err := claims.GetExpirationTime(); err == nil && exp != nil {
+		w.Expiry = exp.Time
+	}
+	if nbf, err := claims.GetNotBefore(); err == nil && nbf != nil {
+		w.NotBefore = nbf.Time
+	}
+
+	// Extract CNF claim
+	if cnfMap, ok := claims["cnf"].(map[string]interface{}); ok {
+		w.CNF = cnfFromMap(cnfMap)
+	}
+
+	return w, nil
+}
+
+// extractAudience extracts audience from claims (handles string or array).
+func extractAudience(claims jwt.MapClaims) []string {
+	switch aud := claims["aud"].(type) {
+	case string:
+		return []string{aud}
+	case []interface{}:
+		result := make([]string, 0, len(aud))
+		for _, a := range aud {
+			if s, ok := a.(string); ok {
+				result = append(result, s)
+			}
+		}
+		return result
+	case []string:
+		return aud
+	default:
+		return nil
+	}
+}
+
+// cnfFromMap extracts a CNF from a map.
+func cnfFromMap(m map[string]interface{}) *CNF {
+	cnf := &CNF{}
+
+	if jwk, ok := m["jwk"].(map[string]interface{}); ok {
+		if jwkBytes, err := json.Marshal(jwk); err == nil {
+			cnf.JWK = jwkBytes
+		}
+	}
+	if kid, ok := m["kid"].(string); ok {
+		cnf.Kid = kid
+	}
+	if x5t, ok := m["x5t#S256"].(string); ok {
+		cnf.X5T = x5t
+	}
+
+	return cnf
+}
+
+// WITVerifier verifies Workload Identity Tokens.
+type WITVerifier struct {
+	// PublicKey is the public key used to verify signatures.
+	PublicKey crypto.PublicKey
+
+	// ExpectedIssuer is the required issuer claim value (optional).
+	ExpectedIssuer string
+
+	// ExpectedAudience is the required audience claim value (optional).
+	ExpectedAudience string
+
+	// ClockSkew allows for clock differences between systems.
+	ClockSkew time.Duration
+}
+
+// NewWITVerifier creates a new WIT verifier with a public key.
+func NewWITVerifier(publicKey crypto.PublicKey) *WITVerifier {
+	return &WITVerifier{
+		PublicKey: publicKey,
+	}
+}
+
+// WithExpectedIssuer sets the expected issuer for verification.
+func (v *WITVerifier) WithExpectedIssuer(issuer string) *WITVerifier {
+	v.ExpectedIssuer = issuer
+	return v
+}
+
+// WithExpectedAudience sets the expected audience for verification.
+func (v *WITVerifier) WithExpectedAudience(audience string) *WITVerifier {
+	v.ExpectedAudience = audience
+	return v
+}
+
+// WithClockSkew sets the allowed clock skew for time validation.
+func (v *WITVerifier) WithClockSkew(skew time.Duration) *WITVerifier {
+	v.ClockSkew = skew
+	return v
+}
+
+// Verify verifies a WIT JWT string and returns the parsed token.
+//
+//nolint:dupl // WIT and WPT verifiers have similar structure but different token types and errors
+func (v *WITVerifier) Verify(tokenString string) (*WorkloadIdentityToken, error) {
+	keyFunc := func(token *jwt.Token) (interface{}, error) {
+		// Validate typ header if present
+		if typ, ok := token.Header["typ"].(string); ok && typ != "" {
+			if typ != TokenTypeWIT {
+				return nil, fmt.Errorf("%w: expected %s, got %s", ErrWITInvalidType, TokenTypeWIT, typ)
+			}
+		}
+		return v.PublicKey, nil
+	}
+
+	var parserOpts []jwt.ParserOption
+	if v.ClockSkew > 0 {
+		parserOpts = append(parserOpts, jwt.WithLeeway(v.ClockSkew))
+	}
+	if v.ExpectedIssuer != "" {
+		parserOpts = append(parserOpts, jwt.WithIssuer(v.ExpectedIssuer))
+	}
+	if v.ExpectedAudience != "" {
+		parserOpts = append(parserOpts, jwt.WithAudience(v.ExpectedAudience))
+	}
+
+	parser := jwt.NewParser(parserOpts...)
+	token, err := parser.Parse(tokenString, keyFunc)
+	if err != nil {
+		if errors.Is(err, jwt.ErrTokenExpired) {
+			return nil, ErrWITExpired
+		}
+		return nil, fmt.Errorf("WIT verification failed: %w", err)
+	}
+
+	claims, ok := token.Claims.(jwt.MapClaims)
+	if !ok || !token.Valid {
+		return nil, fmt.Errorf("invalid WIT claims")
+	}
+
+	return witFromClaims(claims)
 }
