@@ -81,6 +81,9 @@ nav:
     - Examples: aims/examples.md
     - Diagrams: aims/diagrams.md
     - API Reference: aims/api-reference.md
+  - Bridge:
+    - Overview: bridge/overview.md
+    - Getting Started: bridge/getting-started.md
   - Adapters:
     - Zitadel:
       - Overview: adapters/zitadel/overview.md
@@ -93,6 +96,9 @@ nav:
     - Ory:
       - Overview: adapters/ory/overview.md
       - Getting Started: adapters/ory/getting-started.md
+  - Guides:
+    - OAuth to Agent Migration: guides/oauth-to-agent-migration.md
+    - Hybrid Authentication: guides/hybrid-authentication.md
   - Releases:
     - v0.4.0: releases/v0.4.0.md
     - v0.3.0: releases/v0.3.0.md
