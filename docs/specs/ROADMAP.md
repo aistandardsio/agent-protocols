@@ -200,7 +200,7 @@ Enable interoperability between protocols for mixed environments.
 
 | Example | Status | Description |
 |---------|--------|-------------|
-| `demos/protocol-bridge/` | Planned | Working cross-protocol demo |
+| `demos/protocol-bridge/` | ✅ | Working cross-protocol demo |
 | OAuth → Agent migration | Planned | Gradual migration path |
 | Hybrid authentication | Planned | Support legacy + new protocols |
 
