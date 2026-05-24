@@ -1,6 +1,7 @@
 package aauth
 
 import (
+	"context"
 	"crypto"
 	"encoding/json"
 	"fmt"
@@ -53,6 +54,9 @@ func (as *AuthServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Limit request body size to prevent memory exhaustion (1MB max)
+	r.Body = http.MaxBytesReader(w, r.Body, 1<<20)
+
 	// Parse the token exchange request
 	req, err := ParseTokenExchangeRequest(r)
 	if err != nil {
@@ -73,7 +77,7 @@ func (as *AuthServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Process the token exchange
-	ctx, err := as.validateExchangeRequest(req)
+	exchangeCtx, err := as.validateExchangeRequest(r.Context(), req)
 	if err != nil {
 		as.writeError(w, http.StatusBadRequest, ErrorInvalidGrant, err.Error())
 		return
@@ -82,7 +86,7 @@ func (as *AuthServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	// Determine scope
 	scope := req.Scope
 	if as.opts.scopeHandler != nil {
-		scope, err = as.opts.scopeHandler(ctx.AgentID, req.Scope)
+		scope, err = as.opts.scopeHandler(exchangeCtx.AgentID, req.Scope)
 		if err != nil {
 			as.writeError(w, http.StatusForbidden, ErrorInvalidScope, err.Error())
 			return
@@ -90,7 +94,7 @@ func (as *AuthServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Issue the auth token
-	authToken, err := as.IssueAuthToken(ctx.AgentID, ctx.AgentCNF, req.Audience, scope)
+	authToken, err := as.IssueAuthToken(exchangeCtx.AgentID, exchangeCtx.AgentCNF, req.Audience, scope)
 	if err != nil {
 		as.writeError(w, http.StatusInternalServerError, ErrorServerError, "failed to issue token")
 		return
@@ -155,8 +159,8 @@ func (as *AuthServer) SignAuthToken(agentID *AAuthID, agentCNF *CNF, audience []
 }
 
 // validateExchangeRequest validates and processes a token exchange request.
-func (as *AuthServer) validateExchangeRequest(req *TokenExchangeRequest) (*TokenExchangeContext, error) {
-	ctx := &TokenExchangeContext{
+func (as *AuthServer) validateExchangeRequest(ctx context.Context, req *TokenExchangeRequest) (*TokenExchangeContext, error) {
+	exchangeCtx := &TokenExchangeContext{
 		Request: req,
 	}
 
@@ -165,72 +169,72 @@ func (as *AuthServer) validateExchangeRequest(req *TokenExchangeRequest) (*Token
 	switch flowType {
 	case FlowResourceManaged:
 		// Resource token exchange: verify the resource token
-		resourceToken, err := as.verifyResourceToken(req.SubjectToken)
+		resourceToken, err := as.verifyResourceToken(ctx, req.SubjectToken)
 		if err != nil {
 			return nil, fmt.Errorf("invalid resource token: %w", err)
 		}
-		ctx.ResourceToken = resourceToken
+		exchangeCtx.ResourceToken = resourceToken
 
 		// Parse agent ID from resource token
 		agentID, err := ParseAAuthID(resourceToken.Subject)
 		if err != nil {
 			return nil, fmt.Errorf("invalid agent subject: %w", err)
 		}
-		ctx.AgentID = agentID
+		exchangeCtx.AgentID = agentID
 
 		// Create CNF from agent_jkt
-		ctx.AgentCNF = &CNF{Kid: resourceToken.AgentJKT}
+		exchangeCtx.AgentCNF = &CNF{Kid: resourceToken.AgentJKT}
 
 	case FlowPSAsserted:
 		// Agent token exchange: verify the agent token
-		agentToken, err := as.verifyAgentToken(req.SubjectToken)
+		agentToken, err := as.verifyAgentToken(ctx, req.SubjectToken)
 		if err != nil {
 			return nil, fmt.Errorf("invalid agent token: %w", err)
 		}
-		ctx.AgentToken = agentToken
+		exchangeCtx.AgentToken = agentToken
 
 		// Parse agent ID
 		agentID, err := ParseAAuthID(agentToken.Subject)
 		if err != nil {
 			return nil, fmt.Errorf("invalid agent subject: %w", err)
 		}
-		ctx.AgentID = agentID
-		ctx.AgentCNF = agentToken.CNF
+		exchangeCtx.AgentID = agentID
+		exchangeCtx.AgentCNF = agentToken.CNF
 
 	case FlowDelegation:
 		// Delegation flow: verify both subject and actor tokens
-		subjectToken, err := as.verifyAgentToken(req.SubjectToken)
+		subjectToken, err := as.verifyAgentToken(ctx, req.SubjectToken)
 		if err != nil {
 			return nil, fmt.Errorf("invalid subject token: %w", err)
 		}
 
-		actorToken, err := as.verifyAgentToken(req.ActorToken)
+		actorToken, err := as.verifyAgentToken(ctx, req.ActorToken)
 		if err != nil {
 			return nil, fmt.Errorf("invalid actor token: %w", err)
 		}
 
-		ctx.AgentToken = subjectToken
-		ctx.ActorToken = actorToken
+		exchangeCtx.AgentToken = subjectToken
+		exchangeCtx.ActorToken = actorToken
 
 		// The acting agent's identity
 		agentID, err := ParseAAuthID(actorToken.Subject)
 		if err != nil {
 			return nil, fmt.Errorf("invalid actor subject: %w", err)
 		}
-		ctx.AgentID = agentID
-		ctx.AgentCNF = actorToken.CNF
+		exchangeCtx.AgentID = agentID
+		exchangeCtx.AgentCNF = actorToken.CNF
 
 	default:
 		return nil, fmt.Errorf("unsupported flow type")
 	}
 
-	return ctx, nil
+	return exchangeCtx, nil
 }
 
 // verifyAgentToken verifies an agent token.
-func (as *AuthServer) verifyAgentToken(tokenStr string) (*AgentToken, error) {
+func (as *AuthServer) verifyAgentToken(ctx context.Context, tokenStr string) (*AgentToken, error) {
 	if as.opts.agentTokenVerifier != nil {
-		return as.opts.agentTokenVerifier.VerifyAgentToken(nil, tokenStr)
+		return as.opts.agentTokenVerifier.VerifyAgentToken(ctx, tokenStr)
 	}
 
 	// Parse without verification (in production, use JWKS verifier)
@@ -247,9 +251,9 @@ func (as *AuthServer) verifyAgentToken(tokenStr string) (*AgentToken, error) {
 }
 
 // verifyResourceToken verifies a resource token.
-func (as *AuthServer) verifyResourceToken(tokenStr string) (*ResourceToken, error) {
+func (as *AuthServer) verifyResourceToken(ctx context.Context, tokenStr string) (*ResourceToken, error) {
 	if as.opts.resourceTokenVerifier != nil {
-		return as.opts.resourceTokenVerifier.VerifyResourceToken(nil, tokenStr)
+		return as.opts.resourceTokenVerifier.VerifyResourceToken(ctx, tokenStr)
 	}
 
 	// Parse without verification (in production, use JWKS verifier)

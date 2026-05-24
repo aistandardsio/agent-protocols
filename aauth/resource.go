@@ -1,6 +1,7 @@
 package aauth
 
 import (
+	"context"
 	"crypto"
 	"fmt"
 	"time"
@@ -129,9 +130,9 @@ func (rs *ResourceServer) Options() *resourceOptions {
 }
 
 // VerifyAgentToken verifies an agent token.
-func (rs *ResourceServer) VerifyAgentToken(tokenString string) (*AgentToken, error) {
+func (rs *ResourceServer) VerifyAgentToken(ctx context.Context, tokenString string) (*AgentToken, error) {
 	if rs.opts.agentTokenVerifier != nil {
-		return rs.opts.agentTokenVerifier.VerifyAgentToken(nil, tokenString)
+		return rs.opts.agentTokenVerifier.VerifyAgentToken(ctx, tokenString)
 	}
 
 	// Parse without verification for now (in production, use JWKS verifier)
@@ -148,9 +149,9 @@ func (rs *ResourceServer) VerifyAgentToken(tokenString string) (*AgentToken, err
 }
 
 // VerifyAuthToken verifies an auth token.
-func (rs *ResourceServer) VerifyAuthToken(tokenString string) (*AuthToken, error) {
+func (rs *ResourceServer) VerifyAuthToken(ctx context.Context, tokenString string) (*AuthToken, error) {
 	if rs.opts.authTokenVerifier != nil {
-		return rs.opts.authTokenVerifier.VerifyAuthToken(nil, tokenString)
+		return rs.opts.authTokenVerifier.VerifyAuthToken(ctx, tokenString)
 	}
 
 	// Parse without verification for now (in production, use JWKS verifier)

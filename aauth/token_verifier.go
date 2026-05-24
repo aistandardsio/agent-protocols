@@ -443,6 +443,7 @@ func (v *JWKSVerifier) getKey(ctx context.Context, kid string) (crypto.PublicKey
 
 // refreshKeys fetches the JWKS and updates the cache.
 func (v *JWKSVerifier) refreshKeys(ctx context.Context) error {
+	//nolint:gosec // G704: jwksURL is set by the application developer via NewJWKSVerifier, not user input
 	req, err := http.NewRequestWithContext(ctx, "GET", v.jwksURL, nil)
 	if err != nil {
 		return fmt.Errorf("%w: failed to create request: %v", ErrDiscoveryFailed, err)

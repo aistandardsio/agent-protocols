@@ -42,6 +42,7 @@ func (rs *ResourceServer) MiddlewareFunc(next http.HandlerFunc) http.HandlerFunc
 // verifyRequest verifies an incoming request.
 func (rs *ResourceServer) verifyRequest(r *http.Request) (*RequestVerificationResult, error) {
 	result := &RequestVerificationResult{}
+	ctx := r.Context()
 
 	// Get Signature-Key header
 	signatureKey := r.Header.Get(HeaderSignatureKey)
@@ -57,7 +58,7 @@ func (rs *ResourceServer) verifyRequest(r *http.Request) (*RequestVerificationRe
 	}
 
 	// Verify agent token
-	agentToken, err := rs.VerifyAgentToken(agentTokenStr)
+	agentToken, err := rs.VerifyAgentToken(ctx, agentTokenStr)
 	if err != nil {
 		return nil, err
 	}
@@ -101,7 +102,7 @@ func (rs *ResourceServer) verifyRequest(r *http.Request) (*RequestVerificationRe
 	authHeader := r.Header.Get(HeaderAuthorization)
 	if authHeader != "" && strings.HasPrefix(authHeader, "Bearer ") {
 		authTokenStr := strings.TrimPrefix(authHeader, "Bearer ")
-		authToken, err := rs.VerifyAuthToken(authTokenStr)
+		authToken, err := rs.VerifyAuthToken(ctx, authTokenStr)
 		if err != nil {
 			return nil, err
 		}
