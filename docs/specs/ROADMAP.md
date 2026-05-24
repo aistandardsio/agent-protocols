@@ -6,9 +6,10 @@ Go implementation of emerging AI agent-to-agent communication protocols for auth
 
 | Version | Date | Highlights |
 |---------|------|------------|
-| v0.3.0 | 2025-05-11 | SharkAuth adapter, Ory adapter |
-| v0.2.0 | 2025-05-11 | AAuth protocol, Zitadel adapter |
-| v0.1.0 | 2025-04-19 | ID-JAG and AIMS protocols |
+| v0.4.0 | 2026-05-24 | Token parsing/verification, IETF compliance, breaking API changes |
+| v0.3.0 | 2026-05-11 | SharkAuth adapter, Ory adapter |
+| v0.2.0 | 2026-05-11 | AAuth protocol, Zitadel adapter |
+| v0.1.0 | 2026-04-19 | ID-JAG and AIMS protocols |
 
 ---
 
@@ -84,7 +85,7 @@ Three-tier architecture across three protocols:
 | `adapters/ory/hydra/client.go` | ✅ |
 | ID-JAG examples | ✅ |
 
-### Phase 5.5: Code Quality & Test Coverage ✅ (v0.3.1)
+### Phase 5.5: Code Quality & Test Coverage ✅ (v0.4.0)
 
 Improvements to core packages identified during verification review.
 

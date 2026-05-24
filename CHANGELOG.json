@@ -7,6 +7,53 @@
   "maintainers": ["grokify"],
   "releases": [
     {
+      "version": "v0.4.0",
+      "date": "2026-05-24",
+      "highlights": [
+        { "description": "AIMS: Token parsing and verification with WITVerifier and WPTVerifier" },
+        { "description": "AAuth: JWT typ header validation and context-aware verification methods" },
+        { "description": "ID-JAG: IETF-compliant token types and IdP authorization server" }
+      ],
+      "added": [
+        { "description": "AIMS `ParseWIT` and `ParseWPT` functions for token inspection without verification", "commit": "9fc9e1a" },
+        { "description": "AIMS `WITVerifier` for cryptographic WIT signature verification with issuer/audience validation", "commit": "9fc9e1a" },
+        { "description": "AIMS `WPTVerifier` for WPT verification including HTTP request binding checks", "commit": "9fc9e1a" },
+        { "description": "AIMS `TokenTypeWIT` and `TokenTypeWPT` constants per WIMSE specification", "commit": "9fc9e1a" },
+        { "description": "AAuth `validateTokenType` function for JWT typ header validation in token parsers", "commit": "20070a4" },
+        { "description": "ID-JAG IETF-compliant token type constants and JWT header values", "commit": "a469aad" },
+        { "description": "ID-JAG required IETF claims (`client_id`, `jti`) in Assertion struct", "commit": "bbd2b31" },
+        { "description": "ID-JAG `IdPAuthServer` for OAuth token exchange at identity providers", "commit": "c3a32c9" },
+        { "description": "ID-JAG token type acceptance in Resource authorization server", "commit": "53ade96" },
+        { "description": "Integration test script (`scripts/integration-test.sh`) for running all examples", "commit": "7c8f4df" }
+      ],
+      "changed": [
+        { "description": "**BREAKING**: AAuth `ResourceServer.VerifyAgentToken` and `VerifyAuthToken` now require `context.Context` parameter", "commit": "a838560" },
+        { "description": "**BREAKING**: AAuth `AuthServer.validateExchangeRequest` now accepts `context.Context` for proper cancellation", "commit": "a838560" },
+        { "description": "AIMS `signingMethodForKey` properly detects RSA, ECDSA (P-256/384/521), and Ed25519 keys", "commit": "9fc9e1a" },
+        { "description": "AIMS WIT and WPT signing now sets `typ` header per WIMSE specification", "commit": "9fc9e1a" }
+      ],
+      "fixed": [
+        { "description": "SharkAuth DPoP `parseJWKPublicKey` now properly parses RSA, EC, and OKP keys using aauth.JWK", "commit": "1187ad5" },
+        { "description": "AAuth request body size limit (1MB) prevents memory exhaustion in AuthServer", "commit": "a838560" }
+      ],
+      "documentation": [
+        { "description": "AIMS package documentation for parsing and verification APIs", "commit": "0ebd848" },
+        { "description": "AAuth package documentation for context-aware verification methods", "commit": "7a92300" },
+        { "description": "Project roadmap documenting release history and future phases", "commit": "d520cfc" },
+        { "description": "README Development section with test, lint, and integration commands", "commit": "4c17112" },
+        { "description": "ID-JAG datasheet updated for IETF compliance", "commit": "0789d1e" },
+        { "description": "ID-JAG delegation example updated for IETF-compliant flow", "commit": "9da3c03" }
+      ],
+      "tests": [
+        { "description": "AIMS parsing and verification tests for WIT and WPT", "commit": "f46f38b" },
+        { "description": "AAuth typ header validation tests for all token types", "commit": "575800b" },
+        { "description": "SharkAuth DPoP proof verification tests for EC and RSA keys", "commit": "a4c4c62" }
+      ],
+      "refactor": [
+        { "description": "Extract shared CSS theme from HTML datasheets", "commit": "a4e4c68" }
+      ]
+    },
+    {
       "version": "v0.3.0",
       "date": "2026-05-11",
       "commit": "d9fc824",
