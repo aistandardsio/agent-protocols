@@ -220,6 +220,11 @@ func ParseResourceToken(tokenString string) (*ResourceToken, error) {
 		return nil, fmt.Errorf("%w: %v", ErrInvalidToken, err)
 	}
 
+	// Validate typ header matches expected token type
+	if err := validateTokenType(token, TokenTypeResourceJWT); err != nil {
+		return nil, err
+	}
+
 	claims, ok := token.Claims.(jwt.MapClaims)
 	if !ok {
 		return nil, fmt.Errorf("%w: invalid claims type", ErrInvalidToken)

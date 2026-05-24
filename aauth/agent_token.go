@@ -207,12 +207,37 @@ func ParseAgentToken(tokenString string) (*AgentToken, error) {
 		return nil, fmt.Errorf("%w: %v", ErrInvalidToken, err)
 	}
 
+	// Validate typ header matches expected token type
+	if err := validateTokenType(token, TokenTypeAgentJWT); err != nil {
+		return nil, err
+	}
+
 	claims, ok := token.Claims.(jwt.MapClaims)
 	if !ok {
 		return nil, fmt.Errorf("%w: invalid claims type", ErrInvalidToken)
 	}
 
 	return agentTokenFromClaims(claims)
+}
+
+// validateTokenType checks that the JWT typ header matches the expected type.
+// Returns nil if the typ header is missing, "JWT" (default), or matches the expected type.
+// The "JWT" default is accepted for backward compatibility with legacy tokens.
+func validateTokenType(token *jwt.Token, expectedType string) error {
+	typ, ok := token.Header["typ"].(string)
+	if !ok || typ == "" {
+		// typ header is optional per JWT spec; skip validation if missing
+		return nil
+	}
+	// Accept "JWT" as a valid value for backward compatibility
+	// (golang-jwt sets this as default when typ is not specified)
+	if typ == "JWT" {
+		return nil
+	}
+	if typ != expectedType {
+		return fmt.Errorf("%w: expected typ %s, got %s", ErrInvalidToken, expectedType, typ)
+	}
+	return nil
 }
 
 // agentTokenFromClaims extracts an AgentToken from JWT claims.
