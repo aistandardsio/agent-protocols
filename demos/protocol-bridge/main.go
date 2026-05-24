@@ -154,7 +154,7 @@ func demoMultiProtocolGateway(idjagKey, aimsKey, aauthKey *ecdsa.PrivateKey) {
 		}
 
 		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(response)
+		_ = json.NewEncoder(w).Encode(response)
 	})
 
 	// Create multi-protocol middleware
@@ -226,7 +226,7 @@ func testGateway(url, token, name string) {
 	defer resp.Body.Close()
 
 	var body map[string]interface{}
-	json.NewDecoder(resp.Body).Decode(&body)
+	_ = json.NewDecoder(resp.Body).Decode(&body)
 
 	fmt.Printf("    Protocol: %s, Subject: %s\n", body["protocol"], body["subject"])
 	if body["delegated"] == true {
