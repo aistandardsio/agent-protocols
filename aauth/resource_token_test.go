@@ -206,3 +206,78 @@ func TestResourceToken_ShortTTL(t *testing.T) {
 		t.Errorf("expected TTL around 2 minutes, got %v", ttl)
 	}
 }
+
+func TestParseResourceToken_WrongTypHeader(t *testing.T) {
+	privateKey, _ := ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
+
+	original := NewResourceToken(
+		"https://resource.example.com",
+		"aauth:agent@example.com",
+		[]string{"https://ps.example.com"},
+		"jkt-thumbprint",
+		5*time.Minute,
+	)
+
+	// Manually create a token with wrong typ header
+	claims := jwt.MapClaims{
+		"iss":       original.Issuer,
+		"sub":       original.Subject,
+		"aud":       original.Audience,
+		"iat":       jwt.NewNumericDate(original.IssuedAt),
+		"exp":       jwt.NewNumericDate(original.ExpiresAt),
+		"agent_jkt": original.AgentJKT,
+	}
+	token := jwt.NewWithClaims(jwt.SigningMethodES256, claims)
+	token.Header["typ"] = TokenTypeAgentJWT // Wrong type - using agent instead of resource
+	token.Header["kid"] = "test-key"
+
+	signed, err := token.SignedString(privateKey)
+	if err != nil {
+		t.Fatalf("failed to sign token: %v", err)
+	}
+
+	// ParseResourceToken should reject the token with wrong typ header
+	_, err = ParseResourceToken(signed)
+	if err == nil {
+		t.Error("expected error for token with wrong typ header")
+	}
+}
+
+func TestParseResourceToken_MissingTypHeader(t *testing.T) {
+	privateKey, _ := ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
+
+	original := NewResourceToken(
+		"https://resource.example.com",
+		"aauth:agent@example.com",
+		[]string{"https://ps.example.com"},
+		"jkt-thumbprint",
+		5*time.Minute,
+	)
+
+	// Manually create a token without typ header (backward compatibility)
+	claims := jwt.MapClaims{
+		"iss":       original.Issuer,
+		"sub":       original.Subject,
+		"aud":       original.Audience,
+		"iat":       jwt.NewNumericDate(original.IssuedAt),
+		"exp":       jwt.NewNumericDate(original.ExpiresAt),
+		"agent_jkt": original.AgentJKT,
+	}
+	token := jwt.NewWithClaims(jwt.SigningMethodES256, claims)
+	token.Header["kid"] = "test-key"
+	// Note: No typ header set
+
+	signed, err := token.SignedString(privateKey)
+	if err != nil {
+		t.Fatalf("failed to sign token: %v", err)
+	}
+
+	// ParseResourceToken should accept tokens without typ header for backward compatibility
+	parsed, err := ParseResourceToken(signed)
+	if err != nil {
+		t.Errorf("ParseResourceToken() error = %v, expected nil for missing typ header", err)
+	}
+	if parsed.Issuer != original.Issuer {
+		t.Errorf("Issuer mismatch: %s vs %s", parsed.Issuer, original.Issuer)
+	}
+}

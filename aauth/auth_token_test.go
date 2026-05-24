@@ -214,3 +214,80 @@ func TestParseAuthToken(t *testing.T) {
 		t.Errorf("Scope mismatch: %s vs %s", parsed.Scope, original.Scope)
 	}
 }
+
+func TestParseAuthToken_WrongTypHeader(t *testing.T) {
+	privateKey, _ := ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
+	cnf, _ := NewCNFWithJWK(&privateKey.PublicKey, "test-key")
+
+	original := NewAuthToken(
+		"https://ps.example.com",
+		"aauth:agent@example.com",
+		[]string{"https://resource.example.com"},
+		cnf,
+		5*time.Minute,
+	)
+
+	// Manually create a token with wrong typ header
+	claims := jwt.MapClaims{
+		"iss": original.Issuer,
+		"sub": original.Subject,
+		"aud": original.Audience,
+		"iat": jwt.NewNumericDate(original.IssuedAt),
+		"exp": jwt.NewNumericDate(original.ExpiresAt),
+		"cnf": cnf,
+	}
+	token := jwt.NewWithClaims(jwt.SigningMethodES256, claims)
+	token.Header["typ"] = TokenTypeAgentJWT // Wrong type - using agent instead of auth
+	token.Header["kid"] = "test-key"
+
+	signed, err := token.SignedString(privateKey)
+	if err != nil {
+		t.Fatalf("failed to sign token: %v", err)
+	}
+
+	// ParseAuthToken should reject the token with wrong typ header
+	_, err = ParseAuthToken(signed)
+	if err == nil {
+		t.Error("expected error for token with wrong typ header")
+	}
+}
+
+func TestParseAuthToken_MissingTypHeader(t *testing.T) {
+	privateKey, _ := ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
+	cnf, _ := NewCNFWithJWK(&privateKey.PublicKey, "test-key")
+
+	original := NewAuthToken(
+		"https://ps.example.com",
+		"aauth:agent@example.com",
+		[]string{"https://resource.example.com"},
+		cnf,
+		5*time.Minute,
+	)
+
+	// Manually create a token without typ header (backward compatibility)
+	claims := jwt.MapClaims{
+		"iss": original.Issuer,
+		"sub": original.Subject,
+		"aud": original.Audience,
+		"iat": jwt.NewNumericDate(original.IssuedAt),
+		"exp": jwt.NewNumericDate(original.ExpiresAt),
+		"cnf": cnf,
+	}
+	token := jwt.NewWithClaims(jwt.SigningMethodES256, claims)
+	token.Header["kid"] = "test-key"
+	// Note: No typ header set
+
+	signed, err := token.SignedString(privateKey)
+	if err != nil {
+		t.Fatalf("failed to sign token: %v", err)
+	}
+
+	// ParseAuthToken should accept tokens without typ header for backward compatibility
+	parsed, err := ParseAuthToken(signed)
+	if err != nil {
+		t.Errorf("ParseAuthToken() error = %v, expected nil for missing typ header", err)
+	}
+	if parsed.Issuer != original.Issuer {
+		t.Errorf("Issuer mismatch: %s vs %s", parsed.Issuer, original.Issuer)
+	}
+}

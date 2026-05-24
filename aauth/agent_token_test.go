@@ -242,3 +242,66 @@ func TestAgentToken_WithMultipleAudiences(t *testing.T) {
 		t.Errorf("expected 2 audiences after parsing, got %d", len(parsed.Audience))
 	}
 }
+
+func TestParseAgentToken_WrongTypHeader(t *testing.T) {
+	privateKey, _ := ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
+	cnf, _ := NewCNFWithJWK(&privateKey.PublicKey, "test-key")
+
+	original := NewAgentToken("https://issuer.example.com", "aauth:agent@example.com", cnf, 5*time.Minute)
+
+	// Manually create a token with wrong typ header
+	claims := jwt.MapClaims{
+		"iss": original.Issuer,
+		"sub": original.Subject,
+		"iat": jwt.NewNumericDate(original.IssuedAt),
+		"exp": jwt.NewNumericDate(original.ExpiresAt),
+		"cnf": cnf,
+	}
+	token := jwt.NewWithClaims(jwt.SigningMethodES256, claims)
+	token.Header["typ"] = TokenTypeAuthJWT // Wrong type - using auth instead of agent
+	token.Header["kid"] = "test-key"
+
+	signed, err := token.SignedString(privateKey)
+	if err != nil {
+		t.Fatalf("failed to sign token: %v", err)
+	}
+
+	// ParseAgentToken should reject the token with wrong typ header
+	_, err = ParseAgentToken(signed)
+	if err == nil {
+		t.Error("expected error for token with wrong typ header")
+	}
+}
+
+func TestParseAgentToken_MissingTypHeader(t *testing.T) {
+	privateKey, _ := ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
+	cnf, _ := NewCNFWithJWK(&privateKey.PublicKey, "test-key")
+
+	original := NewAgentToken("https://issuer.example.com", "aauth:agent@example.com", cnf, 5*time.Minute)
+
+	// Manually create a token without typ header (backward compatibility)
+	claims := jwt.MapClaims{
+		"iss": original.Issuer,
+		"sub": original.Subject,
+		"iat": jwt.NewNumericDate(original.IssuedAt),
+		"exp": jwt.NewNumericDate(original.ExpiresAt),
+		"cnf": cnf,
+	}
+	token := jwt.NewWithClaims(jwt.SigningMethodES256, claims)
+	token.Header["kid"] = "test-key"
+	// Note: No typ header set
+
+	signed, err := token.SignedString(privateKey)
+	if err != nil {
+		t.Fatalf("failed to sign token: %v", err)
+	}
+
+	// ParseAgentToken should accept tokens without typ header for backward compatibility
+	parsed, err := ParseAgentToken(signed)
+	if err != nil {
+		t.Errorf("ParseAgentToken() error = %v, expected nil for missing typ header", err)
+	}
+	if parsed.Issuer != original.Issuer {
+		t.Errorf("Issuer mismatch: %s vs %s", parsed.Issuer, original.Issuer)
+	}
+}
