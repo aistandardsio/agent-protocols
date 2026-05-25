@@ -214,16 +214,19 @@ Production monitoring, debugging, and operational tooling.
 
 | Component | Status | Description |
 |-----------|--------|-------------|
-| OpenTelemetry SDK | Planned | Instrumentation for all packages |
-| Jaeger integration | Planned | Trace visualization |
-| Trace context propagation | Planned | Cross-service correlation |
-| Token flow tracing | Planned | Track tokens through exchanges |
+| OmniObserve integration | ✅ | `bridge/observe` package with observops provider |
+| OpenTelemetry support | ✅ | Via omniobserve OTLP backend |
+| Trace context propagation | ✅ | Cross-service correlation via spans |
+| Token flow tracing | ✅ | Auth spans with protocol/subject/issuer attributes |
+| Delegation chain tracing | ✅ | `DelegationTracker` records delegation depth |
 
 #### Metrics & Monitoring
 
 | Component | Status | Description |
 |-----------|--------|-------------|
-| Prometheus metrics | Planned | Token counts, latencies, errors |
+| Auth metrics | ✅ | `auth.requests`, `auth.success`, `auth.failure` counters |
+| Duration histogram | ✅ | `auth.duration` in milliseconds |
+| Delegation depth gauge | ✅ | `auth.delegation_depth` metric |
 | Grafana dashboards | Planned | Pre-built visualization |
 | Alert rules | Planned | Common failure detection |
 | Health endpoints | Planned | `/health`, `/ready` for all services |
@@ -232,9 +235,10 @@ Production monitoring, debugging, and operational tooling.
 
 | Component | Status | Description |
 |-----------|--------|-------------|
+| Structured logging | ✅ | Identity-aware log events via observops |
+| Log correlation | ✅ | Trace IDs in structured logs |
 | Token inspector CLI | Planned | Decode and validate tokens |
 | Request debugger | Planned | Trace HTTP signature verification |
-| Log correlation | Planned | Structured logging with trace IDs |
 | Troubleshooting guide | Planned | Common issues and solutions |
 
 ---
