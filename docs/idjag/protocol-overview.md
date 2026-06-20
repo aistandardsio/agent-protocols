@@ -20,6 +20,50 @@ ID-JAG builds on established OAuth 2.0 and JWT standards to create a flexible au
 | **Resource Server** | Hosts protected APIs, validates access tokens |
 | **JWKS Endpoint** | Distributes public keys for signature verification |
 
+## Industry Adoption
+
+ID-JAG is gaining traction as the foundation for enterprise agent authentication. Most notably, the [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) has adopted ID-JAG for its [Enterprise-Managed Authorization](https://blog.modelcontextprotocol.io/posts/enterprise-managed-auth/) extension.
+
+### MCP Enterprise-Managed Authorization
+
+The MCP Enterprise-Managed Authorization (EMA) extension uses ID-JAG to enable:
+
+- **Centralized provisioning**: Organizations control MCP server access through their identity provider
+- **Zero-touch setup**: Users receive connected servers automatically upon first login
+- **Policy enforcement**: Security teams manage access based on group membership, roles, and conditional access
+
+### Ecosystem Support
+
+**Identity Providers:**
+
+| Provider | Status | Notes |
+|----------|--------|-------|
+| Okta | Supported | First supported IdP via Cross App Access (XAA) |
+
+**Clients:**
+
+| Client | Status | Notes |
+|--------|--------|-------|
+| Claude | Supported | Claude, Claude Code, and Cowork via Anthropic's shared MCP layer |
+| Visual Studio Code | Supported | Native IDE integration |
+
+**MCP Servers:**
+
+| Server | Status |
+|--------|--------|
+| Asana | Supported |
+| Atlassian | Supported |
+| Canva | Supported |
+| Figma | Supported |
+| Granola | Supported |
+| Linear | Supported |
+| Supabase | Supported |
+| Slack | In Progress |
+
+For more details, see the [MCP Enterprise-Managed Auth announcement](https://blog.modelcontextprotocol.io/posts/enterprise-managed-auth/).
+
+---
+
 ## The Problem ID-JAG Solves
 
 Traditional OAuth 2.0 flows were designed for web applications where users directly interact with authorization servers. AI agents face unique challenges:

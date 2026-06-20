@@ -2,6 +2,8 @@
 
 This guide walks you through setting up and using the ID-JAG library.
 
+ID-JAG is an emerging standard for agent authentication, recently adopted by the [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) for enterprise authorization. See [Industry Adoption](protocol-overview.md#industry-adoption) for ecosystem support details.
+
 ## Installation
 
 ```bash
