@@ -1,0 +1,22 @@
+@startuml
+title AAuth Pre-Authorization Flow
+
+participant "AI Agent" as agent
+participant "Person Server" as person_server
+participant "Resource Server" as resource_server
+
+
+== Authorization Request ==
+agent -> person_server: POST /aauth/authorize
+person_server -> person_server: Check Pre-Authorization
+person_server -> person_server: Generate Access Token (JWT)
+person_server --> agent: 200 OK (access_token)
+
+== Resource Access ==
+agent -> resource_server: Request + Bearer Token
+resource_server -> person_server: GET /.well-known/jwks.json
+person_server --> resource_server: JWKS
+resource_server -> resource_server: Verify Token
+resource_server --> agent: Protected Resource
+
+@enduml

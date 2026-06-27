@@ -224,6 +224,13 @@ sequenceDiagram
 | **Delegation** | Person Server + cnf | `act` claim | SPIFFE conventions |
 | **Standards** | RFC 9421, RFC 8693 | RFC 8693, RFC 7523 | SPIFFE, WIMSE |
 
+## Next Steps
+
+- [AAuth vs OAuth](oauth-comparison.md) - Understand how AAuth differs from OAuth 2.0
+- [Getting Started](getting-started.md) - Quick start guide
+- [Examples](examples.md) - Run the demo applications
+- [API Reference](api-reference.md) - Full Go package documentation
+
 ## References
 
 - [draft-hardt-oauth-aauth-protocol](https://datatracker.ietf.org/doc/draft-hardt-oauth-aauth-protocol/)

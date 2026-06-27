@@ -1,0 +1,34 @@
+sequenceDiagram
+    title AAuth + ID-JAG Hybrid Authorization
+    autonumber
+
+    participant agent as AI Agent
+    participant identity_provider as Identity Provider
+    participant authz_server as Authorization Server
+    participant user as User
+    participant resource_server as Resource Server
+
+    rect rgb(240, 240, 240)
+    note right of agent: Assertion Acquisition
+    agent->>identity_provider: Authenticate Agent
+    identity_provider-->>agent: ID-JAG Assertion (JWT)
+    end
+
+    rect rgb(240, 240, 240)
+    note right of agent: Policy Evaluation
+    agent->>authz_server: POST /oauth/token (token-exchange)
+    authz_server->>authz_server: Evaluate Scope Policy
+    end
+
+    rect rgb(240, 240, 240)
+    note right of agent: ID-JAG Path (Automated)
+    authz_server->>authz_server: Verify ID-JAG Assertion
+    authz_server->>authz_server: Issue Access Token
+    authz_server-->>agent: Access Token
+    end
+
+    rect rgb(240, 240, 240)
+    note right of agent: Resource Access
+    agent->>resource_server: Request + Bearer Token
+    resource_server-->>agent: Protected Resource
+    end

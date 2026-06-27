@@ -48,6 +48,17 @@ This repository provides Go libraries for emerging agent-to-agent protocols:
   - [Examples](./aims/examples/) - Working demos (simple WIT/WPT, mTLS)
   - [PIDL Definitions](./aims/pidl/) - Protocol diagrams
 
+### Server Implementations
+
+Production-ready authorization servers:
+
+- **[aauth/personserver](./aauth/personserver/)** - AAuth Person Server with interface-based storage
+- **[idjag/authzserver](./idjag/authzserver/)** - ID-JAG Authorization Server with interface-based storage
+- **[agentauth](./agentauth/)** - Unified authorization layer combining AAuth + ID-JAG with SQLite storage
+  - [CLI Server](./cmd/agentauth-server/) - Ready-to-run binary
+  - [Examples](./examples/agentauth-demo/) - Working demos
+  - [Lambda Deployment](./lambda/peopleserver/) - AWS Lambda handler
+
 ### Cross-Protocol Bridge
 
 - **[bridge](./bridge/)** - Cross-protocol interoperability with unified identity representation
@@ -173,6 +184,7 @@ go run ./demos/protocol-bridge  # Multi-protocol authentication demo
 - **AAuth**: [Overview](./docs/aauth/overview.md) | [Getting Started](./docs/aauth/getting-started.md) | [Examples](./docs/aauth/examples.md)
 - **ID-JAG**: [Protocol Overview](./docs/idjag/protocol-overview.md) | [Getting Started](./docs/idjag/getting-started.md)
 - **AIMS**: [Overview](./docs/aims/overview.md) | [Getting Started](./docs/aims/getting-started.md)
+- **AgentAuth**: [Overview](./docs/agentauth/overview.md) | [Getting Started](./docs/agentauth/getting-started.md) | [Deployment](./docs/agentauth/deployment.md)
 - **Zitadel Adapter**: [Overview](./docs/adapters/zitadel/overview.md) | [Getting Started](./docs/adapters/zitadel/getting-started.md)
 - **SharkAuth Adapter**: [Overview](./docs/adapters/sharkauth/overview.md) | [Getting Started](./docs/adapters/sharkauth/getting-started.md)
 - **Ory Adapter**: [Overview](./docs/adapters/ory/overview.md) | [Getting Started](./docs/adapters/ory/getting-started.md)

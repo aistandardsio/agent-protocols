@@ -174,6 +174,167 @@ Full infrastructure with Docker Compose, configuration management, and multi-ser
 
 ---
 
+### Phase 6.5: AAuth Protocol Enhancements (v0.5.5)
+
+Advanced AAuth features identified from C# reference implementation comparison.
+
+#### High Priority: Core Signing & Consent
+
+| Component | Status | Description |
+|-----------|--------|-------------|
+| `SignatureKeyProvider` interface | ✅ | Pluggable key resolution for different signing modes |
+| `hwk` signing mode | ✅ | Hardware key-backed signatures |
+| `jkt-jwt` signing mode | ✅ | JWT thumbprint confirmation |
+| `jwks_uri` signing mode | ✅ | Remote JWKS key resolution |
+| `jwt` signing mode | ✅ | Standard JWT-based signing |
+| Deferred consent handling | ✅ | 202 Accepted response with polling support |
+| `ConsentPoller` | ✅ | Async consent polling with backoff |
+| Token refresh handler | ✅ | Automatic token refresh on expiry |
+| `TokenRefresher` interface | ✅ | Pluggable refresh strategies |
+
+#### Medium Priority: Governance & Interactions
+
+| Component | Status | Description |
+|-----------|--------|-------------|
+| Mission governance types | ✅ | `MissionProposal`, `MissionApproval` structs |
+| Per-call permissions | ✅ | Fine-grained permission requests per API call |
+| Mission approval flow | ✅ | Human approval workflow for agent missions |
+| Interaction types | ✅ | `interactionType` claim support (autonomous, supervised, etc.) |
+| Self-AP support | ✅ | Agent acting as its own Authorization Provider |
+| `SelfAPClient` | ✅ | Client for self-issued tokens |
+
+#### Low Priority: Advanced Features
+
+| Component | Status | Description |
+|-----------|--------|-------------|
+| Adaptive signature components | ✅ | Dynamic component selection based on request |
+| `AdaptiveComponentSelector` | ✅ | Select signature components per request characteristics |
+| `SignaturePolicy` | ✅ | Policy-based validation of signed components |
+| Platform attestation | ✅ | TPM/secure enclave attestation support |
+| `PlatformAttestor` interface | ✅ | Abstract interface for platform attestation |
+| `TPMAttestor` | ✅ | TPM 2.0 attestation with quote/signature |
+| `SoftwareAttestor` | ✅ | Software attestation for testing |
+| `AttestationVerifier` | ✅ | Verify attestation evidence and cert chains |
+| `AttestedKeyProvider` | ✅ | Key provider with attestation evidence |
+| Call chaining router | ✅ | Multi-agent delegation with nested `act` claims |
+| `DelegationRouter` | ✅ | Route requests through delegation chain |
+| `DelegationChain` | ✅ | Parse and manage nested `act` claims |
+| `DelegationValidator` | ✅ | Verify full delegation chain integrity |
+
+#### Unified Authorization Layer (`agentauth/`)
+
+| Component | Status | Description |
+|-----------|--------|-------------|
+| `agentauth/` package | ✅ | Unified authorization abstraction |
+| `Provider` interface | ✅ | Common interface for ID-JAG and AAuth |
+| `Policy` configuration | ✅ | Scope-based protocol routing |
+| `PolicyMatcher` | ✅ | Pattern matching for scope policies |
+| `HybridProvider` | ✅ | Routes requests based on policy |
+| `IDJAGProvider` | ✅ | ID-JAG protocol wrapper |
+| `AAuthProvider` | ✅ | AAuth protocol wrapper with consent |
+| Consent flow support | ✅ | Deferred/redirect consent handling |
+| Token caching | ✅ | Automatic token caching with TTL |
+
+**Policy Modes:**
+- `auto` - All requests use ID-JAG (policy-based, no human interaction)
+- `human` - All requests use AAuth (always human consent)
+- `hybrid` - Routes based on scope patterns (sensitive → AAuth, auto → ID-JAG)
+
+#### Composable Authorization Servers
+
+Two package options for authorization servers:
+
+**Interface-Based Packages (for custom storage):**
+
+| Component | Status | Description |
+|-----------|--------|-------------|
+| `aauth/personserver/` | ✅ | AAuth Person Server with `Store` interface |
+| `idjag/authzserver/` | ✅ | ID-JAG Authorization Server with `Store` interface |
+
+**Storage Implementations (plexusone/agentauth/store):**
+
+| Component | Status | Description |
+|-----------|--------|-------------|
+| `store.SQLiteStore` | ✅ | SQLite storage implementation |
+| `store.DynamoDBStore` | ✅ | DynamoDB storage implementation (build tag) |
+| `store.PersonServerAdapter` | ✅ | Adapts Storer to `personserver.Store` |
+| `store.AuthzServerAdapter` | ✅ | Adapts Storer to `authzserver.Store` |
+
+**CLI and Examples:**
+
+| Component | Status | Description |
+|-----------|--------|-------------|
+| `cmd/agentauth-server/` | ✅ | Unified server binary combining both protocols |
+| `examples/agentauth-demo/` | ✅ | Working example demonstrating both protocols |
+| `lambda/peopleserver/` | ✅ | AWS Lambda deployment example |
+
+**Server Architecture:**
+
+- Both servers expose `RegisterHandlers(mux *http.ServeMux)` for composability
+- Can deploy as single binary or separately
+- Interface-based packages allow custom storage (DynamoDB, PostgreSQL, etc.)
+- Storage adapters in `plexusone/agentauth/store` bridge the interfaces
+- Policy evaluator routes scopes to ID-JAG (auto) or AAuth (human consent)
+
+---
+
+### Phase 6.7: AgentAuth Server Hardening (v0.5.7)
+
+Complete the agentauth server implementation with tests, documentation, and production readiness.
+
+#### High Priority: Tests & E2E Demo
+
+| Component | Status | Description |
+|-----------|--------|-------------|
+| `agentauth/personserver/*_test.go` | ✅ | Unit tests for Person Server handlers |
+| `agentauth/authzserver/*_test.go` | ✅ | Unit tests for Authorization Server handlers |
+| `agentauth/store_test.go` | ✅ | Integration tests for SQLite store |
+| E2E demo scenario | ✅ | Complete flow: agent → ID-JAG → authzserver → resource |
+| `examples/agentauth-demo/` | ✅ | Working example demonstrating both protocols |
+
+#### Medium Priority: Verifier & Client SDK
+
+| Component | Status | Description |
+|-----------|--------|-------------|
+| ID-JAG verifier integration | ✅ | Wire up proper `idjag.Verifier` in authzserver |
+| `agentauth/client/` package | ✅ | Go client SDK for agents |
+| `AgentAuthClient` | ✅ | Unified client for both protocols |
+| Auto-consent polling | ✅ | Client-side consent status polling |
+| Token refresh | ✅ | Automatic token refresh support |
+
+#### Medium Priority: Documentation
+
+| Component | Status | Description |
+|-----------|--------|-------------|
+| `agentauth/README.md` | ✅ | Package overview and architecture |
+| API reference | ✅ | Endpoint documentation (in README) |
+| Deployment guide | ✅ | Production deployment instructions (`docs/agentauth/deployment.md`) |
+| OmniAgent integration | ✅ | Integration guide (`docs/agentauth/integration.md`) |
+| Zitadel integration guide | Planned | Using Zitadel as upstream IdP |
+
+#### Lambda Deployment
+
+| Component | Status | Description |
+|-----------|--------|-------------|
+| `lambda/peopleserver/main.go` | ✅ | Lambda handler with API Gateway adapter |
+| `lambda/peopleserver/template.yaml` | ✅ | SAM template for deployment |
+| DynamoDB store | ✅ | `agentauth/store_dynamodb.go` with build tag |
+| Local SAM testing | ✅ | `make local` for local development |
+| Deployment documentation | ✅ | `lambda/peopleserver/README.md` |
+
+#### Lower Priority: Advanced Features
+
+| Component | Status | Description |
+|-----------|--------|-------------|
+| KMS signing key | Planned | AWS KMS for production JWT signing |
+| DynamoDB integration tests | Planned | Tests with DynamoDB Local |
+| Zitadel adapter | Planned | Connect to Zitadel for user/agent management |
+| Cedar policy integration | Planned | Fine-grained authorization with Cedar |
+| Refresh token support | Planned | Long-lived sessions with refresh tokens |
+| Admin UI | Planned | Web UI for managing policies and users |
+
+---
+
 ### Phase 7: Cross-Protocol Bridging (v0.6.0)
 
 Enable interoperability between protocols for mixed environments.

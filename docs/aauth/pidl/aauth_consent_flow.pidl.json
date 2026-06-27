@@ -1,0 +1,236 @@
+{
+  "$schema": "https://github.com/grokify/pidl/schema/pidl.schema.json",
+  "protocol": {
+    "id": "aauth-consent-flow",
+    "name": "AAuth Human Consent Flow",
+    "version": "1.0",
+    "description": "Agent Authorization protocol flow requiring human consent for sensitive operations",
+    "category": "auth",
+    "references": [
+      {
+        "name": "draft-hardt-oauth-aauth-protocol",
+        "url": "https://datatracker.ietf.org/doc/draft-hardt-oauth-aauth-protocol/"
+      }
+    ]
+  },
+  "entities": [
+    {
+      "id": "agent",
+      "name": "AI Agent",
+      "type": "agent",
+      "description": "AI agent requesting authorization to act on behalf of user"
+    },
+    {
+      "id": "person_server",
+      "name": "Person Server",
+      "type": "authorization_server",
+      "description": "AAuth authorization server managing human consent"
+    },
+    {
+      "id": "user",
+      "name": "User",
+      "type": "user",
+      "description": "Human user granting or denying consent"
+    },
+    {
+      "id": "resource_server",
+      "name": "Resource Server",
+      "type": "resource_server",
+      "description": "Protected resource the agent wants to access"
+    }
+  ],
+  "phases": [
+    {
+      "id": "authorization_request",
+      "name": "Authorization Request",
+      "description": "Agent requests authorization from Person Server"
+    },
+    {
+      "id": "human_consent",
+      "name": "Human Consent",
+      "description": "User reviews and approves or denies the request"
+    },
+    {
+      "id": "token_issuance",
+      "name": "Token Issuance",
+      "description": "Person Server issues access token after consent"
+    },
+    {
+      "id": "resource_access",
+      "name": "Resource Access",
+      "description": "Agent uses token to access protected resource"
+    }
+  ],
+  "flows": [
+    {
+      "from": "agent",
+      "to": "person_server",
+      "action": "authorization_request",
+      "label": "POST /aauth/authorize",
+      "mode": "request",
+      "phase": "authorization_request",
+      "description": "Agent submits authorization request with scope and mission details"
+    },
+    {
+      "from": "person_server",
+      "to": "person_server",
+      "action": "create_mission",
+      "label": "Create Mission Record",
+      "mode": "request",
+      "phase": "authorization_request",
+      "description": "Server creates mission with pending status"
+    },
+    {
+      "from": "person_server",
+      "to": "agent",
+      "action": "pending_response",
+      "label": "202 Accepted (consent_uri, status_uri)",
+      "mode": "response",
+      "phase": "authorization_request",
+      "description": "Return consent URI for user and status URI for polling"
+    },
+    {
+      "from": "user",
+      "to": "person_server",
+      "action": "view_consent",
+      "label": "GET /aauth/consent/{id}",
+      "mode": "interactive",
+      "phase": "human_consent",
+      "description": "User opens consent page to review request"
+    },
+    {
+      "from": "person_server",
+      "to": "user",
+      "action": "consent_page",
+      "label": "Consent Page (scope, mission details)",
+      "mode": "response",
+      "phase": "human_consent",
+      "description": "Display scope, agent info, and mission description"
+    },
+    {
+      "from": "user",
+      "to": "person_server",
+      "action": "consent_decision",
+      "label": "POST /aauth/consent/{id} (approve/deny)",
+      "mode": "interactive",
+      "phase": "human_consent",
+      "description": "User submits approval or denial",
+      "alternatives": [
+        {
+          "condition": "user_denies",
+          "description": "User denies the request",
+          "flows": [
+            {
+              "from": "person_server",
+              "to": "person_server",
+              "action": "mark_denied",
+              "label": "Update Mission: denied",
+              "mode": "request"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "from": "person_server",
+      "to": "person_server",
+      "action": "approve_mission",
+      "label": "Update Mission: approved",
+      "mode": "request",
+      "phase": "human_consent",
+      "condition": "user_approves"
+    },
+    {
+      "from": "person_server",
+      "to": "user",
+      "action": "approval_confirmation",
+      "label": "Approval Confirmation Page",
+      "mode": "response",
+      "phase": "human_consent"
+    },
+    {
+      "from": "agent",
+      "to": "person_server",
+      "action": "poll_status",
+      "label": "GET /aauth/consent/status/{id}",
+      "mode": "request",
+      "phase": "token_issuance",
+      "description": "Agent polls for consent status"
+    },
+    {
+      "from": "person_server",
+      "to": "person_server",
+      "action": "issue_token",
+      "label": "Generate Access Token (JWT)",
+      "mode": "request",
+      "phase": "token_issuance",
+      "condition": "mission_approved",
+      "annotations": [
+        {
+          "type": "security",
+          "text": "Token includes act claim with user subject"
+        }
+      ]
+    },
+    {
+      "from": "person_server",
+      "to": "agent",
+      "action": "token_response",
+      "label": "Access Token (aa-auth+jwt)",
+      "mode": "response",
+      "phase": "token_issuance",
+      "description": "Return access token with granted scope"
+    },
+    {
+      "from": "agent",
+      "to": "resource_server",
+      "action": "resource_request",
+      "label": "Request + Bearer Token",
+      "mode": "request",
+      "phase": "resource_access",
+      "description": "Agent accesses resource with AAuth token"
+    },
+    {
+      "from": "resource_server",
+      "to": "person_server",
+      "action": "fetch_jwks",
+      "label": "GET /.well-known/jwks.json",
+      "mode": "request",
+      "phase": "resource_access",
+      "condition": "keys_not_cached",
+      "description": "Fetch public keys for token verification"
+    },
+    {
+      "from": "person_server",
+      "to": "resource_server",
+      "action": "jwks_response",
+      "label": "JWKS (public keys)",
+      "mode": "response",
+      "phase": "resource_access",
+      "condition": "keys_not_cached"
+    },
+    {
+      "from": "resource_server",
+      "to": "resource_server",
+      "action": "verify_token",
+      "label": "Verify Token Signature + Claims",
+      "mode": "request",
+      "phase": "resource_access",
+      "annotations": [
+        {
+          "type": "security",
+          "text": "Validate iss, aud, exp, scope claims"
+        }
+      ]
+    },
+    {
+      "from": "resource_server",
+      "to": "agent",
+      "action": "resource_response",
+      "label": "Protected Resource",
+      "mode": "response",
+      "phase": "resource_access",
+      "description": "Return requested resource data"
+    }
+  ]
+}

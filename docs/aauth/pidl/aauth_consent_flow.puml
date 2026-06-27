@@ -1,0 +1,34 @@
+@startuml
+title AAuth Human Consent Flow
+
+participant "AI Agent" as agent
+participant "Person Server" as person_server
+participant "User" as user
+participant "Resource Server" as resource_server
+
+
+== Authorization Request ==
+agent -> person_server: POST /aauth/authorize
+person_server -> person_server: Create Mission Record
+person_server --> agent: 202 Accepted (consent_uri, status_uri)
+
+== Human Consent ==
+user -> person_server: GET /aauth/consent/{id}
+person_server --> user: Consent Page (scope, mission details)
+user -> person_server: POST /aauth/consent/{id} (approve/deny)
+person_server -> person_server: Update Mission: approved
+person_server --> user: Approval Confirmation Page
+
+== Token Issuance ==
+agent -> person_server: GET /aauth/consent/status/{id}
+person_server -> person_server: Generate Access Token (JWT)
+person_server --> agent: Access Token (aa-auth+jwt)
+
+== Resource Access ==
+agent -> resource_server: Request + Bearer Token
+resource_server -> person_server: GET /.well-known/jwks.json
+person_server --> resource_server: JWKS (public keys)
+resource_server -> resource_server: Verify Token Signature + Claims
+resource_server --> agent: Protected Resource
+
+@enduml

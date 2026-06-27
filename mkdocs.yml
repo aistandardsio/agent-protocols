@@ -84,6 +84,11 @@ nav:
   - Bridge:
     - Overview: bridge/overview.md
     - Getting Started: bridge/getting-started.md
+  - SCIM Extension:
+    - Overview: scimext/overview.md
+    - Getting Started: scimext/getting-started.md
+    - Examples: scimext/examples.md
+    - API Reference: scimext/api-reference.md
   - Adapters:
     - Zitadel:
       - Overview: adapters/zitadel/overview.md
