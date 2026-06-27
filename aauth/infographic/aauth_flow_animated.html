@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AAuth Flow - Animated Infographic</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        .container {
+            width: 1080px;
+            height: 1080px;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Header */
+        .header {
+            position: absolute;
+            top: 40px;
+            left: 0;
+            right: 0;
+            text-align: center;
+        }
+
+        .header h1 {
+            color: #fff;
+            font-size: 48px;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+
+        .header .subtitle {
+            color: #64ffda;
+            font-size: 20px;
+            margin-top: 8px;
+            font-weight: 400;
+        }
+
+        /* SVG Container */
+        .diagram {
+            position: absolute;
+            top: 140px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        /* Node Styles */
+        .node {
+            filter: drop-shadow(0 4px 20px rgba(100, 255, 218, 0.3));
+        }
+
+        .node-circle {
+            fill: #1a1a2e;
+            stroke: #64ffda;
+            stroke-width: 3;
+        }
+
+        .node-icon {
+            fill: #64ffda;
+            font-size: 32px;
+        }
+
+        .node-label {
+            fill: #fff;
+            font-size: 16px;
+            font-weight: 600;
+            text-anchor: middle;
+        }
+
+        .node-sublabel {
+            fill: #8892b0;
+            font-size: 12px;
+            text-anchor: middle;
+        }
+
+        /* Connection Lines */
+        .connection {
+            stroke: #233554;
+            stroke-width: 3;
+            fill: none;
+        }
+
+        .connection-active {
+            stroke: #64ffda;
+            stroke-width: 3;
+            fill: none;
+            opacity: 0.4;
+        }
+
+        /* Moving Dots */
+        .dot {
+            fill: #64ffda;
+            filter: drop-shadow(0 0 8px #64ffda);
+        }
+
+        /* Animation for dot along path */
+        @keyframes moveAlongPath1 {
+            0% { offset-distance: 0%; opacity: 0; }
+            5% { opacity: 1; }
+            45% { opacity: 1; }
+            50% { offset-distance: 100%; opacity: 0; }
+            100% { offset-distance: 100%; opacity: 0; }
+        }
+
+        @keyframes moveAlongPath2 {
+            0%, 15% { offset-distance: 0%; opacity: 0; }
+            20% { opacity: 1; }
+            55% { opacity: 1; }
+            60% { offset-distance: 100%; opacity: 0; }
+            100% { offset-distance: 100%; opacity: 0; }
+        }
+
+        @keyframes moveAlongPath3 {
+            0%, 30% { offset-distance: 0%; opacity: 0; }
+            35% { opacity: 1; }
+            70% { opacity: 1; }
+            75% { offset-distance: 100%; opacity: 0; }
+            100% { offset-distance: 100%; opacity: 0; }
+        }
+
+        @keyframes moveAlongPath4 {
+            0%, 45% { offset-distance: 0%; opacity: 0; }
+            50% { opacity: 1; }
+            85% { opacity: 1; }
+            90% { offset-distance: 100%; opacity: 0; }
+            100% { offset-distance: 100%; opacity: 0; }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.2); opacity: 1; }
+        }
+
+        .dot1 {
+            offset-path: path('M 200,400 Q 350,300 540,250');
+            animation: moveAlongPath1 6s ease-in-out infinite;
+        }
+
+        .dot2 {
+            offset-path: path('M 540,250 Q 650,350 540,450');
+            animation: moveAlongPath2 6s ease-in-out infinite;
+        }
+
+        .dot3 {
+            offset-path: path('M 540,450 Q 450,380 540,310');
+            animation: moveAlongPath3 6s ease-in-out infinite;
+        }
+
+        .dot4 {
+            offset-path: path('M 540,250 Q 700,300 880,400');
+            animation: moveAlongPath4 6s ease-in-out infinite;
+        }
+
+        /* Step Labels */
+        .step-label {
+            position: absolute;
+            background: rgba(100, 255, 218, 0.1);
+            border: 1px solid #64ffda;
+            border-radius: 20px;
+            padding: 8px 16px;
+            color: #64ffda;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .step1 { top: 280px; left: 280px; }
+        .step2 { top: 420px; left: 480px; }
+        .step3 { top: 350px; left: 380px; }
+        .step4 { top: 280px; left: 680px; }
+
+        /* Legend */
+        .legend {
+            position: absolute;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 40px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #8892b0;
+            font-size: 14px;
+        }
+
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #64ffda;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .legend-line {
+            width: 30px;
+            height: 3px;
+            background: #233554;
+        }
+
+        /* Footer */
+        .footer {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            color: #4a5568;
+            font-size: 12px;
+        }
+
+        /* Phase indicator */
+        .phase-indicator {
+            position: absolute;
+            top: 820px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+        }
+
+        .phase {
+            padding: 10px 20px;
+            background: rgba(100, 255, 218, 0.05);
+            border: 1px solid #233554;
+            border-radius: 8px;
+            color: #8892b0;
+            font-size: 12px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .phase.active {
+            border-color: #64ffda;
+            color: #64ffda;
+            background: rgba(100, 255, 218, 0.1);
+        }
+
+        @keyframes highlightPhase1 {
+            0%, 24% { border-color: #64ffda; color: #64ffda; background: rgba(100, 255, 218, 0.1); }
+            25%, 100% { border-color: #233554; color: #8892b0; background: rgba(100, 255, 218, 0.05); }
+        }
+
+        @keyframes highlightPhase2 {
+            0%, 24% { border-color: #233554; color: #8892b0; }
+            25%, 49% { border-color: #64ffda; color: #64ffda; background: rgba(100, 255, 218, 0.1); }
+            50%, 100% { border-color: #233554; color: #8892b0; background: rgba(100, 255, 218, 0.05); }
+        }
+
+        @keyframes highlightPhase3 {
+            0%, 49% { border-color: #233554; color: #8892b0; }
+            50%, 74% { border-color: #64ffda; color: #64ffda; background: rgba(100, 255, 218, 0.1); }
+            75%, 100% { border-color: #233554; color: #8892b0; background: rgba(100, 255, 218, 0.05); }
+        }
+
+        @keyframes highlightPhase4 {
+            0%, 74% { border-color: #233554; color: #8892b0; }
+            75%, 99% { border-color: #64ffda; color: #64ffda; background: rgba(100, 255, 218, 0.1); }
+            100% { border-color: #233554; color: #8892b0; background: rgba(100, 255, 218, 0.05); }
+        }
+
+        .phase:nth-child(1) { animation: highlightPhase1 6s ease-in-out infinite; }
+        .phase:nth-child(2) { animation: highlightPhase2 6s ease-in-out infinite; }
+        .phase:nth-child(3) { animation: highlightPhase3 6s ease-in-out infinite; }
+        .phase:nth-child(4) { animation: highlightPhase4 6s ease-in-out infinite; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>AAuth Protocol</h1>
+            <div class="subtitle">Human-in-the-Loop Authorization for AI Agents</div>
+        </div>
+
+        <svg class="diagram" width="880" height="600" viewBox="0 0 880 600">
+            <!-- Connection Lines (Background) -->
+            <path class="connection" d="M 200,200 Q 350,100 540,50" />
+            <path class="connection" d="M 540,50 Q 650,150 540,250" />
+            <path class="connection" d="M 540,250 Q 450,180 540,110" />
+            <path class="connection" d="M 540,50 Q 700,100 880,200" />
+
+            <!-- Connection Lines (Active overlay) -->
+            <path class="connection-active" d="M 200,200 Q 350,100 540,50" />
+            <path class="connection-active" d="M 540,50 Q 650,150 540,250" />
+            <path class="connection-active" d="M 540,250 Q 450,180 540,110" />
+            <path class="connection-active" d="M 540,50 Q 700,100 880,200" />
+
+            <!-- AI Agent Node -->
+            <g class="node" transform="translate(100, 100)">
+                <circle class="node-circle" cx="100" cy="100" r="60" />
+                <text class="node-icon" x="100" y="95" text-anchor="middle" font-size="40">🤖</text>
+                <text class="node-label" x="100" y="180">AI Agent</text>
+                <text class="node-sublabel" x="100" y="200">Requests access</text>
+            </g>
+
+            <!-- Person Server Node -->
+            <g class="node" transform="translate(440, -50)">
+                <circle class="node-circle" cx="100" cy="100" r="60" />
+                <text class="node-icon" x="100" y="95" text-anchor="middle" font-size="40">🔐</text>
+                <text class="node-label" x="100" y="180">Person Server</text>
+                <text class="node-sublabel" x="100" y="200">Manages consent</text>
+            </g>
+
+            <!-- Human User Node -->
+            <g class="node" transform="translate(440, 150)">
+                <circle class="node-circle" cx="100" cy="100" r="60" />
+                <text class="node-icon" x="100" y="95" text-anchor="middle" font-size="40">👤</text>
+                <text class="node-label" x="100" y="180">Human</text>
+                <text class="node-sublabel" x="100" y="200">Grants consent</text>
+            </g>
+
+            <!-- Resource Server Node -->
+            <g class="node" transform="translate(780, 100)">
+                <circle class="node-circle" cx="100" cy="100" r="60" />
+                <text class="node-icon" x="100" y="95" text-anchor="middle" font-size="40">📦</text>
+                <text class="node-label" x="100" y="180">Resource</text>
+                <text class="node-sublabel" x="100" y="200">Protected data</text>
+            </g>
+
+            <!-- Step Labels on paths -->
+            <text x="320" y="110" fill="#64ffda" font-size="14" font-weight="600">① Request</text>
+            <text x="600" y="160" fill="#64ffda" font-size="14" font-weight="600">② Consent</text>
+            <text x="460" y="200" fill="#64ffda" font-size="14" font-weight="600">③ Token</text>
+            <text x="700" y="110" fill="#64ffda" font-size="14" font-weight="600">④ Access</text>
+        </svg>
+
+        <!-- Moving Dots (using CSS offset-path) -->
+        <svg style="position: absolute; top: 140px; left: 50%; transform: translateX(-50%);" width="880" height="600" viewBox="0 0 880 600">
+            <circle class="dot dot1" r="8" />
+            <circle class="dot dot2" r="8" />
+            <circle class="dot dot3" r="8" />
+            <circle class="dot dot4" r="8" />
+        </svg>
+
+        <!-- Phase Indicators -->
+        <div class="phase-indicator">
+            <div class="phase">
+                <strong>1. Authorization</strong><br/>
+                Agent requests access
+            </div>
+            <div class="phase">
+                <strong>2. Consent</strong><br/>
+                Human approves
+            </div>
+            <div class="phase">
+                <strong>3. Token</strong><br/>
+                JWT issued
+            </div>
+            <div class="phase">
+                <strong>4. Access</strong><br/>
+                Resource granted
+            </div>
+        </div>
+
+        <div class="footer">
+            AIStandards.io | AAuth Protocol | draft-hardt-oauth-aauth-protocol
+        </div>
+    </div>
+</body>
+</html>

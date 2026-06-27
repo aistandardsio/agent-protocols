@@ -1,0 +1,24 @@
+sequenceDiagram
+    title AAuth Pre-Authorization Flow
+    autonumber
+
+    participant agent as AI Agent
+    participant person_server as Person Server
+    participant resource_server as Resource Server
+
+    rect rgb(240, 240, 240)
+    note right of agent: Authorization Request
+    agent->>person_server: POST /aauth/authorize
+    person_server->>person_server: Check Pre-Authorization
+    person_server->>person_server: Generate Access Token (JWT)
+    person_server-->>agent: 200 OK (access_token)
+    end
+
+    rect rgb(240, 240, 240)
+    note right of agent: Resource Access
+    agent->>resource_server: Request + Bearer Token
+    resource_server->>person_server: GET /.well-known/jwks.json
+    person_server-->>resource_server: JWKS
+    resource_server->>resource_server: Verify Token
+    resource_server-->>agent: Protected Resource
+    end

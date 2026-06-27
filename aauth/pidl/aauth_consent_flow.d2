@@ -1,0 +1,42 @@
+title: AAuth Human Consent Flow {
+  shape: text
+  near: top-center
+  style.font-size: 24
+}
+
+sequence: {
+  shape: sequence_diagram
+
+  agent: AI Agent
+  person_server: Person Server
+  user: User
+  resource_server: Resource Server
+
+  authorization_request: Authorization Request {
+    seq1: agent -> person_server: POST /aauth/authorize
+    seq2: person_server -> person_server: Create Mission Record
+    seq3: person_server <- agent: 202 Accepted (consent_uri, status_uri)
+  }
+
+  human_consent: Human Consent {
+    seq4: user -> person_server: GET /aauth/consent/{id}
+    seq5: person_server <- user: Consent Page (scope, mission details)
+    seq6: user -> person_server: POST /aauth/consent/{id} (approve/deny)
+    seq7: person_server -> person_server: Update Mission: approved
+    seq8: person_server <- user: Approval Confirmation Page
+  }
+
+  token_issuance: Token Issuance {
+    seq9: agent -> person_server: GET /aauth/consent/status/{id}
+    seq10: person_server -> person_server: Generate Access Token (JWT)
+    seq11: person_server <- agent: Access Token (aa-auth+jwt)
+  }
+
+  resource_access: Resource Access {
+    seq12: agent -> resource_server: Request + Bearer Token
+    seq13: resource_server -> person_server: GET /.well-known/jwks.json
+    seq14: person_server <- resource_server: JWKS (public keys)
+    seq15: resource_server -> resource_server: Verify Token Signature + Claims
+    seq16: resource_server <- agent: Protected Resource
+  }
+}

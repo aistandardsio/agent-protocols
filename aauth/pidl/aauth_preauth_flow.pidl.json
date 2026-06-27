@@ -1,0 +1,135 @@
+{
+  "$schema": "https://github.com/grokify/pidl/schema/pidl.schema.json",
+  "protocol": {
+    "id": "aauth-preauthorization-flow",
+    "name": "AAuth Pre-Authorization Flow",
+    "version": "1.0",
+    "description": "Agent Authorization flow with pre-authorized scopes (no consent required)",
+    "category": "auth",
+    "references": [
+      {
+        "name": "draft-hardt-oauth-aauth-protocol",
+        "url": "https://datatracker.ietf.org/doc/draft-hardt-oauth-aauth-protocol/"
+      }
+    ]
+  },
+  "entities": [
+    {
+      "id": "agent",
+      "name": "AI Agent",
+      "type": "agent",
+      "description": "AI agent with pre-authorized access"
+    },
+    {
+      "id": "person_server",
+      "name": "Person Server",
+      "type": "authorization_server",
+      "description": "AAuth authorization server with pre-authorization records"
+    },
+    {
+      "id": "resource_server",
+      "name": "Resource Server",
+      "type": "resource_server",
+      "description": "Protected resource the agent wants to access"
+    }
+  ],
+  "phases": [
+    {
+      "id": "authorization_request",
+      "name": "Authorization Request",
+      "description": "Agent requests authorization with pre-authorized scopes"
+    },
+    {
+      "id": "resource_access",
+      "name": "Resource Access",
+      "description": "Agent uses token to access protected resource"
+    }
+  ],
+  "flows": [
+    {
+      "from": "agent",
+      "to": "person_server",
+      "action": "authorization_request",
+      "label": "POST /aauth/authorize",
+      "mode": "request",
+      "phase": "authorization_request",
+      "description": "Agent submits authorization request for pre-authorized scope"
+    },
+    {
+      "from": "person_server",
+      "to": "person_server",
+      "action": "check_preauth",
+      "label": "Check Pre-Authorization",
+      "mode": "request",
+      "phase": "authorization_request",
+      "description": "Lookup pre-authorization record for user+agent+scope"
+    },
+    {
+      "from": "person_server",
+      "to": "person_server",
+      "action": "issue_token",
+      "label": "Generate Access Token (JWT)",
+      "mode": "request",
+      "phase": "authorization_request",
+      "condition": "preauth_covers_scope",
+      "annotations": [
+        {
+          "type": "info",
+          "text": "No consent required - scope pre-authorized"
+        }
+      ]
+    },
+    {
+      "from": "person_server",
+      "to": "agent",
+      "action": "immediate_token",
+      "label": "200 OK (access_token)",
+      "mode": "response",
+      "phase": "authorization_request",
+      "description": "Immediate token issuance without consent flow"
+    },
+    {
+      "from": "agent",
+      "to": "resource_server",
+      "action": "resource_request",
+      "label": "Request + Bearer Token",
+      "mode": "request",
+      "phase": "resource_access",
+      "description": "Agent accesses resource with AAuth token"
+    },
+    {
+      "from": "resource_server",
+      "to": "person_server",
+      "action": "fetch_jwks",
+      "label": "GET /.well-known/jwks.json",
+      "mode": "request",
+      "phase": "resource_access",
+      "condition": "keys_not_cached"
+    },
+    {
+      "from": "person_server",
+      "to": "resource_server",
+      "action": "jwks_response",
+      "label": "JWKS",
+      "mode": "response",
+      "phase": "resource_access",
+      "condition": "keys_not_cached"
+    },
+    {
+      "from": "resource_server",
+      "to": "resource_server",
+      "action": "verify_token",
+      "label": "Verify Token",
+      "mode": "request",
+      "phase": "resource_access"
+    },
+    {
+      "from": "resource_server",
+      "to": "agent",
+      "action": "resource_response",
+      "label": "Protected Resource",
+      "mode": "response",
+      "phase": "resource_access"
+    }
+  ]
+}

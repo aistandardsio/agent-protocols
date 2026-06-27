@@ -2,150 +2,178 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://aistandards.io/agent-protocols/</loc>
-         <lastmod>2026-06-22</lastmod>
+         <lastmod>2026-06-27</lastmod>
     </url>
     <url>
          <loc>https://aistandards.io/agent-protocols/aauth/api-reference/</loc>
-         <lastmod>2026-06-22</lastmod>
+         <lastmod>2026-06-27</lastmod>
     </url>
     <url>
          <loc>https://aistandards.io/agent-protocols/aauth/diagrams/</loc>
-         <lastmod>2026-06-22</lastmod>
+         <lastmod>2026-06-27</lastmod>
     </url>
     <url>
          <loc>https://aistandards.io/agent-protocols/aauth/examples/</loc>
-         <lastmod>2026-06-22</lastmod>
+         <lastmod>2026-06-27</lastmod>
     </url>
     <url>
          <loc>https://aistandards.io/agent-protocols/aauth/getting-started/</loc>
-         <lastmod>2026-06-22</lastmod>
+         <lastmod>2026-06-27</lastmod>
+    </url>
+    <url>
+         <loc>https://aistandards.io/agent-protocols/aauth/oauth-comparison/</loc>
+         <lastmod>2026-06-27</lastmod>
     </url>
     <url>
          <loc>https://aistandards.io/agent-protocols/aauth/overview/</loc>
-         <lastmod>2026-06-22</lastmod>
+         <lastmod>2026-06-27</lastmod>
+    </url>
+    <url>
+         <loc>https://aistandards.io/agent-protocols/aauth/infographic/</loc>
+         <lastmod>2026-06-27</lastmod>
     </url>
     <url>
          <loc>https://aistandards.io/agent-protocols/adapters/ory/getting-started/</loc>
-         <lastmod>2026-06-22</lastmod>
+         <lastmod>2026-06-27</lastmod>
     </url>
     <url>
          <loc>https://aistandards.io/agent-protocols/adapters/ory/overview/</loc>
-         <lastmod>2026-06-22</lastmod>
+         <lastmod>2026-06-27</lastmod>
     </url>
     <url>
          <loc>https://aistandards.io/agent-protocols/adapters/sharkauth/getting-started/</loc>
-         <lastmod>2026-06-22</lastmod>
+         <lastmod>2026-06-27</lastmod>
     </url>
     <url>
          <loc>https://aistandards.io/agent-protocols/adapters/sharkauth/overview/</loc>
-         <lastmod>2026-06-22</lastmod>
+         <lastmod>2026-06-27</lastmod>
     </url>
     <url>
          <loc>https://aistandards.io/agent-protocols/adapters/zitadel/api-reference/</loc>
-         <lastmod>2026-06-22</lastmod>
+         <lastmod>2026-06-27</lastmod>
     </url>
     <url>
          <loc>https://aistandards.io/agent-protocols/adapters/zitadel/examples/</loc>
-         <lastmod>2026-06-22</lastmod>
+         <lastmod>2026-06-27</lastmod>
     </url>
     <url>
          <loc>https://aistandards.io/agent-protocols/adapters/zitadel/getting-started/</loc>
-         <lastmod>2026-06-22</lastmod>
+         <lastmod>2026-06-27</lastmod>
     </url>
     <url>
          <loc>https://aistandards.io/agent-protocols/adapters/zitadel/overview/</loc>
-         <lastmod>2026-06-22</lastmod>
+         <lastmod>2026-06-27</lastmod>
     </url>
     <url>
          <loc>https://aistandards.io/agent-protocols/aims/api-reference/</loc>
-         <lastmod>2026-06-22</lastmod>
+         <lastmod>2026-06-27</lastmod>
     </url>
     <url>
          <loc>https://aistandards.io/agent-protocols/aims/diagrams/</loc>
-         <lastmod>2026-06-22</lastmod>
+         <lastmod>2026-06-27</lastmod>
     </url>
     <url>
          <loc>https://aistandards.io/agent-protocols/aims/examples/</loc>
-         <lastmod>2026-06-22</lastmod>
+         <lastmod>2026-06-27</lastmod>
     </url>
     <url>
          <loc>https://aistandards.io/agent-protocols/aims/getting-started/</loc>
-         <lastmod>2026-06-22</lastmod>
+         <lastmod>2026-06-27</lastmod>
     </url>
     <url>
          <loc>https://aistandards.io/agent-protocols/aims/overview/</loc>
-         <lastmod>2026-06-22</lastmod>
+         <lastmod>2026-06-27</lastmod>
     </url>
     <url>
          <loc>https://aistandards.io/agent-protocols/bridge/getting-started/</loc>
-         <lastmod>2026-06-22</lastmod>
+         <lastmod>2026-06-27</lastmod>
     </url>
     <url>
          <loc>https://aistandards.io/agent-protocols/bridge/overview/</loc>
-         <lastmod>2026-06-22</lastmod>
+         <lastmod>2026-06-27</lastmod>
     </url>
     <url>
          <loc>https://aistandards.io/agent-protocols/design/aauth/PLAN/</loc>
-         <lastmod>2026-06-22</lastmod>
+         <lastmod>2026-06-27</lastmod>
     </url>
     <url>
          <loc>https://aistandards.io/agent-protocols/design/threetier/PLAN/</loc>
-         <lastmod>2026-06-22</lastmod>
+         <lastmod>2026-06-27</lastmod>
     </url>
     <url>
          <loc>https://aistandards.io/agent-protocols/guides/hybrid-authentication/</loc>
-         <lastmod>2026-06-22</lastmod>
+         <lastmod>2026-06-27</lastmod>
     </url>
     <url>
          <loc>https://aistandards.io/agent-protocols/guides/oauth-to-agent-migration/</loc>
-         <lastmod>2026-06-22</lastmod>
+         <lastmod>2026-06-27</lastmod>
     </url>
     <url>
          <loc>https://aistandards.io/agent-protocols/idjag/api-reference/</loc>
-         <lastmod>2026-06-22</lastmod>
+         <lastmod>2026-06-27</lastmod>
     </url>
     <url>
          <loc>https://aistandards.io/agent-protocols/idjag/diagrams/</loc>
-         <lastmod>2026-06-22</lastmod>
+         <lastmod>2026-06-27</lastmod>
     </url>
     <url>
          <loc>https://aistandards.io/agent-protocols/idjag/examples/</loc>
-         <lastmod>2026-06-22</lastmod>
+         <lastmod>2026-06-27</lastmod>
     </url>
     <url>
          <loc>https://aistandards.io/agent-protocols/idjag/getting-started/</loc>
-         <lastmod>2026-06-22</lastmod>
+         <lastmod>2026-06-27</lastmod>
     </url>
     <url>
          <loc>https://aistandards.io/agent-protocols/idjag/protocol-overview/</loc>
-         <lastmod>2026-06-22</lastmod>
+         <lastmod>2026-06-27</lastmod>
     </url>
     <url>
          <loc>https://aistandards.io/agent-protocols/idjag/presentations/idjag-intro/</loc>
-         <lastmod>2026-06-22</lastmod>
+         <lastmod>2026-06-27</lastmod>
     </url>
     <url>
          <loc>https://aistandards.io/agent-protocols/releases/v0.1.0/</loc>
-         <lastmod>2026-06-22</lastmod>
+         <lastmod>2026-06-27</lastmod>
     </url>
     <url>
          <loc>https://aistandards.io/agent-protocols/releases/v0.2.0/</loc>
-         <lastmod>2026-06-22</lastmod>
+         <lastmod>2026-06-27</lastmod>
     </url>
     <url>
          <loc>https://aistandards.io/agent-protocols/releases/v0.3.0/</loc>
-         <lastmod>2026-06-22</lastmod>
+         <lastmod>2026-06-27</lastmod>
     </url>
     <url>
          <loc>https://aistandards.io/agent-protocols/releases/v0.4.0/</loc>
-         <lastmod>2026-06-22</lastmod>
+         <lastmod>2026-06-27</lastmod>
     </url>
     <url>
          <loc>https://aistandards.io/agent-protocols/releases/v0.5.0/</loc>
-         <lastmod>2026-06-22</lastmod>
+         <lastmod>2026-06-27</lastmod>
+    </url>
+    <url>
+         <loc>https://aistandards.io/agent-protocols/releases/v0.6.0/</loc>
+         <lastmod>2026-06-27</lastmod>
+    </url>
+    <url>
+         <loc>https://aistandards.io/agent-protocols/scimext/api-reference/</loc>
+         <lastmod>2026-06-27</lastmod>
+    </url>
+    <url>
+         <loc>https://aistandards.io/agent-protocols/scimext/examples/</loc>
+         <lastmod>2026-06-27</lastmod>
+    </url>
+    <url>
+         <loc>https://aistandards.io/agent-protocols/scimext/getting-started/</loc>
+         <lastmod>2026-06-27</lastmod>
+    </url>
+    <url>
+         <loc>https://aistandards.io/agent-protocols/scimext/overview/</loc>
+         <lastmod>2026-06-27</lastmod>
     </url>
     <url>
          <loc>https://aistandards.io/agent-protocols/specs/ROADMAP/</loc>
-         <lastmod>2026-06-22</lastmod>
+         <lastmod>2026-06-27</lastmod>
     </url>
 </urlset>

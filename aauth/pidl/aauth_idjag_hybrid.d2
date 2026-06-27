@@ -1,0 +1,36 @@
+title: AAuth + ID-JAG Hybrid Authorization {
+  shape: text
+  near: top-center
+  style.font-size: 24
+}
+
+sequence: {
+  shape: sequence_diagram
+
+  agent: AI Agent
+  identity_provider: Identity Provider
+  authz_server: Authorization Server
+  user: User
+  resource_server: Resource Server
+
+  assertion_acquisition: Assertion Acquisition {
+    seq1: agent -> identity_provider: Authenticate Agent
+    seq2: identity_provider <- agent: ID-JAG Assertion (JWT)
+  }
+
+  policy_evaluation: Policy Evaluation {
+    seq3: agent -> authz_server: POST /oauth/token (token-exchange)
+    seq4: authz_server -> authz_server: Evaluate Scope Policy
+  }
+
+  idjag_path: ID-JAG Path (Automated) {
+    seq5: authz_server -> authz_server: Verify ID-JAG Assertion
+    seq6: authz_server -> authz_server: Issue Access Token
+    seq7: authz_server <- agent: Access Token
+  }
+
+  resource_access: Resource Access {
+    seq8: agent -> resource_server: Request + Bearer Token
+    seq9: resource_server <- agent: Protected Resource
+  }
+}

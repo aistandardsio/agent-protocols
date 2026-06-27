@@ -1,0 +1,187 @@
+{
+  "$schema": "https://github.com/grokify/pidl/schema/pidl.schema.json",
+  "protocol": {
+    "id": "aauth-idjag-hybrid",
+    "name": "AAuth + ID-JAG Hybrid Authorization",
+    "version": "1.0",
+    "description": "Policy-based routing between AAuth (human consent) and ID-JAG (automated) protocols",
+    "category": "auth",
+    "references": [
+      {
+        "name": "draft-hardt-oauth-aauth-protocol",
+        "url": "https://datatracker.ietf.org/doc/draft-hardt-oauth-aauth-protocol/"
+      },
+      {
+        "name": "draft-ietf-oauth-identity-assertion-authz-grant",
+        "url": "https://datatracker.ietf.org/doc/draft-ietf-oauth-identity-assertion-authz-grant/"
+      }
+    ]
+  },
+  "entities": [
+    {
+      "id": "agent",
+      "name": "AI Agent",
+      "type": "agent",
+      "description": "AI agent requesting authorization"
+    },
+    {
+      "id": "identity_provider",
+      "name": "Identity Provider",
+      "type": "identity_provider",
+      "description": "Issues ID-JAG assertions for the agent"
+    },
+    {
+      "id": "authz_server",
+      "name": "Authorization Server",
+      "type": "authorization_server",
+      "description": "AgentAuth server handling both ID-JAG and AAuth"
+    },
+    {
+      "id": "user",
+      "name": "User",
+      "type": "user",
+      "description": "Human user for consent (AAuth path only)"
+    },
+    {
+      "id": "resource_server",
+      "name": "Resource Server",
+      "type": "resource_server",
+      "description": "Protected resource"
+    }
+  ],
+  "phases": [
+    {
+      "id": "assertion_acquisition",
+      "name": "Assertion Acquisition",
+      "description": "Agent obtains ID-JAG assertion from IdP"
+    },
+    {
+      "id": "policy_evaluation",
+      "name": "Policy Evaluation",
+      "description": "Server evaluates scope policy to determine protocol"
+    },
+    {
+      "id": "idjag_path",
+      "name": "ID-JAG Path (Automated)",
+      "description": "Automated token exchange for low-sensitivity scopes"
+    },
+    {
+      "id": "aauth_path",
+      "name": "AAuth Path (Human Consent)",
+      "description": "Human consent flow for sensitive scopes"
+    },
+    {
+      "id": "resource_access",
+      "name": "Resource Access",
+      "description": "Agent accesses resource with token"
+    }
+  ],
+  "flows": [
+    {
+      "from": "agent",
+      "to": "identity_provider",
+      "action": "authenticate",
+      "label": "Authenticate Agent",
+      "mode": "request",
+      "phase": "assertion_acquisition"
+    },
+    {
+      "from": "identity_provider",
+      "to": "agent",
+      "action": "idjag_assertion",
+      "label": "ID-JAG Assertion (JWT)",
+      "mode": "response",
+      "phase": "assertion_acquisition",
+      "description": "JWT with agent identity and act claim"
+    },
+    {
+      "from": "agent",
+      "to": "authz_server",
+      "action": "token_exchange",
+      "label": "POST /oauth/token (token-exchange)",
+      "mode": "request",
+      "phase": "policy_evaluation",
+      "description": "Submit ID-JAG assertion for token exchange"
+    },
+    {
+      "from": "authz_server",
+      "to": "authz_server",
+      "action": "evaluate_policy",
+      "label": "Evaluate Scope Policy",
+      "mode": "request",
+      "phase": "policy_evaluation",
+      "description": "Match requested scopes against policies",
+      "alternatives": [
+        {
+          "condition": "policy_requires_consent",
+          "description": "Sensitive scope requires human consent",
+          "flows": [
+            {
+              "from": "authz_server",
+              "to": "agent",
+              "action": "consent_required",
+              "label": "202 Accepted (consent_uri)",
+              "mode": "response"
+            },
+            {
+              "from": "user",
+              "to": "authz_server",
+              "action": "consent_decision",
+              "label": "User Approves/Denies",
+              "mode": "interactive"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "from": "authz_server",
+      "to": "authz_server",
+      "action": "verify_assertion",
+      "label": "Verify ID-JAG Assertion",
+      "mode": "request",
+      "phase": "idjag_path",
+      "condition": "policy_auto_approve",
+      "annotations": [
+        {
+          "type": "security",
+          "text": "Validate signature via IdP JWKS"
+        }
+      ]
+    },
+    {
+      "from": "authz_server",
+      "to": "authz_server",
+      "action": "issue_token",
+      "label": "Issue Access Token",
+      "mode": "request",
+      "phase": "idjag_path",
+      "condition": "policy_auto_approve"
+    },
+    {
+      "from": "authz_server",
+      "to": "agent",
+      "action": "token_response",
+      "label": "Access Token",
+      "mode": "response",
+      "phase": "idjag_path",
+      "description": "Token issued via ID-JAG (no consent needed)"
+    },
+    {
+      "from": "agent",
+      "to": "resource_server",
+      "action": "resource_request",
+      "label": "Request + Bearer Token",
+      "mode": "request",
+      "phase": "resource_access"
+    },
+    {
+      "from": "resource_server",
+      "to": "agent",
+      "action": "resource_response",
+      "label": "Protected Resource",
+      "mode": "response",
+      "phase": "resource_access"
+    }
+  ]
+}

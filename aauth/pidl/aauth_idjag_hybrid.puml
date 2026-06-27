@@ -1,0 +1,28 @@
+@startuml
+title AAuth + ID-JAG Hybrid Authorization
+
+participant "AI Agent" as agent
+participant "Identity Provider" as identity_provider
+participant "Authorization Server" as authz_server
+participant "User" as user
+participant "Resource Server" as resource_server
+
+
+== Assertion Acquisition ==
+agent -> identity_provider: Authenticate Agent
+identity_provider --> agent: ID-JAG Assertion (JWT)
+
+== Policy Evaluation ==
+agent -> authz_server: POST /oauth/token (token-exchange)
+authz_server -> authz_server: Evaluate Scope Policy
+
+== ID-JAG Path (Automated) ==
+authz_server -> authz_server: Verify ID-JAG Assertion
+authz_server -> authz_server: Issue Access Token
+authz_server --> agent: Access Token
+
+== Resource Access ==
+agent -> resource_server: Request + Bearer Token
+resource_server --> agent: Protected Resource
+
+@enduml

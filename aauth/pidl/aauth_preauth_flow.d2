@@ -1,0 +1,28 @@
+title: AAuth Pre-Authorization Flow {
+  shape: text
+  near: top-center
+  style.font-size: 24
+}
+
+sequence: {
+  shape: sequence_diagram
+
+  agent: AI Agent
+  person_server: Person Server
+  resource_server: Resource Server
+
+  authorization_request: Authorization Request {
+    seq1: agent -> person_server: POST /aauth/authorize
+    seq2: person_server -> person_server: Check Pre-Authorization
+    seq3: person_server -> person_server: Generate Access Token (JWT)
+    seq4: person_server <- agent: 200 OK (access_token)
+  }
+
+  resource_access: Resource Access {
+    seq5: agent -> resource_server: Request + Bearer Token
+    seq6: resource_server -> person_server: GET /.well-known/jwks.json
+    seq7: person_server <- resource_server: JWKS
+    seq8: resource_server -> resource_server: Verify Token
+    seq9: resource_server <- agent: Protected Resource
+  }
+}

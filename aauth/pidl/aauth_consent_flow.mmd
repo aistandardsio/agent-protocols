@@ -1,0 +1,40 @@
+sequenceDiagram
+    title AAuth Human Consent Flow
+    autonumber
+
+    participant agent as AI Agent
+    participant person_server as Person Server
+    participant user as User
+    participant resource_server as Resource Server
+
+    rect rgb(240, 240, 240)
+    note right of agent: Authorization Request
+    agent->>person_server: POST /aauth/authorize
+    person_server->>person_server: Create Mission Record
+    person_server-->>agent: 202 Accepted (consent_uri, status_uri)
+    end
+
+    rect rgb(240, 240, 240)
+    note right of agent: Human Consent
+    user->>person_server: GET /aauth/consent/{id}
+    person_server-->>user: Consent Page (scope, mission details)
+    user->>person_server: POST /aauth/consent/{id} (approve/deny)
+    person_server->>person_server: Update Mission&&#35;58; approved
+    person_server-->>user: Approval Confirmation Page
+    end
+
+    rect rgb(240, 240, 240)
+    note right of agent: Token Issuance
+    agent->>person_server: GET /aauth/consent/status/{id}
+    person_server->>person_server: Generate Access Token (JWT)
+    person_server-->>agent: Access Token (aa-auth+jwt)
+    end
+
+    rect rgb(240, 240, 240)
+    note right of agent: Resource Access
+    agent->>resource_server: Request + Bearer Token
+    resource_server->>person_server: GET /.well-known/jwks.json
+    person_server-->>resource_server: JWKS (public keys)
+    resource_server->>resource_server: Verify Token Signature + Claims
+    resource_server-->>agent: Protected Resource
+    end
