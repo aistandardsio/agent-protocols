@@ -50,14 +50,13 @@ This repository provides Go libraries for emerging agent-to-agent protocols:
 
 ### Server Implementations
 
-Production-ready authorization servers:
+Interface-based authorization servers (bring your own storage):
 
-- **[aauth/personserver](./aauth/personserver/)** - AAuth Person Server with interface-based storage
-- **[idjag/authzserver](./idjag/authzserver/)** - ID-JAG Authorization Server with interface-based storage
-- **[agentauth](./agentauth/)** - Unified authorization layer combining AAuth + ID-JAG with SQLite storage
-  - [CLI Server](./cmd/agentauth-server/) - Ready-to-run binary
-  - [Examples](./examples/agentauth-demo/) - Working demos
-  - [Lambda Deployment](./lambda/peopleserver/) - AWS Lambda handler
+- **[aauth/personserver](./aauth/personserver/)** - AAuth Person Server with pluggable store interface
+- **[idjag/authzserver](./idjag/authzserver/)** - ID-JAG Authorization Server with pluggable store interface
+- **[agentauth](./agentauth/)** - Unified authorization client combining AAuth + ID-JAG
+
+For production deployments with SQLite/DynamoDB storage, see [plexusone/agentauth](https://github.com/plexusone/agentauth).
 
 ### Cross-Protocol Bridge
 
@@ -184,7 +183,7 @@ go run ./demos/protocol-bridge  # Multi-protocol authentication demo
 - **AAuth**: [Overview](./docs/aauth/overview.md) | [Getting Started](./docs/aauth/getting-started.md) | [Examples](./docs/aauth/examples.md)
 - **ID-JAG**: [Protocol Overview](./docs/idjag/protocol-overview.md) | [Getting Started](./docs/idjag/getting-started.md)
 - **AIMS**: [Overview](./docs/aims/overview.md) | [Getting Started](./docs/aims/getting-started.md)
-- **AgentAuth**: [Overview](./docs/agentauth/overview.md) | [Getting Started](./docs/agentauth/getting-started.md) | [Deployment](./docs/agentauth/deployment.md)
+- **AgentAuth**: See [plexusone/agentauth](https://github.com/plexusone/agentauth) for unified deployment
 - **Zitadel Adapter**: [Overview](./docs/adapters/zitadel/overview.md) | [Getting Started](./docs/adapters/zitadel/getting-started.md)
 - **SharkAuth Adapter**: [Overview](./docs/adapters/sharkauth/overview.md) | [Getting Started](./docs/adapters/sharkauth/getting-started.md)
 - **Ory Adapter**: [Overview](./docs/adapters/ory/overview.md) | [Getting Started](./docs/adapters/ory/getting-started.md)
