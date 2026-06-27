@@ -1,0 +1,6 @@
+generator:
+  # Ignore operations that ogen cannot implement
+  ignore_not_implemented:
+    - "all"
+  # Don't require default response for convenient errors
+  convenient_errors: false

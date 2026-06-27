@@ -1,0 +1,1164 @@
+openapi: 3.0.3
+info:
+  title: SCIM Agent Extension API
+  description: |
+    OpenAPI specification for the SCIM Agents and Agentic Applications Extension.
+
+    Based on draft-abbey-scim-agent-extension-00:
+    https://datatracker.ietf.org/doc/draft-abbey-scim-agent-extension
+
+    This extension adds two new resource types to SCIM 2.0:
+    - Agent: Represents AI agents with their own identity, metadata, and privileges
+    - AgenticApplication: Represents applications that host or provide access to agents
+  version: 0.1.0
+  contact:
+    name: AIStandards.io
+    url: https://aistandards.io
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: https://scim.example.com/v2
+    description: Example SCIM server
+
+tags:
+  - name: Agents
+    description: Agent resource operations
+  - name: AgenticApplications
+    description: Agentic Application resource operations
+  - name: ServiceProviderConfig
+    description: Service provider configuration
+
+paths:
+  /Agents:
+    get:
+      tags:
+        - Agents
+      operationId: listAgents
+      summary: List agents
+      description: |
+        Retrieve a list of agents. Supports SCIM filtering on name and externalId.
+      parameters:
+        - $ref: '#/components/parameters/filter'
+        - $ref: '#/components/parameters/startIndex'
+        - $ref: '#/components/parameters/count'
+        - $ref: '#/components/parameters/sortBy'
+        - $ref: '#/components/parameters/sortOrder'
+        - $ref: '#/components/parameters/attributes'
+        - $ref: '#/components/parameters/excludedAttributes'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/scim+json:
+              schema:
+                $ref: '#/components/schemas/AgentListResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    post:
+      tags:
+        - Agents
+      operationId: createAgent
+      summary: Create an agent
+      description: Create a new agent resource.
+      requestBody:
+        required: true
+        content:
+          application/scim+json:
+            schema:
+              $ref: '#/components/schemas/AgentCreate'
+      responses:
+        '201':
+          description: Agent created successfully
+          content:
+            application/scim+json:
+              schema:
+                $ref: '#/components/schemas/Agent'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /Agents/{id}:
+    parameters:
+      - $ref: '#/components/parameters/resourceId'
+    get:
+      tags:
+        - Agents
+      operationId: getAgent
+      summary: Get an agent by ID
+      description: Retrieve a single agent by its unique identifier.
+      parameters:
+        - $ref: '#/components/parameters/attributes'
+        - $ref: '#/components/parameters/excludedAttributes'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/scim+json:
+              schema:
+                $ref: '#/components/schemas/Agent'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    put:
+      tags:
+        - Agents
+      operationId: replaceAgent
+      summary: Replace an agent
+      description: Replace an existing agent resource entirely.
+      requestBody:
+        required: true
+        content:
+          application/scim+json:
+            schema:
+              $ref: '#/components/schemas/AgentCreate'
+      responses:
+        '200':
+          description: Agent replaced successfully
+          content:
+            application/scim+json:
+              schema:
+                $ref: '#/components/schemas/Agent'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    patch:
+      tags:
+        - Agents
+      operationId: patchAgent
+      summary: Patch an agent
+      description: Partially update an existing agent resource using SCIM PATCH operations.
+      requestBody:
+        required: true
+        content:
+          application/scim+json:
+            schema:
+              $ref: '#/components/schemas/PatchRequest'
+      responses:
+        '200':
+          description: Agent patched successfully
+          content:
+            application/scim+json:
+              schema:
+                $ref: '#/components/schemas/Agent'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      tags:
+        - Agents
+      operationId: deleteAgent
+      summary: Delete an agent
+      description: Delete an existing agent resource.
+      responses:
+        '204':
+          description: Agent deleted successfully
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /AgenticApplications:
+    get:
+      tags:
+        - AgenticApplications
+      operationId: listAgenticApplications
+      summary: List agentic applications
+      description: |
+        Retrieve a list of agentic applications. Supports SCIM filtering on name, externalId, and applicationUrls.value.
+      parameters:
+        - $ref: '#/components/parameters/filter'
+        - $ref: '#/components/parameters/startIndex'
+        - $ref: '#/components/parameters/count'
+        - $ref: '#/components/parameters/sortBy'
+        - $ref: '#/components/parameters/sortOrder'
+        - $ref: '#/components/parameters/attributes'
+        - $ref: '#/components/parameters/excludedAttributes'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/scim+json:
+              schema:
+                $ref: '#/components/schemas/AgenticApplicationListResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    post:
+      tags:
+        - AgenticApplications
+      operationId: createAgenticApplication
+      summary: Create an agentic application
+      description: Create a new agentic application resource.
+      requestBody:
+        required: true
+        content:
+          application/scim+json:
+            schema:
+              $ref: '#/components/schemas/AgenticApplicationCreate'
+      responses:
+        '201':
+          description: Agentic application created successfully
+          content:
+            application/scim+json:
+              schema:
+                $ref: '#/components/schemas/AgenticApplication'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /AgenticApplications/{id}:
+    parameters:
+      - $ref: '#/components/parameters/resourceId'
+    get:
+      tags:
+        - AgenticApplications
+      operationId: getAgenticApplication
+      summary: Get an agentic application by ID
+      description: Retrieve a single agentic application by its unique identifier.
+      parameters:
+        - $ref: '#/components/parameters/attributes'
+        - $ref: '#/components/parameters/excludedAttributes'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/scim+json:
+              schema:
+                $ref: '#/components/schemas/AgenticApplication'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    put:
+      tags:
+        - AgenticApplications
+      operationId: replaceAgenticApplication
+      summary: Replace an agentic application
+      description: Replace an existing agentic application resource entirely.
+      requestBody:
+        required: true
+        content:
+          application/scim+json:
+            schema:
+              $ref: '#/components/schemas/AgenticApplicationCreate'
+      responses:
+        '200':
+          description: Agentic application replaced successfully
+          content:
+            application/scim+json:
+              schema:
+                $ref: '#/components/schemas/AgenticApplication'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    patch:
+      tags:
+        - AgenticApplications
+      operationId: patchAgenticApplication
+      summary: Patch an agentic application
+      description: Partially update an existing agentic application resource using SCIM PATCH operations.
+      requestBody:
+        required: true
+        content:
+          application/scim+json:
+            schema:
+              $ref: '#/components/schemas/PatchRequest'
+      responses:
+        '200':
+          description: Agentic application patched successfully
+          content:
+            application/scim+json:
+              schema:
+                $ref: '#/components/schemas/AgenticApplication'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      tags:
+        - AgenticApplications
+      operationId: deleteAgenticApplication
+      summary: Delete an agentic application
+      description: Delete an existing agentic application resource.
+      responses:
+        '204':
+          description: Agentic application deleted successfully
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /ServiceProviderConfig:
+    get:
+      tags:
+        - ServiceProviderConfig
+      operationId: getServiceProviderConfig
+      summary: Get service provider configuration
+      description: |
+        Retrieve the service provider configuration including agent extension support.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/scim+json:
+              schema:
+                $ref: '#/components/schemas/ServiceProviderConfig'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+components:
+  parameters:
+    resourceId:
+      name: id
+      in: path
+      required: true
+      description: The unique identifier of the resource.
+      schema:
+        type: string
+    filter:
+      name: filter
+      in: query
+      description: SCIM filter expression.
+      schema:
+        type: string
+    startIndex:
+      name: startIndex
+      in: query
+      description: 1-based index of the first result to return.
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+    count:
+      name: count
+      in: query
+      description: Maximum number of results to return.
+      schema:
+        type: integer
+        minimum: 0
+    sortBy:
+      name: sortBy
+      in: query
+      description: Attribute to sort by.
+      schema:
+        type: string
+    sortOrder:
+      name: sortOrder
+      in: query
+      description: Sort order (ascending or descending).
+      schema:
+        type: string
+        enum:
+          - ascending
+          - descending
+    attributes:
+      name: attributes
+      in: query
+      description: Comma-separated list of attributes to include in the response.
+      schema:
+        type: string
+    excludedAttributes:
+      name: excludedAttributes
+      in: query
+      description: Comma-separated list of attributes to exclude from the response.
+      schema:
+        type: string
+
+  responses:
+    BadRequest:
+      description: Bad request - invalid syntax or parameters
+      content:
+        application/scim+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Unauthorized - authentication required
+      content:
+        application/scim+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Forbidden:
+      description: Forbidden - insufficient permissions
+      content:
+        application/scim+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Resource not found
+      content:
+        application/scim+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Conflict:
+      description: Conflict - resource already exists or version mismatch
+      content:
+        application/scim+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/scim+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+  schemas:
+    Meta:
+      type: object
+      description: SCIM resource metadata.
+      properties:
+        resourceType:
+          type: string
+          description: The name of the resource type.
+        created:
+          type: string
+          format: date-time
+          description: The date and time the resource was created.
+        lastModified:
+          type: string
+          format: date-time
+          description: The date and time the resource was last modified.
+        location:
+          type: string
+          format: uri
+          description: The URI of the resource.
+        version:
+          type: string
+          description: The version of the resource (ETag).
+
+    Reference:
+      type: object
+      description: A reference to another SCIM resource.
+      properties:
+        value:
+          type: string
+          description: The identifier of the referenced resource.
+        $ref:
+          type: string
+          format: uri
+          description: The URI of the referenced resource.
+        display:
+          type: string
+          description: A human-readable name for the referenced resource.
+
+    GroupReference:
+      allOf:
+        - $ref: '#/components/schemas/Reference'
+        - type: object
+          properties:
+            type:
+              type: string
+              description: The type of group membership.
+              enum:
+                - direct
+                - indirect
+
+    ApplicationReference:
+      allOf:
+        - $ref: '#/components/schemas/Reference'
+        - type: object
+          properties:
+            type:
+              type: string
+              description: The type of application.
+
+    AgentReference:
+      allOf:
+        - $ref: '#/components/schemas/Reference'
+        - type: object
+          properties:
+            type:
+              type: string
+              description: The relationship type between the agent and application.
+              enum:
+                - owned
+                - authorized
+                - guest
+
+    Entitlement:
+      type: object
+      description: An entitlement granted to an agent.
+      properties:
+        value:
+          type: string
+          description: The value of the entitlement.
+        display:
+          type: string
+          description: A human-readable name for the entitlement.
+        type:
+          type: string
+          description: A label indicating the entitlement's function.
+        primary:
+          type: boolean
+          description: Whether this is the primary entitlement.
+
+    Role:
+      type: object
+      description: A role assigned to an agent.
+      properties:
+        value:
+          type: string
+          description: The value of the role.
+        display:
+          type: string
+          description: A human-readable name for the role.
+        type:
+          type: string
+          description: A label indicating the role's function.
+        primary:
+          type: boolean
+          description: Whether this is the primary role.
+
+    X509Certificate:
+      type: object
+      description: An X.509 certificate.
+      properties:
+        value:
+          type: string
+          format: byte
+          description: The DER-encoded X.509 certificate, base64 encoded.
+        display:
+          type: string
+          description: A human-readable name for the certificate.
+        type:
+          type: string
+          description: A label indicating the certificate's function.
+        primary:
+          type: boolean
+          description: Whether this is the primary certificate.
+
+    Protocol:
+      type: object
+      description: A communication protocol supported by an agent.
+      properties:
+        type:
+          type: string
+          description: The type of protocol.
+          enum:
+            - A2A
+            - OpenAPI
+            - MCP-Server
+        specificationUrl:
+          type: string
+          format: uri
+          description: The URL of the specification document for this protocol.
+
+    Agent:
+      type: object
+      description: |
+        An AI agent with its own identifier, metadata, and privileges.
+        Schema URI: urn:ietf:params:scim:schemas:core:2.0:Agent
+      required:
+        - schemas
+        - name
+      properties:
+        schemas:
+          type: array
+          items:
+            type: string
+          description: The schemas used for this resource.
+          example:
+            - "urn:ietf:params:scim:schemas:core:2.0:Agent"
+        id:
+          type: string
+          description: The unique identifier for the agent.
+          readOnly: true
+        externalId:
+          type: string
+          description: An external identifier for the agent.
+        meta:
+          $ref: '#/components/schemas/Meta'
+        name:
+          type: string
+          description: The unique name of the agent. REQUIRED.
+        displayName:
+          type: string
+          description: A human-readable display name for the agent.
+        description:
+          type: string
+          description: A description of the agent.
+        agentType:
+          type: string
+          description: The type of agent (e.g., Assistant, Researcher, Chat bot).
+        active:
+          type: boolean
+          description: Whether the agent is administratively active.
+        subject:
+          type: string
+          description: The subject for inbound token federation correlation.
+        groups:
+          type: array
+          items:
+            $ref: '#/components/schemas/GroupReference'
+          description: Groups to which the agent belongs.
+          readOnly: true
+        entitlements:
+          type: array
+          items:
+            $ref: '#/components/schemas/Entitlement'
+          description: Entitlements granted to the agent.
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/Role'
+          description: Roles assigned to the agent.
+        x509Certificates:
+          type: array
+          items:
+            $ref: '#/components/schemas/X509Certificate'
+          description: X.509 certificates associated with the agent.
+        applications:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApplicationReference'
+          description: Agentic applications this agent is associated with.
+          readOnly: true
+        protocols:
+          type: array
+          items:
+            $ref: '#/components/schemas/Protocol'
+          description: Communication protocols supported by this agent.
+        parent:
+          $ref: '#/components/schemas/Reference'
+        owners:
+          type: array
+          items:
+            $ref: '#/components/schemas/Reference'
+          description: Users or groups that own this agent.
+
+    AgentCreate:
+      type: object
+      description: Request body for creating or replacing an agent.
+      required:
+        - schemas
+        - name
+      properties:
+        schemas:
+          type: array
+          items:
+            type: string
+          description: The schemas used for this resource.
+          example:
+            - "urn:ietf:params:scim:schemas:core:2.0:Agent"
+        externalId:
+          type: string
+          description: An external identifier for the agent.
+        name:
+          type: string
+          description: The unique name of the agent. REQUIRED.
+        displayName:
+          type: string
+          description: A human-readable display name for the agent.
+        description:
+          type: string
+          description: A description of the agent.
+        agentType:
+          type: string
+          description: The type of agent.
+        active:
+          type: boolean
+          description: Whether the agent is administratively active.
+        subject:
+          type: string
+          description: The subject for inbound token federation correlation.
+        entitlements:
+          type: array
+          items:
+            $ref: '#/components/schemas/Entitlement'
+          description: Entitlements granted to the agent.
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/Role'
+          description: Roles assigned to the agent.
+        x509Certificates:
+          type: array
+          items:
+            $ref: '#/components/schemas/X509Certificate'
+          description: X.509 certificates associated with the agent.
+        protocols:
+          type: array
+          items:
+            $ref: '#/components/schemas/Protocol'
+          description: Communication protocols supported by this agent.
+        parent:
+          $ref: '#/components/schemas/Reference'
+        owners:
+          type: array
+          items:
+            $ref: '#/components/schemas/Reference'
+          description: Users or groups that own this agent.
+
+    AgentListResponse:
+      type: object
+      description: SCIM list response for agents.
+      required:
+        - schemas
+        - totalResults
+      properties:
+        schemas:
+          type: array
+          items:
+            type: string
+          example:
+            - "urn:ietf:params:scim:api:messages:2.0:ListResponse"
+        totalResults:
+          type: integer
+          description: Total number of results matching the query.
+        startIndex:
+          type: integer
+          description: 1-based index of the first result returned.
+        itemsPerPage:
+          type: integer
+          description: Number of results returned in this response.
+        Resources:
+          type: array
+          items:
+            $ref: '#/components/schemas/Agent'
+          description: The list of agents.
+
+    ApplicationUrl:
+      type: object
+      description: A URL associated with an agentic application.
+      properties:
+        type:
+          type: string
+          description: The type of URL.
+          enum:
+            - ssoEndpoint
+            - loginPage
+            - api
+            - homepage
+        primary:
+          type: boolean
+          description: Whether this is the primary URL of this type.
+        value:
+          type: string
+          format: uri
+          description: The URL value.
+        description:
+          type: string
+          description: A human-readable description of the URL.
+
+    OAuthConfiguration:
+      type: object
+      description: OAuth client configuration for an agentic application.
+      properties:
+        clientId:
+          type: string
+          description: The OAuth client identifier.
+        description:
+          type: string
+          description: A human-readable description of the OAuth client.
+        audienceUri:
+          type: string
+          format: uri
+          description: The OAuth audience URI.
+        issuerUri:
+          type: string
+          format: uri
+          description: The identity provider issuer URI.
+        redirectUri:
+          type: array
+          items:
+            type: string
+            format: uri
+          description: Authorized redirect URIs for the OAuth client.
+
+    ExternalIdentifier:
+      type: object
+      description: An external identifier for an agentic application.
+      properties:
+        type:
+          type: string
+          description: The type of identifier.
+        value:
+          type: string
+          description: The identifier value.
+        system:
+          type: string
+          description: The system or domain within which the identifier is valid.
+
+    AgenticApplication:
+      type: object
+      description: |
+        An application that hosts or provides access to one or more agents.
+        Schema URI: urn:ietf:params:scim:schemas:core:2.0:AgenticApplication
+      required:
+        - schemas
+        - name
+      properties:
+        schemas:
+          type: array
+          items:
+            type: string
+          description: The schemas used for this resource.
+          example:
+            - "urn:ietf:params:scim:schemas:core:2.0:AgenticApplication"
+        id:
+          type: string
+          description: The unique identifier for the agentic application.
+          readOnly: true
+        externalId:
+          type: string
+          description: An external identifier for the agentic application.
+        meta:
+          $ref: '#/components/schemas/Meta'
+        name:
+          type: string
+          description: The unique name of the agentic application. REQUIRED.
+        displayName:
+          type: string
+          description: A human-readable display name for the agentic application.
+        description:
+          type: string
+          description: A description of the agentic application.
+        active:
+          type: boolean
+          description: Whether the agentic application is administratively active.
+        applicationUrls:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApplicationUrl'
+          description: URLs associated with this agentic application.
+        lastAccessed:
+          type: string
+          format: date-time
+          description: Timestamp of when the application was last accessed.
+          readOnly: true
+        oAuthConfiguration:
+          type: array
+          items:
+            $ref: '#/components/schemas/OAuthConfiguration'
+          description: OAuth client configurations for this agentic application.
+        agents:
+          type: array
+          items:
+            $ref: '#/components/schemas/AgentReference'
+          description: Agents associated with this agentic application.
+        externalIdentifiers:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalIdentifier'
+          description: External identifiers for this agentic application.
+
+    AgenticApplicationCreate:
+      type: object
+      description: Request body for creating or replacing an agentic application.
+      required:
+        - schemas
+        - name
+      properties:
+        schemas:
+          type: array
+          items:
+            type: string
+          description: The schemas used for this resource.
+          example:
+            - "urn:ietf:params:scim:schemas:core:2.0:AgenticApplication"
+        externalId:
+          type: string
+          description: An external identifier for the agentic application.
+        name:
+          type: string
+          description: The unique name of the agentic application. REQUIRED.
+        displayName:
+          type: string
+          description: A human-readable display name for the agentic application.
+        description:
+          type: string
+          description: A description of the agentic application.
+        active:
+          type: boolean
+          description: Whether the agentic application is administratively active.
+        applicationUrls:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApplicationUrl'
+          description: URLs associated with this agentic application.
+        oAuthConfiguration:
+          type: array
+          items:
+            $ref: '#/components/schemas/OAuthConfiguration'
+          description: OAuth client configurations for this agentic application.
+        agents:
+          type: array
+          items:
+            $ref: '#/components/schemas/AgentReference'
+          description: Agents associated with this agentic application.
+        externalIdentifiers:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalIdentifier'
+          description: External identifiers for this agentic application.
+
+    AgenticApplicationListResponse:
+      type: object
+      description: SCIM list response for agentic applications.
+      required:
+        - schemas
+        - totalResults
+      properties:
+        schemas:
+          type: array
+          items:
+            type: string
+          example:
+            - "urn:ietf:params:scim:api:messages:2.0:ListResponse"
+        totalResults:
+          type: integer
+          description: Total number of results matching the query.
+        startIndex:
+          type: integer
+          description: 1-based index of the first result returned.
+        itemsPerPage:
+          type: integer
+          description: Number of results returned in this response.
+        Resources:
+          type: array
+          items:
+            $ref: '#/components/schemas/AgenticApplication'
+          description: The list of agentic applications.
+
+    PatchOperation:
+      type: object
+      description: A single SCIM PATCH operation.
+      required:
+        - op
+      properties:
+        op:
+          type: string
+          description: The operation to perform.
+          enum:
+            - add
+            - remove
+            - replace
+        path:
+          type: string
+          description: The attribute path to operate on.
+        value:
+          description: The value to use for the operation.
+
+    PatchRequest:
+      type: object
+      description: SCIM PATCH request.
+      required:
+        - schemas
+        - Operations
+      properties:
+        schemas:
+          type: array
+          items:
+            type: string
+          example:
+            - "urn:ietf:params:scim:api:messages:2.0:PatchOp"
+        Operations:
+          type: array
+          items:
+            $ref: '#/components/schemas/PatchOperation'
+          description: The list of patch operations to perform.
+
+    AgentExtensionConfig:
+      type: object
+      description: Agent Extension configuration in ServiceProviderConfig.
+      properties:
+        supported:
+          type: boolean
+          description: Whether any aspect of the agent extension is supported.
+        agentsSupported:
+          type: boolean
+          description: Whether the Agent resource type is supported.
+        agenticApplicationsSupported:
+          type: boolean
+          description: Whether the AgenticApplication resource type is supported.
+
+    ServiceProviderConfig:
+      type: object
+      description: SCIM Service Provider Configuration with Agent Extension support.
+      properties:
+        schemas:
+          type: array
+          items:
+            type: string
+          example:
+            - "urn:ietf:params:scim:schemas:core:2.0:ServiceProviderConfig"
+        documentationUri:
+          type: string
+          format: uri
+          description: URI for the service provider's documentation.
+        patch:
+          type: object
+          properties:
+            supported:
+              type: boolean
+        bulk:
+          type: object
+          properties:
+            supported:
+              type: boolean
+            maxOperations:
+              type: integer
+            maxPayloadSize:
+              type: integer
+        filter:
+          type: object
+          properties:
+            supported:
+              type: boolean
+            maxResults:
+              type: integer
+        changePassword:
+          type: object
+          properties:
+            supported:
+              type: boolean
+        sort:
+          type: object
+          properties:
+            supported:
+              type: boolean
+        etag:
+          type: object
+          properties:
+            supported:
+              type: boolean
+        authenticationSchemes:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+              name:
+                type: string
+              description:
+                type: string
+              specUri:
+                type: string
+                format: uri
+              documentationUri:
+                type: string
+                format: uri
+        agentExtension:
+          $ref: '#/components/schemas/AgentExtensionConfig'
+        meta:
+          $ref: '#/components/schemas/Meta'
+
+    Error:
+      type: object
+      description: SCIM error response.
+      required:
+        - schemas
+        - status
+      properties:
+        schemas:
+          type: array
+          items:
+            type: string
+          example:
+            - "urn:ietf:params:scim:api:messages:2.0:Error"
+        status:
+          type: string
+          description: The HTTP status code as a string.
+        scimType:
+          type: string
+          description: A SCIM-specific error type.
+          enum:
+            - invalidFilter
+            - tooMany
+            - uniqueness
+            - mutability
+            - invalidSyntax
+            - invalidPath
+            - noTarget
+            - invalidValue
+            - invalidVers
+            - sensitive
+        detail:
+          type: string
+          description: A detailed error message.
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: OAuth 2.0 Bearer Token
+
+security:
+  - bearerAuth: []
