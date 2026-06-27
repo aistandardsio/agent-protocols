@@ -7,6 +7,41 @@
   "maintainers": ["grokify"],
   "releases": [
     {
+      "version": "v0.6.0",
+      "date": "2026-06-27",
+      "highlights": [
+        { "description": "Interface-Based Servers: New `aauth/personserver` and `idjag/authzserver` packages with pluggable storage interfaces" },
+        { "description": "SCIM Extensions: New `scimext/` package for SCIM 2.0 agent and application management" },
+        { "description": "Protocol Types: Comprehensive AAuth types for consent, mission, delegation, and attestation" },
+        { "description": "Architecture Refactor: Composition layer moved to plexusone/agentauth for cleaner separation" }
+      ],
+      "breaking": [
+        { "description": "Composition layer (cmd/, lambda/, examples with storage) moved to `plexusone/agentauth`" },
+        { "description": "Import path change: `github.com/plexusone/agentauth` for production deployments" }
+      ],
+      "added": [
+        { "description": "`aauth/personserver/` interface-based Person Server", "commit": "f3fd5a3" },
+        { "description": "`idjag/authzserver/` interface-based Authorization Server", "commit": "bab2e18" },
+        { "description": "`scimext/` SCIM 2.0 extensions for agents", "commit": "fcae1bf" },
+        { "description": "`agentauth/` unified authorization client", "commit": "cf4304c" },
+        { "description": "AAuth consent, mission, delegation types", "commit": "934f438" },
+        { "description": "PersonServer unit tests (38 tests)", "commit": "6e0ddb0" },
+        { "description": "GitHub Actions CI workflow", "commit": "0bb5872" },
+        { "description": "golangci-lint configuration", "commit": "daf33da" }
+      ],
+      "refactored": [
+        { "description": "Composition layer moved to `plexusone/agentauth`", "commit": "3ff928d" },
+        { "description": "AgentAuth documentation moved to plexusone/agentauth", "commit": "2c9fe32" }
+      ],
+      "documentation": [
+        { "description": "Protocol documentation for scimext and agentauth", "commit": "9145e54" },
+        { "description": "ID-JAG MCP Enterprise-Managed Auth adoption guide", "commit": "713da66" }
+      ],
+      "dependencies": [
+        { "description": "`github.com/plexusone/omniobserve` v0.11.0", "commit": "6c661bf" }
+      ]
+    },
+    {
       "version": "v0.5.0",
       "date": "2026-05-24",
       "highlights": [
