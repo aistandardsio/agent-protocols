@@ -26,7 +26,7 @@
  [loc-svg]: https://tokei.rs/b1/github/grokify/agent-protocols
  [repo-url]: https://github.com/aistandardsio/agent-protocols
  [license-svg]: https://img.shields.io/badge/license-MIT-blue.svg
- [license-url]: https://github.com/aistandardsio/agent-protocols/blob/master/LICENSE
+ [license-url]: https://github.com/aistandardsio/agent-protocols/blob/main/LICENSE
 
 Go implementation of agent-to-agent communication protocols for AI agent authentication and authorization.
 
@@ -54,9 +54,8 @@ Interface-based authorization servers (bring your own storage):
 
 - **[aauth/personserver](./aauth/personserver/)** - AAuth Person Server with pluggable store interface
 - **[idjag/authzserver](./idjag/authzserver/)** - ID-JAG Authorization Server with pluggable store interface
-- **[agentauth](./agentauth/)** - Unified authorization client combining AAuth + ID-JAG
 
-For production deployments with SQLite/DynamoDB storage, see [plexusone/agentauth](https://github.com/plexusone/agentauth).
+For multi-protocol orchestration and production deployments, see [plexusone/agentauth](https://github.com/plexusone/agentauth).
 
 ### Cross-Protocol Bridge
 
