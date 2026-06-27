@@ -1,0 +1,25 @@
+run:
+  timeout: 5m
+
+linters:
+  enable:
+    - errcheck
+    - gosec
+    - govet
+    - staticcheck
+    - unused
+
+linters-settings:
+  gosec:
+    excludes:
+      - G101 # Potential hardcoded credentials (false positives on URIs)
+
+issues:
+  exclude-rules:
+    # Exclude gosec warnings from examples and lambda (demo code)
+    - path: "^examples/"
+      linters:
+        - gosec
+    - path: "^lambda/"
+      linters:
+        - gosec
