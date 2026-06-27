@@ -41,6 +41,12 @@ type AuthToken struct {
 	// MayAct indicates the entity may act on behalf of another.
 	MayAct *Actor `json:"may_act,omitempty"`
 
+	// Mission contains mission-related claims.
+	Mission *MissionClaims `json:"mission,omitempty"`
+
+	// InteractionType defines how the agent operates.
+	InteractionType InteractionType `json:"interaction_type,omitempty"`
+
 	// Claims contains any additional custom claims.
 	Claims map[string]any `json:"-"`
 }
@@ -186,6 +192,14 @@ func (t *AuthToken) toJWTClaims() jwt.MapClaims {
 		claims[ClaimMayAct] = t.MayAct
 	}
 
+	if t.Mission != nil {
+		claims[ClaimMission] = t.Mission
+	}
+
+	if t.InteractionType != "" {
+		claims["interaction_type"] = t.InteractionType
+	}
+
 	// Add custom claims
 	for name, value := range t.Claims {
 		claims[name] = value
@@ -262,11 +276,22 @@ func authTokenFromClaims(claims jwt.MapClaims) (*AuthToken, error) {
 		t.MayAct = actorFromMap(mayActMap)
 	}
 
+	// Extract interaction_type claim
+	if it, ok := claims["interaction_type"].(string); ok {
+		t.InteractionType = InteractionType(it)
+	}
+
+	// Extract mission claim
+	if missionMap, ok := claims[ClaimMission].(map[string]interface{}); ok {
+		t.Mission = missionClaimsFromMap(missionMap)
+	}
+
 	// Store remaining claims as custom claims
 	standardClaims := map[string]bool{
 		ClaimIssuer: true, ClaimSubject: true, ClaimAudience: true,
 		ClaimIssuedAt: true, ClaimExpirationTime: true, ClaimJWTID: true,
 		ClaimCNF: true, ClaimActor: true, ClaimScope: true, ClaimMayAct: true,
+		ClaimMission: true, "interaction_type": true,
 	}
 	for name, value := range claims {
 		if !standardClaims[name] {
@@ -275,4 +300,38 @@ func authTokenFromClaims(claims jwt.MapClaims) (*AuthToken, error) {
 	}
 
 	return t, nil
+}
+
+// missionClaimsFromMap extracts MissionClaims from a map.
+func missionClaimsFromMap(m map[string]interface{}) *MissionClaims {
+	mc := &MissionClaims{}
+
+	if id, ok := m["mission_id"].(string); ok {
+		mc.MissionID = id
+	}
+	if it, ok := m["interaction_type"].(string); ok {
+		mc.InteractionType = InteractionType(it)
+	}
+	if vu, ok := m["valid_until"].(float64); ok {
+		mc.ValidUntil = int64(vu)
+	}
+	if perms, ok := m["permissions"].([]interface{}); ok {
+		for _, p := range perms {
+			if pm, ok := p.(map[string]interface{}); ok {
+				perm := Permission{}
+				if a, ok := pm["action"].(string); ok {
+					perm.Action = a
+				}
+				if r, ok := pm["resource"].(string); ok {
+					perm.Resource = r
+				}
+				if s, ok := pm["scope"].(string); ok {
+					perm.Scope = s
+				}
+				mc.Permissions = append(mc.Permissions, perm)
+			}
+		}
+	}
+
+	return mc
 }

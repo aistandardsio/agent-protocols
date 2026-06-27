@@ -41,6 +41,9 @@ var (
 	// ErrInvalidJWK indicates an invalid or malformed JWK.
 	ErrInvalidJWK = errors.New("aauth: invalid jwk")
 
+	// ErrInvalidKey indicates an invalid or missing cryptographic key.
+	ErrInvalidKey = errors.New("aauth: invalid key")
+
 	// ErrMissingAudience indicates a required audience claim is missing.
 	ErrMissingAudience = errors.New("aauth: missing audience")
 

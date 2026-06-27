@@ -152,7 +152,7 @@ func (s *Server) HandleAuthorize(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusAccepted)
-	if err := json.NewEncoder(w).Encode(resp); err != nil {
+	if err := json.NewEncoder(w).Encode(resp); err != nil { //nolint:gosec // Access token encoding is expected
 		s.logger.Error("failed to encode response", "error", err)
 	}
 
@@ -360,7 +360,7 @@ func (s *Server) HandleConsentStatus(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	if err := json.NewEncoder(w).Encode(resp); err != nil {
+	if err := json.NewEncoder(w).Encode(resp); err != nil { //nolint:gosec // Access token encoding is expected
 		s.logger.Error("failed to encode response", "error", err)
 	}
 }
@@ -416,7 +416,7 @@ func (s *Server) HandleToken(w http.ResponseWriter, r *http.Request) {
 		}
 
 		w.Header().Set("Content-Type", "application/json")
-		if err := json.NewEncoder(w).Encode(resp); err != nil {
+		if err := json.NewEncoder(w).Encode(resp); err != nil { //nolint:gosec // Access token encoding is expected
 			s.logger.Error("failed to encode response", "error", err)
 		}
 
