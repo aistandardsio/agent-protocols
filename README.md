@@ -48,6 +48,14 @@ This repository provides Go libraries for emerging agent-to-agent protocols:
   - [Examples](./aims/examples/) - Working demos (simple WIT/WPT, mTLS)
   - [PIDL Definitions](./aims/pidl/) - Protocol diagrams
 
+- **[a2a](./a2a/)** - Agent-to-Agent Protocol for agent discovery and task delegation based on [Google A2A](https://google.github.io/A2A/)
+  - Discovery client for fetching Agent Cards
+  - Task invocation with async polling support
+
+- **[authzen](./authzen/)** - AuthZEN PDP client for authorization decisions based on [OpenID AuthZEN](https://openid.github.io/authzen/)
+  - PEP-to-PDP communication API
+  - Agent-aware subject helpers with SPIFFE/delegation support
+
 ### Server Implementations
 
 Interface-based authorization servers (bring your own storage):
@@ -133,6 +141,41 @@ wit := aims.NewWIT(spiffeID, []string{"https://api.example.com"}, 1*time.Hour)
 signedWIT, _ := wit.Sign(privateKey, "key-1")
 ```
 
+### A2A - Agent Discovery & Task Delegation
+
+```go
+import "github.com/aistandardsio/agent-protocols/a2a"
+
+// Discover agent capabilities
+discovery := a2a.NewDiscoveryClient()
+card, _ := discovery.DiscoverAgent(ctx, "https://agent.example.com")
+
+// Create client and invoke capability
+client, _ := a2a.NewClient(card, a2a.WithClientBearerToken("token"))
+resp, _ := client.Invoke(ctx, &a2a.TaskRequest{
+    CapabilityID: "security-scan",
+    Input:        json.RawMessage(`{"repo": "acme/backend"}`),
+})
+```
+
+### AuthZEN - Authorization Decisions
+
+```go
+import "github.com/aistandardsio/agent-protocols/authzen"
+
+// Create PDP client
+client := authzen.NewClient("https://pdp.example.com")
+
+// Check if agent is allowed to perform action
+subject := authzen.AgentSubject("code-review-agent",
+    authzen.WithWorkloadID("spiffe://example.com/agent/review"),
+    authzen.WithDelegator("user:alice"),
+)
+allowed, _ := client.IsAllowed(ctx, subject,
+    authzen.NewResource("repository", "acme/backend", nil),
+    authzen.NewAction("read", nil))
+```
+
 ## Examples
 
 Each protocol includes working demos:
@@ -182,6 +225,8 @@ go run ./demos/protocol-bridge  # Multi-protocol authentication demo
 - **AAuth**: [Overview](./docs/aauth/overview.md) | [Getting Started](./docs/aauth/getting-started.md) | [Examples](./docs/aauth/examples.md)
 - **ID-JAG**: [Protocol Overview](./docs/idjag/protocol-overview.md) | [Getting Started](./docs/idjag/getting-started.md)
 - **AIMS**: [Overview](./docs/aims/overview.md) | [Getting Started](./docs/aims/getting-started.md)
+- **A2A**: [Overview](./docs/a2a/overview.md) | [Getting Started](./docs/a2a/getting-started.md)
+- **AuthZEN**: [Overview](./docs/authzen/overview.md) | [Getting Started](./docs/authzen/getting-started.md)
 - **AgentAuth**: See [plexusone/agentauth](https://github.com/plexusone/agentauth) for unified deployment
 - **Zitadel Adapter**: [Overview](./docs/adapters/zitadel/overview.md) | [Getting Started](./docs/adapters/zitadel/getting-started.md)
 - **SharkAuth Adapter**: [Overview](./docs/adapters/sharkauth/overview.md) | [Getting Started](./docs/adapters/sharkauth/getting-started.md)
@@ -212,6 +257,8 @@ golangci-lint run
 - [draft-ietf-oauth-identity-assertion-authz-grant](https://datatracker.ietf.org/doc/draft-ietf-oauth-identity-assertion-authz-grant/) - ID-JAG specification
 - [draft-klrc-aiagent-auth-00](https://datatracker.ietf.org/doc/html/draft-klrc-aiagent-auth-00) - AIMS specification
 - [draft-ietf-wimse-s2s-protocol](https://datatracker.ietf.org/doc/draft-ietf-wimse-s2s-protocol/) - WIMSE S2S Protocol (WIT/WPT)
+- [Google A2A](https://google.github.io/A2A/) - Agent-to-Agent Protocol specification
+- [OpenID AuthZEN](https://openid.github.io/authzen/) - Authorization API specification
 - [RFC 9421](https://www.rfc-editor.org/rfc/rfc9421) - HTTP Message Signatures
 - [RFC 8693](https://tools.ietf.org/html/rfc8693) - OAuth 2.0 Token Exchange
 - [SPIFFE](https://spiffe.io/) - Secure Production Identity Framework For Everyone
