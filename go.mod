@@ -3,7 +3,7 @@ module github.com/aistandardsio/agent-protocols
 go 1.26.4
 
 require (
-	github.com/go-faster/errors v0.7.1
+	github.com/go-faster/errors v0.8.0
 	github.com/go-faster/jx v1.2.0
 	github.com/golang-jwt/jwt/v5 v5.3.1
 	github.com/ogen-go/ogen v1.23.0
