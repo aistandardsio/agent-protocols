@@ -7,6 +7,41 @@
   "maintainers": ["grokify"],
   "releases": [
     {
+      "version": "v0.7.0",
+      "date": "2026-08-09",
+      "highlights": [
+        { "description": "AuthZEN: New `authzen/` PDP client for authorization decisions with agent-aware subject helpers" },
+        { "description": "A2A: New `a2a/` client for Google A2A agent discovery and task delegation" },
+        { "description": "omniskill Adapter: New `adapters/omniskill/` idjag verifier for omniskill's ExternalAuth seam" },
+        { "description": "Keycloak Adapter: New `adapters/keycloak/` identity-assertion-jwt receiver bootstrap (experimental)" },
+        { "description": "MCP EMA Demo: New `examples/mcp-ema/` end-to-end Enterprise-Managed Authorization demo" }
+      ],
+      "added": [
+        { "description": "`authzen/` AuthZEN PDP client", "commit": "d5bd420" },
+        { "description": "`a2a/` A2A protocol client", "commit": "337ea70" },
+        { "description": "`adapters/omniskill/` idjag verifier adapter for omniskill ExternalAuth seam", "commit": "1239f75" },
+        { "description": "`adapters/keycloak/` Keycloak identity-assertion-jwt receiver adapter", "commit": "f85c5a1" },
+        { "description": "`examples/mcp-ema/` end-to-end MCP EMA demo", "commit": "731accc" }
+      ],
+      "documentation": [
+        { "description": "AuthZEN overview and getting-started guides", "commit": "d4feb1a" },
+        { "description": "A2A overview and getting-started guides", "commit": "ebd634f" },
+        { "description": "README updated with AuthZEN and A2A packages", "commit": "eae7207" },
+        { "description": "README shields updated", "commit": "157f282" },
+        { "description": "INIT-AGENTPROTOCOLS-001 initiative specs (PRD/TRD/PLAN/ROADMAP)", "commit": "88d3c37" },
+        { "description": "omniskill and Keycloak adapter overview guides", "commit": "4572728" }
+      ],
+      "dependencies": [
+        { "description": "`github.com/ogen-go/ogen` v1.22.0 -> v1.23.0", "commit": "6e339f4" },
+        { "description": "`github.com/plexusone/omniobserve` v0.11.0 -> v0.12.0", "commit": "ef042c8" },
+        { "description": "`github.com/go-faster/errors` v0.7.1 -> v0.8.0", "commit": "666b4e1" },
+        { "description": "`go.opentelemetry.io/otel/metric` v1.44.0 -> v1.45.0", "commit": "008c1e9" },
+        { "description": "`go.opentelemetry.io/otel/trace` v1.44.0 -> v1.45.0", "commit": "b4948da" },
+        { "description": "`go.opentelemetry.io/otel` v1.44.0 -> v1.45.0", "commit": "e739433" },
+        { "description": "`github.com/plexusone/omniskill` v0.12.0, `github.com/modelcontextprotocol/go-sdk` v1.7.0, and other go.mod updates", "commit": "8fd1142" }
+      ]
+    },
+    {
       "version": "v0.6.0",
       "date": "2026-06-27",
       "highlights": [
