@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://aistandards.io/agent-protocols/aauth/overview/">
+        <link rel="canonical" href="https://aistandards.io/agent-protocols/releases/v0.7.0/">
       
       
-        <link rel="prev" href="../..">
+        <link rel="prev" href="../../guides/hybrid-authentication/">
       
       
-        <link rel="next" href="../getting-started/">
+        <link rel="next" href="../v0.6.0/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Overview - agent-protocols</title>
+        <title>v0.7.0 - agent-protocols</title>
       
     
     
@@ -80,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#aauth-overview" class="md-skip">
+        <a href="#release-notes-v070" class="md-skip">
           Skip to content
         </a>
       
@@ -169,7 +169,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Overview
+              v0.7.0
             
           </span>
         </div>
@@ -340,8 +340,6 @@
       
   
   
-    
-  
   
   
     
@@ -354,11 +352,13 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
         
           
           <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
@@ -379,7 +379,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             
@@ -394,37 +394,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Overview
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../aauth/overview/" class="md-nav__link">
         
   
   
@@ -440,214 +413,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#what-is-aauth" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        What is AAuth?
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#key-concepts" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Key Concepts
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Key Concepts">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#aauth-id" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        AAuth ID
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#identity-token-aa-agentjwt" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Identity Token (aa-agent+jwt)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#auth-token-aa-authjwt" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Auth Token (aa-auth+jwt)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#resource-token-aa-resourcejwt" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Resource Token (aa-resource+jwt)
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#authentication-flows" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Authentication Flows
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Authentication Flows">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#identity-only-flow-2-party" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Identity-Only Flow (2-Party)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#resource-managed-flow-3-party" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Resource-Managed Flow (3-Party)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#ps-asserted-flow-3-party-proactive" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        PS-Asserted Flow (3-Party, Proactive)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#federated-flow-4-party" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Federated Flow (4-Party)
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#protocol-components" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Protocol Components
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#key-standards" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Key Standards
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#aauth-vs-id-jag-vs-aims" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        AAuth vs ID-JAG vs AIMS
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#next-steps" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Next Steps
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#references" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        References
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -660,7 +425,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../getting-started/" class="md-nav__link">
+      <a href="../../aauth/getting-started/" class="md-nav__link">
         
   
   
@@ -688,7 +453,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../examples/" class="md-nav__link">
+      <a href="../../aauth/examples/" class="md-nav__link">
         
   
   
@@ -716,7 +481,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../diagrams/" class="md-nav__link">
+      <a href="../../aauth/diagrams/" class="md-nav__link">
         
   
   
@@ -744,7 +509,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api-reference/" class="md-nav__link">
+      <a href="../../aauth/api-reference/" class="md-nav__link">
         
   
   
@@ -2542,8 +2307,10 @@
       
   
   
+    
   
   
+  
     
     
     
@@ -2554,13 +2321,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_11" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" checked>
         
           
           <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="">
@@ -2581,7 +2346,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_11">
             <span class="md-nav__icon md-icon"></span>
             
@@ -2596,10 +2361,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../releases/v0.7.0/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    v0.7.0
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -2615,6 +2407,142 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#highlights" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Highlights
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#new-features" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        New Features
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="New Features">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#authzen-pdp-client-authzen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AuthZEN PDP Client (authzen/)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a2a-protocol-client-a2a" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A2A Protocol Client (a2a/)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#omniskill-adapter-adaptersomniskill" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        omniskill Adapter (adapters/omniskill/)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#keycloak-adapter-adapterskeycloak" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Keycloak Adapter (adapters/keycloak/)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mcp-ema-demo-examplesmcp-ema" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MCP EMA Demo (examples/mcp-ema/)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#added" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Added
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Documentation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dependencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dependencies
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -2627,7 +2555,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../releases/v0.6.0/" class="md-nav__link">
+      <a href="../v0.6.0/" class="md-nav__link">
         
   
   
@@ -2655,7 +2583,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../releases/v0.5.0/" class="md-nav__link">
+      <a href="../v0.5.0/" class="md-nav__link">
         
   
   
@@ -2683,7 +2611,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../releases/v0.4.0/" class="md-nav__link">
+      <a href="../v0.4.0/" class="md-nav__link">
         
   
   
@@ -2711,7 +2639,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../releases/v0.3.0/" class="md-nav__link">
+      <a href="../v0.3.0/" class="md-nav__link">
         
   
   
@@ -2739,7 +2667,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../releases/v0.2.0/" class="md-nav__link">
+      <a href="../v0.2.0/" class="md-nav__link">
         
   
   
@@ -2767,7 +2695,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../releases/v0.1.0/" class="md-nav__link">
+      <a href="../v0.1.0/" class="md-nav__link">
         
   
   
@@ -2822,10 +2750,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#what-is-aauth" class="md-nav__link">
+  <a href="#highlights" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What is AAuth?
+        Highlights
       
     </span>
   </a>
@@ -2833,22 +2761,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#key-concepts" class="md-nav__link">
+  <a href="#new-features" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Key Concepts
+        New Features
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Key Concepts">
+    <nav class="md-nav" aria-label="New Features">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#aauth-id" class="md-nav__link">
+  <a href="#authzen-pdp-client-authzen" class="md-nav__link">
     <span class="md-ellipsis">
       
-        AAuth ID
+        AuthZEN PDP Client (authzen/)
       
     </span>
   </a>
@@ -2856,10 +2784,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#identity-token-aa-agentjwt" class="md-nav__link">
+  <a href="#a2a-protocol-client-a2a" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Identity Token (aa-agent+jwt)
+        A2A Protocol Client (a2a/)
       
     </span>
   </a>
@@ -2867,10 +2795,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#auth-token-aa-authjwt" class="md-nav__link">
+  <a href="#omniskill-adapter-adaptersomniskill" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Auth Token (aa-auth+jwt)
+        omniskill Adapter (adapters/omniskill/)
       
     </span>
   </a>
@@ -2878,10 +2806,21 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#resource-token-aa-resourcejwt" class="md-nav__link">
+  <a href="#keycloak-adapter-adapterskeycloak" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Resource Token (aa-resource+jwt)
+        Keycloak Adapter (adapters/keycloak/)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mcp-ema-demo-examplesmcp-ema" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MCP EMA Demo (examples/mcp-ema/)
       
     </span>
   </a>
@@ -2894,71 +2833,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#authentication-flows" class="md-nav__link">
+  <a href="#added" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Authentication Flows
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Authentication Flows">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#identity-only-flow-2-party" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Identity-Only Flow (2-Party)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#resource-managed-flow-3-party" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Resource-Managed Flow (3-Party)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#ps-asserted-flow-3-party-proactive" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        PS-Asserted Flow (3-Party, Proactive)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#federated-flow-4-party" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Federated Flow (4-Party)
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#protocol-components" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Protocol Components
+        Added
       
     </span>
   </a>
@@ -2966,10 +2844,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#key-standards" class="md-nav__link">
+  <a href="#documentation" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Key Standards
+        Documentation
       
     </span>
   </a>
@@ -2977,32 +2855,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#aauth-vs-id-jag-vs-aims" class="md-nav__link">
+  <a href="#dependencies" class="md-nav__link">
     <span class="md-ellipsis">
       
-        AAuth vs ID-JAG vs AIMS
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#next-steps" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Next Steps
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#references" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        References
+        Dependencies
       
     </span>
   </a>
@@ -3029,276 +2885,93 @@
   
 
 
-<h1 id="aauth-overview">AAuth Overview<a class="headerlink" href="#aauth-overview" title="Permanent link">&para;</a></h1>
-<p>AAuth (Agent Auth) is a protocol for AI agent authentication based on <a href="https://datatracker.ietf.org/doc/draft-hardt-oauth-aauth-protocol/">draft-hardt-oauth-aauth-protocol</a>.</p>
+<h1 id="release-notes-v070">Release Notes v0.7.0<a class="headerlink" href="#release-notes-v070" title="Permanent link">&para;</a></h1>
+<p><strong>Release Date:</strong> August 2026</p>
+<h2 id="highlights">Highlights<a class="headerlink" href="#highlights" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>AuthZEN</strong>: New <code>authzen/</code> PDP client for authorization decisions, with agent-aware subject helpers (SPIFFE, delegation)</li>
+<li><strong>A2A</strong>: New <code>a2a/</code> client for Google A2A agent discovery and task delegation</li>
+<li><strong>omniskill Adapter</strong>: New <code>adapters/omniskill/</code> idjag verifier for omniskill's <code>ExternalAuth</code> seam, turning any omniskill-based MCP server into an OAuth resource server</li>
+<li><strong>Keycloak Adapter</strong>: New <code>adapters/keycloak/</code> bootstrap for Keycloak 26.7's experimental <code>identity-assertion-jwt</code> receiver</li>
+<li><strong>MCP EMA Demo</strong>: New <code>examples/mcp-ema/</code> end-to-end Enterprise-Managed Authorization demo (issuer → receiver → mcp-google resource server)</li>
+</ul>
+<p>No breaking changes.</p>
+<h2 id="new-features">New Features<a class="headerlink" href="#new-features" title="Permanent link">&para;</a></h2>
+<h3 id="authzen-pdp-client-authzen">AuthZEN PDP Client (<code>authzen/</code>)<a class="headerlink" href="#authzen-pdp-client-authzen" title="Permanent link">&para;</a></h3>
+<p>Client for the <a href="https://openid.github.io/authzen/">OpenID AuthZEN</a> authorization API.</p>
+<div class="language-go highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">import</span><span class="w"> </span><span class="s">&quot;github.com/aistandardsio/agent-protocols/authzen&quot;</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nx">client</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">authzen</span><span class="p">.</span><span class="nx">NewClient</span><span class="p">(</span><span class="s">&quot;https://pdp.example.com&quot;</span><span class="p">)</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="nx">subject</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">authzen</span><span class="p">.</span><span class="nx">AgentSubject</span><span class="p">(</span><span class="s">&quot;code-review-agent&quot;</span><span class="p">,</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="nx">authzen</span><span class="p">.</span><span class="nx">WithWorkloadID</span><span class="p">(</span><span class="s">&quot;spiffe://example.com/agent/review&quot;</span><span class="p">),</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span><span class="nx">authzen</span><span class="p">.</span><span class="nx">WithDelegator</span><span class="p">(</span><span class="s">&quot;user:alice&quot;</span><span class="p">),</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="p">)</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="nx">allowed</span><span class="p">,</span><span class="w"> </span><span class="nx">_</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">client</span><span class="p">.</span><span class="nx">IsAllowed</span><span class="p">(</span><span class="nx">ctx</span><span class="p">,</span><span class="w"> </span><span class="nx">subject</span><span class="p">,</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">    </span><span class="nx">authzen</span><span class="p">.</span><span class="nx">NewResource</span><span class="p">(</span><span class="s">&quot;repository&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;acme/backend&quot;</span><span class="p">,</span><span class="w"> </span><span class="kc">nil</span><span class="p">),</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">    </span><span class="nx">authzen</span><span class="p">.</span><span class="nx">NewAction</span><span class="p">(</span><span class="s">&quot;read&quot;</span><span class="p">,</span><span class="w"> </span><span class="kc">nil</span><span class="p">))</span>
+</span></code></pre></div>
+<h3 id="a2a-protocol-client-a2a">A2A Protocol Client (<code>a2a/</code>)<a class="headerlink" href="#a2a-protocol-client-a2a" title="Permanent link">&para;</a></h3>
+<p>Discovery and task delegation client for <a href="https://google.github.io/A2A/">Google A2A</a>.</p>
+<div class="language-go highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">import</span><span class="w"> </span><span class="s">&quot;github.com/aistandardsio/agent-protocols/a2a&quot;</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nx">discovery</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">a2a</span><span class="p">.</span><span class="nx">NewDiscoveryClient</span><span class="p">()</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="nx">card</span><span class="p">,</span><span class="w"> </span><span class="nx">_</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">discovery</span><span class="p">.</span><span class="nx">DiscoverAgent</span><span class="p">(</span><span class="nx">ctx</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;https://agent.example.com&quot;</span><span class="p">)</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="nx">client</span><span class="p">,</span><span class="w"> </span><span class="nx">_</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">a2a</span><span class="p">.</span><span class="nx">NewClient</span><span class="p">(</span><span class="nx">card</span><span class="p">,</span><span class="w"> </span><span class="nx">a2a</span><span class="p">.</span><span class="nx">WithClientBearerToken</span><span class="p">(</span><span class="s">&quot;token&quot;</span><span class="p">))</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="nx">resp</span><span class="p">,</span><span class="w"> </span><span class="nx">_</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">client</span><span class="p">.</span><span class="nx">Invoke</span><span class="p">(</span><span class="nx">ctx</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="nx">a2a</span><span class="p">.</span><span class="nx">TaskRequest</span><span class="p">{</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">    </span><span class="nx">CapabilityID</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;security-scan&quot;</span><span class="p">,</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">    </span><span class="nx">Input</span><span class="p">:</span><span class="w">        </span><span class="nx">json</span><span class="p">.</span><span class="nx">RawMessage</span><span class="p">(</span><span class="s">`{&quot;repo&quot;: &quot;acme/backend&quot;}`</span><span class="p">),</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="p">})</span>
+</span></code></pre></div>
+<h3 id="omniskill-adapter-adaptersomniskill">omniskill Adapter (<code>adapters/omniskill/</code>)<a class="headerlink" href="#omniskill-adapter-adaptersomniskill" title="Permanent link">&para;</a></h3>
+<p>Implements omniskill's <code>oauth2.TokenVerifier</code> by wrapping idjag's JWKS verifier — resolves the issuer's JWKS endpoint via discovery, verifies the bearer token, and maps the RFC 8693 delegation chain and claims into <code>oauth2.TokenInfo</code>. Requires omniskill's external <code>TokenVerifier</code> seam, released in <a href="https://github.com/plexusone/omniskill">omniskill v0.12.0</a>.</p>
+<div class="language-go highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">import</span><span class="w"> </span><span class="p">(</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">    </span><span class="nx">adapter</span><span class="w"> </span><span class="s">&quot;github.com/aistandardsio/agent-protocols/adapters/omniskill&quot;</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="nx">runtime</span><span class="w"> </span><span class="s">&quot;github.com/plexusone/omniskill/mcp/server&quot;</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="p">)</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="nx">verifier</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">adapter</span><span class="p">.</span><span class="nx">NewVerifier</span><span class="p">(</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">    </span><span class="s">&quot;https://keycloak.example/realms/agents&quot;</span><span class="p">,</span><span class="w"> </span><span class="c1">// issuer</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">    </span><span class="s">&quot;https://mcp.example/mcp&quot;</span><span class="p">,</span><span class="w">                </span><span class="c1">// expected audience</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="p">)</span>
+</span></code></pre></div>
+<h3 id="keycloak-adapter-adapterskeycloak">Keycloak Adapter (<code>adapters/keycloak/</code>)<a class="headerlink" href="#keycloak-adapter-adapterskeycloak" title="Permanent link">&para;</a></h3>
+<p>Bootstraps a Keycloak 26.7 realm as an ID-JAG receiver via the admin REST API (client scopes, token-exchange policy, <code>identity-assertion-jwt</code> feature checks) plus a <code>kcadm</code> bootstrap script, and performs the RFC 8693 token exchange against it.</p>
 <div class="admonition warning">
-<p class="admonition-title">Experimental</p>
-<p>This package implements a draft specification that is subject to change.</p>
+<p class="admonition-title">Experimental upstream feature</p>
+<p>Keycloak's <code>identity-assertion-jwt</code> feature is experimental (introduced in Keycloak 26.7) and not for production. Developed and tested against <code>quay.io/keycloak/keycloak:26.7</code> only.</p>
 </div>
-<h2 id="what-is-aauth">What is AAuth?<a class="headerlink" href="#what-is-aauth" title="Permanent link">&para;</a></h2>
-<p>AAuth provides a standardized approach to agent authentication using cryptographic identity, HTTP message signatures (RFC 9421), and OAuth 2.0 token exchange (RFC 8693).</p>
-<pre class="mermaid"><code>flowchart LR
-    subgraph Agent
-        A[AI Agent]
-    end
-
-    subgraph Authorization
-        PS[Person Server]
-    end
-
-    subgraph Resources
-        R[Resource Server]
-    end
-
-    A --&gt;|1. Signed Request| R
-    R --&gt;|2. Challenge| A
-    A --&gt;|3. Token Exchange| PS
-    PS --&gt;|4. Auth Token| A
-    A --&gt;|5. Request + Auth Token| R
-    R --&gt;|6. Response| A</code></pre>
-<h2 id="key-concepts">Key Concepts<a class="headerlink" href="#key-concepts" title="Permanent link">&para;</a></h2>
-<h3 id="aauth-id">AAuth ID<a class="headerlink" href="#aauth-id" title="Permanent link">&para;</a></h3>
-<p>The canonical identifier format for agents:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>aauth:local@domain
+<h3 id="mcp-ema-demo-examplesmcp-ema">MCP EMA Demo (<code>examples/mcp-ema/</code>)<a class="headerlink" href="#mcp-ema-demo-examplesmcp-ema" title="Permanent link">&para;</a></h3>
+<p>End-to-end demo of MCP Enterprise-Managed Authorization: an IdP authorization server (issuer) exchanges an ID-JAG with a receiver — the in-process reference <code>idjag.AuthorizationServer</code> by default, or Keycloak (via the keycloak adapter) with <code>KEYCLOAK_URL</code> set — which mints an access token for an mcp-google resource server.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>go<span class="w"> </span>run<span class="w"> </span>./examples/mcp-ema
 </span></code></pre></div>
-<p>Examples:</p>
+<h2 id="added">Added<a class="headerlink" href="#added" title="Permanent link">&para;</a></h2>
 <ul>
-<li><code>aauth:calendar-bot@example.com</code></li>
-<li><code>aauth:task-agent@corp.example.com</code></li>
-<li><code>aauth:assistant@agents.provider.com</code></li>
+<li><code>authzen/</code> AuthZEN PDP client (<a href="https://github.com/aistandardsio/agent-protocols/commit/d5bd420"><code>d5bd420</code></a>)</li>
+<li><code>a2a/</code> A2A protocol client (<a href="https://github.com/aistandardsio/agent-protocols/commit/337ea70"><code>337ea70</code></a>)</li>
+<li><code>adapters/omniskill/</code> idjag verifier adapter for omniskill ExternalAuth seam (<a href="https://github.com/aistandardsio/agent-protocols/commit/1239f75"><code>1239f75</code></a>)</li>
+<li><code>adapters/keycloak/</code> Keycloak identity-assertion-jwt receiver adapter (<a href="https://github.com/aistandardsio/agent-protocols/commit/f85c5a1"><code>f85c5a1</code></a>)</li>
+<li><code>examples/mcp-ema/</code> end-to-end MCP EMA demo (<a href="https://github.com/aistandardsio/agent-protocols/commit/731accc"><code>731accc</code></a>)</li>
 </ul>
-<h3 id="identity-token-aa-agentjwt">Identity Token (aa-agent+jwt)<a class="headerlink" href="#identity-token-aa-agentjwt" title="Permanent link">&para;</a></h3>
-<p>A JWT asserting the agent's identity, used as the <code>Signature-Key</code> header:</p>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="p">{</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="nt">&quot;iss&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://agents.example.com&quot;</span><span class="p">,</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span><span class="nt">&quot;sub&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;aauth:calendar-bot@example.com&quot;</span><span class="p">,</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="nt">&quot;aud&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;https://resource.example.com&quot;</span><span class="p">],</span>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">  </span><span class="nt">&quot;exp&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1234567890</span><span class="p">,</span>
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">  </span><span class="nt">&quot;cnf&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;jwk&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;kty&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;EC&quot;</span><span class="p">,</span><span class="w"> </span><span class="err">...</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">}</span>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="p">}</span>
-</span></code></pre></div>
-<h3 id="auth-token-aa-authjwt">Auth Token (aa-auth+jwt)<a class="headerlink" href="#auth-token-aa-authjwt" title="Permanent link">&para;</a></h3>
-<p>A JWT issued by the Person Server authorizing the agent:</p>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="p">{</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="nt">&quot;iss&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://ps.example.com&quot;</span><span class="p">,</span>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="nt">&quot;sub&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;aauth:calendar-bot@example.com&quot;</span><span class="p">,</span>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">  </span><span class="nt">&quot;aud&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;https://resource.example.com&quot;</span><span class="p">],</span>
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">  </span><span class="nt">&quot;scope&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;calendar:read calendar:write&quot;</span><span class="p">,</span>
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">  </span><span class="nt">&quot;cnf&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;jkt&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;abc123...&quot;</span><span class="w"> </span><span class="p">}</span>
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="p">}</span>
-</span></code></pre></div>
-<p>The <code>cnf</code> claim binds the token to the agent's key via JWK Thumbprint (RFC 7638).</p>
-<h3 id="resource-token-aa-resourcejwt">Resource Token (aa-resource+jwt)<a class="headerlink" href="#resource-token-aa-resourcejwt" title="Permanent link">&para;</a></h3>
-<p>A JWT issued by resources in challenges:</p>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="p">{</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="nt">&quot;iss&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://resource.example.com&quot;</span><span class="p">,</span>
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span><span class="nt">&quot;sub&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;aauth:calendar-bot@example.com&quot;</span><span class="p">,</span>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">  </span><span class="nt">&quot;aud&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;https://ps.example.com&quot;</span><span class="p">],</span>
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">  </span><span class="nt">&quot;scope&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;calendar:read&quot;</span><span class="p">,</span>
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">  </span><span class="nt">&quot;jkt&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;abc123...&quot;</span>
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="p">}</span>
-</span></code></pre></div>
-<h2 id="authentication-flows">Authentication Flows<a class="headerlink" href="#authentication-flows" title="Permanent link">&para;</a></h2>
-<p>AAuth supports multiple authentication flows depending on security requirements:</p>
-<h3 id="identity-only-flow-2-party">Identity-Only Flow (2-Party)<a class="headerlink" href="#identity-only-flow-2-party" title="Permanent link">&para;</a></h3>
-<p>For resources that only need to verify agent identity:</p>
-<pre class="mermaid"><code>sequenceDiagram
-    participant Agent
-    participant Resource
-    participant AP as Agent Provider
-
-    Agent-&gt;&gt;Resource: Signed Request
-    Resource-&gt;&gt;AP: Fetch JWKS (if not cached)
-    AP--&gt;&gt;Resource: Public Keys
-    Resource-&gt;&gt;Resource: Verify Signature
-    Resource--&gt;&gt;Agent: Protected Resource</code></pre>
-<p><strong>Use when:</strong></p>
+<h2 id="documentation">Documentation<a class="headerlink" href="#documentation" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Resource trusts any authenticated agent</li>
-<li>No fine-grained authorization needed</li>
-<li>Simpler deployment desired</li>
+<li>AuthZEN overview and getting-started guides (<a href="https://github.com/aistandardsio/agent-protocols/commit/d4feb1a"><code>d4feb1a</code></a>)</li>
+<li>A2A overview and getting-started guides (<a href="https://github.com/aistandardsio/agent-protocols/commit/ebd634f"><code>ebd634f</code></a>)</li>
+<li>README updated with AuthZEN and A2A packages (<a href="https://github.com/aistandardsio/agent-protocols/commit/eae7207"><code>eae7207</code></a>)</li>
+<li>README shields updated (<a href="https://github.com/aistandardsio/agent-protocols/commit/157f282"><code>157f282</code></a>)</li>
+<li>INIT-AGENTPROTOCOLS-001 initiative specs (PRD/TRD/PLAN/ROADMAP) (<a href="https://github.com/aistandardsio/agent-protocols/commit/88d3c37"><code>88d3c37</code></a>)</li>
+<li>omniskill and Keycloak adapter overview guides (<a href="https://github.com/aistandardsio/agent-protocols/commit/4572728"><code>4572728</code></a>)</li>
 </ul>
-<h3 id="resource-managed-flow-3-party">Resource-Managed Flow (3-Party)<a class="headerlink" href="#resource-managed-flow-3-party" title="Permanent link">&para;</a></h3>
-<p>For resources requiring Person Server authorization:</p>
-<pre class="mermaid"><code>sequenceDiagram
-    participant Agent
-    participant Resource
-    participant PS as Person Server
-
-    Agent-&gt;&gt;Resource: Signed Request (no auth token)
-    Resource--&gt;&gt;Agent: 401 + WWW-Authenticate Challenge
-    Agent-&gt;&gt;PS: Token Exchange (resource token)
-    PS--&gt;&gt;Agent: Auth Token
-    Agent-&gt;&gt;Resource: Signed Request + Auth Token
-    Resource-&gt;&gt;Resource: Verify Signature + Auth Token
-    Resource--&gt;&gt;Agent: Protected Resource</code></pre>
-<p><strong>Use when:</strong></p>
+<h2 id="dependencies">Dependencies<a class="headerlink" href="#dependencies" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Resources need human authorization verification</li>
-<li>Scope-based access control required</li>
-<li>Multiple authorization levels needed</li>
-</ul>
-<h3 id="ps-asserted-flow-3-party-proactive">PS-Asserted Flow (3-Party, Proactive)<a class="headerlink" href="#ps-asserted-flow-3-party-proactive" title="Permanent link">&para;</a></h3>
-<p>For agents that obtain tokens before accessing resources:</p>
-<pre class="mermaid"><code>sequenceDiagram
-    participant Agent
-    participant Resource
-    participant PS as Person Server
-
-    Agent-&gt;&gt;Resource: Discover Metadata
-    Resource--&gt;&gt;Agent: Resource Metadata (PS URL)
-    Agent-&gt;&gt;PS: Discover + Request Auth Token
-    PS--&gt;&gt;Agent: Auth Token
-    Agent-&gt;&gt;Resource: Signed Request + Auth Token
-    Resource--&gt;&gt;Agent: Protected Resource</code></pre>
-<p><strong>Use when:</strong></p>
-<ul>
-<li>Agent knows required scopes in advance</li>
-<li>Pre-flight authorization preferred</li>
-<li>Caching auth tokens across requests</li>
-</ul>
-<h3 id="federated-flow-4-party">Federated Flow (4-Party)<a class="headerlink" href="#federated-flow-4-party" title="Permanent link">&para;</a></h3>
-<p>For cross-organizational access with delegation:</p>
-<pre class="mermaid"><code>sequenceDiagram
-    participant Human
-    participant Agent
-    participant HumanPS as Human's PS
-    participant ResourcePS as Resource's PS
-    participant Resource
-
-    Human-&gt;&gt;HumanPS: Authorize Agent
-    Agent-&gt;&gt;HumanPS: Request Delegation Token
-    HumanPS--&gt;&gt;Agent: Delegation Token
-    Agent-&gt;&gt;ResourcePS: Exchange for Auth Token
-    ResourcePS--&gt;&gt;Agent: Auth Token
-    Agent-&gt;&gt;Resource: Request + Auth Token
-    Resource--&gt;&gt;Agent: Protected Resource</code></pre>
-<p><strong>Use when:</strong></p>
-<ul>
-<li>Cross-organizational access needed</li>
-<li>Agent and resource in different trust domains</li>
-<li>Explicit human delegation required</li>
-</ul>
-<h2 id="protocol-components">Protocol Components<a class="headerlink" href="#protocol-components" title="Permanent link">&para;</a></h2>
-<table>
-<thead>
-<tr>
-<th>Component</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>Agent</strong></td>
-<td>AI agent with cryptographic identity</td>
-</tr>
-<tr>
-<td><strong>Agent Provider</strong></td>
-<td>Issues and manages agent identities, publishes JWKS</td>
-</tr>
-<tr>
-<td><strong>Person Server</strong></td>
-<td>Authorization server issuing auth tokens on behalf of humans</td>
-</tr>
-<tr>
-<td><strong>Resource Server</strong></td>
-<td>Hosts protected resources, verifies agent identity and authorization</td>
-</tr>
-</tbody>
-</table>
-<h2 id="key-standards">Key Standards<a class="headerlink" href="#key-standards" title="Permanent link">&para;</a></h2>
-<table>
-<thead>
-<tr>
-<th>Standard</th>
-<th>Purpose</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="https://www.rfc-editor.org/rfc/rfc9421">RFC 9421</a></td>
-<td>HTTP Message Signatures</td>
-</tr>
-<tr>
-<td><a href="https://www.rfc-editor.org/rfc/rfc8693">RFC 8693</a></td>
-<td>OAuth 2.0 Token Exchange</td>
-</tr>
-<tr>
-<td><a href="https://www.rfc-editor.org/rfc/rfc7800">RFC 7800</a></td>
-<td>Proof-of-Possession Key (cnf claim)</td>
-</tr>
-<tr>
-<td><a href="https://www.rfc-editor.org/rfc/rfc7638">RFC 7638</a></td>
-<td>JWK Thumbprint</td>
-</tr>
-<tr>
-<td><a href="https://www.rfc-editor.org/rfc/rfc7517">RFC 7517</a></td>
-<td>JSON Web Key (JWK)</td>
-</tr>
-</tbody>
-</table>
-<h2 id="aauth-vs-id-jag-vs-aims">AAuth vs ID-JAG vs AIMS<a class="headerlink" href="#aauth-vs-id-jag-vs-aims" title="Permanent link">&para;</a></h2>
-<table>
-<thead>
-<tr>
-<th>Aspect</th>
-<th>AAuth</th>
-<th>ID-JAG</th>
-<th>AIMS</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>Type</strong></td>
-<td>Protocol</td>
-<td>Protocol</td>
-<td>Framework</td>
-</tr>
-<tr>
-<td><strong>Identity Model</strong></td>
-<td>AAuth IDs</td>
-<td>OAuth assertions</td>
-<td>SPIFFE IDs</td>
-</tr>
-<tr>
-<td><strong>Credential Format</strong></td>
-<td>aa-agent+jwt, aa-auth+jwt</td>
-<td>JWT assertions</td>
-<td>X.509 SVIDs, WITs</td>
-</tr>
-<tr>
-<td><strong>Authentication</strong></td>
-<td>HTTP signatures + tokens</td>
-<td>Token exchange</td>
-<td>mTLS or WIT/WPT</td>
-</tr>
-<tr>
-<td><strong>Delegation</strong></td>
-<td>Person Server + cnf</td>
-<td><code>act</code> claim</td>
-<td>SPIFFE conventions</td>
-</tr>
-<tr>
-<td><strong>Standards</strong></td>
-<td>RFC 9421, RFC 8693</td>
-<td>RFC 8693, RFC 7523</td>
-<td>SPIFFE, WIMSE</td>
-</tr>
-</tbody>
-</table>
-<h2 id="next-steps">Next Steps<a class="headerlink" href="#next-steps" title="Permanent link">&para;</a></h2>
-<ul>
-<li><a href="../oauth-comparison/">AAuth vs OAuth</a> - Understand how AAuth differs from OAuth 2.0</li>
-<li><a href="../getting-started/">Getting Started</a> - Quick start guide</li>
-<li><a href="../examples/">Examples</a> - Run the demo applications</li>
-<li><a href="../api-reference/">API Reference</a> - Full Go package documentation</li>
-</ul>
-<h2 id="references">References<a class="headerlink" href="#references" title="Permanent link">&para;</a></h2>
-<ul>
-<li><a href="https://datatracker.ietf.org/doc/draft-hardt-oauth-aauth-protocol/">draft-hardt-oauth-aauth-protocol</a></li>
-<li><a href="https://www.rfc-editor.org/rfc/rfc9421">RFC 9421 - HTTP Message Signatures</a></li>
-<li><a href="https://www.rfc-editor.org/rfc/rfc8693">RFC 8693 - OAuth 2.0 Token Exchange</a></li>
-<li><a href="https://www.rfc-editor.org/rfc/rfc7800">RFC 7800 - Proof-of-Possession Key Semantics</a></li>
+<li><code>github.com/ogen-go/ogen</code> v1.22.0 → v1.23.0 (<a href="https://github.com/aistandardsio/agent-protocols/commit/6e339f4"><code>6e339f4</code></a>)</li>
+<li><code>github.com/plexusone/omniobserve</code> v0.11.0 → v0.12.0 (<a href="https://github.com/aistandardsio/agent-protocols/commit/ef042c8"><code>ef042c8</code></a>)</li>
+<li><code>github.com/go-faster/errors</code> v0.7.1 → v0.8.0 (<a href="https://github.com/aistandardsio/agent-protocols/commit/666b4e1"><code>666b4e1</code></a>)</li>
+<li><code>go.opentelemetry.io/otel/metric</code> v1.44.0 → v1.45.0 (<a href="https://github.com/aistandardsio/agent-protocols/commit/008c1e9"><code>008c1e9</code></a>)</li>
+<li><code>go.opentelemetry.io/otel/trace</code> v1.44.0 → v1.45.0 (<a href="https://github.com/aistandardsio/agent-protocols/commit/b4948da"><code>b4948da</code></a>)</li>
+<li><code>go.opentelemetry.io/otel</code> v1.44.0 → v1.45.0 (<a href="https://github.com/aistandardsio/agent-protocols/commit/e739433"><code>e739433</code></a>)</li>
+<li><code>github.com/plexusone/omniskill</code> v0.12.0, <code>github.com/modelcontextprotocol/go-sdk</code> v1.7.0, and other indirect updates (<a href="https://github.com/aistandardsio/agent-protocols/commit/8fd1142"><code>8fd1142</code></a>)</li>
 </ul>
 
 
