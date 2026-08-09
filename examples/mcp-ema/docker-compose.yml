@@ -1,0 +1,14 @@
+# Keycloak 26.7 as ID-JAG receiver (interop mode for the mcp-ema demo).
+# The identity-assertion-jwt feature is EXPERIMENTAL — image pinned on purpose.
+services:
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.7
+    command: start-dev --features=identity-assertion-jwt
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+    ports:
+      - "8081:8080"
+    extra_hosts:
+      # Lets Keycloak reach the demo IdP's JWKS endpoint on the host.
+      - "host.docker.internal:host-gateway"
