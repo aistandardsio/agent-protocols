@@ -43,6 +43,48 @@ This repository provides Go libraries for emerging AI agent authentication and a
 
     [:octicons-arrow-right-24: Learn more](aims/overview.md)
 
+-   :material-handshake:{ .lg .middle } **A2A**
+
+    ---
+
+    Agent-to-Agent Protocol for agent discovery and task delegation.
+
+    Best for: Multi-agent discovery, capability invocation, agent-to-agent task delegation.
+
+    [:octicons-arrow-right-24: Learn more](a2a/overview.md)
+
+-   :material-gavel:{ .lg .middle } **AuthZEN**
+
+    ---
+
+    PDP client for authorization decisions based on OpenID AuthZEN.
+
+    Best for: Policy decision points, agent-aware authorization checks.
+
+    [:octicons-arrow-right-24: Learn more](authzen/overview.md)
+
+</div>
+
+## Cross-Cutting Packages
+
+<div class="grid cards" markdown>
+
+-   :material-source-branch:{ .lg .middle } **Bridge**
+
+    ---
+
+    Cross-protocol interoperability with a canonical `Identity` type and multi-protocol HTTP middleware accepting ID-JAG, AIMS, and AAuth.
+
+    [:octicons-arrow-right-24: Learn more](bridge/overview.md)
+
+-   :material-account-group:{ .lg .middle } **SCIM Extension**
+
+    ---
+
+    SCIM 2.0 extensions for provisioning AI agents and applications.
+
+    [:octicons-arrow-right-24: Learn more](scimext/overview.md)
+
 </div>
 
 ## Choosing a Protocol
@@ -148,6 +190,22 @@ Production-ready integrations with identity infrastructure.
 
     [:octicons-arrow-right-24: Learn more](adapters/ory/overview.md)
 
+-   :material-key-chain-variant:{ .lg .middle } **omniskill**
+
+    ---
+
+    ID-JAG verifier adapter for omniskill's `ExternalAuth` seam, turning any omniskill-based MCP server into an OAuth resource server.
+
+    [:octicons-arrow-right-24: Learn more](adapters/omniskill/overview.md)
+
+-   :material-server-security:{ .lg .middle } **Keycloak**
+
+    ---
+
+    Bootstraps Keycloak 26.7's experimental `identity-assertion-jwt` feature as an ID-JAG receiver. Experimental.
+
+    [:octicons-arrow-right-24: Learn more](adapters/keycloak/overview.md)
+
 </div>
 
 ## Documentation
@@ -176,14 +234,40 @@ Production-ready integrations with identity infrastructure.
 - [Diagrams](aims/diagrams.md) - Sequence and architecture diagrams
 - [API Reference](aims/api-reference.md) - Go package documentation
 
+### A2A
+
+- [Overview](a2a/overview.md) - A2A protocol introduction
+- [Getting Started](a2a/getting-started.md) - Installation and first steps
+
+### AuthZEN
+
+- [Overview](authzen/overview.md) - AuthZEN PDP client introduction
+- [Getting Started](authzen/getting-started.md) - Installation and first steps
+
+### Bridge
+
+- [Overview](bridge/overview.md) - Cross-protocol interoperability
+- [Getting Started](bridge/getting-started.md) - Installation and first steps
+
+### SCIM Extension
+
+- [Overview](scimext/overview.md) - SCIM 2.0 agent and application provisioning
+- [Getting Started](scimext/getting-started.md) - Installation and first steps
+- [Examples](scimext/examples.md) - Running the demo applications
+- [API Reference](scimext/api-reference.md) - Go package documentation
+
 ### Adapters
 
 - [Zitadel](adapters/zitadel/overview.md) - Integration with Zitadel OIDC infrastructure
 - [SharkAuth](adapters/sharkauth/overview.md) - Agent delegation with DPoP proof-of-possession
 - [Ory](adapters/ory/overview.md) - Fosite handlers and Hydra client for OAuth 2.0
+- [omniskill](adapters/omniskill/overview.md) - ID-JAG verifier for omniskill's ExternalAuth seam
+- [Keycloak](adapters/keycloak/overview.md) - identity-assertion-jwt receiver bootstrap (experimental)
 
 ### Releases
 
+- [v0.7.0](releases/v0.7.0.md) - A2A and AuthZEN clients, omniskill and Keycloak adapters (2026-08-09)
+- [v0.6.0](releases/v0.6.0.md) - Interface-based servers, SCIM extensions (2026-06-27)
 - [v0.3.0](releases/v0.3.0.md) - SharkAuth and Ory adapters (2026-05-11)
 - [v0.2.0](releases/v0.2.0.md) - AAuth protocol, Zitadel adapter (2026-05-11)
 - [v0.1.0](releases/v0.1.0.md) - ID-JAG and AIMS protocols (2026-04-19)

@@ -53,6 +53,10 @@ This repository provides Go libraries for emerging agent-to-agent protocols:
   - PEP-to-PDP communication API
   - Agent-aware subject helpers with SPIFFE/delegation support
 
+- **[scimext](./scimext/)** - SCIM 2.0 extensions for provisioning AI agents and applications
+  - Agent and Application resource types
+  - Compatible with any SCIM 2.0-compliant identity provider
+
 ### Server Implementations
 
 Interface-based authorization servers (bring your own storage):
@@ -80,6 +84,8 @@ Production-ready integrations with identity infrastructure:
 - **[adapters/zitadel](./adapters/zitadel/)** - Integration with [Zitadel](https://zitadel.com/) OIDC for all three protocols
 - **[adapters/sharkauth](./adapters/sharkauth/)** - Integration with [SharkAuth](https://github.com/shark-auth/shark) for agent delegation with DPoP
 - **[adapters/ory](./adapters/ory/)** - Integration with [Ory Fosite](https://github.com/ory/fosite) and [Hydra](https://github.com/ory/hydra)
+- **[adapters/omniskill](./adapters/omniskill/)** - ID-JAG verifier for [omniskill](https://github.com/plexusone/omniskill)'s `ExternalAuth` seam, turning any omniskill-based MCP server into an OAuth resource server
+- **[adapters/keycloak](./adapters/keycloak/)** - Bootstraps Keycloak 26.7's experimental `identity-assertion-jwt` feature as an ID-JAG receiver (experimental)
 
 ## Installation
 
@@ -217,6 +223,11 @@ go run ./adapters/ory/examples/idjag  # ID-JAG with Hydra
 go run ./demos/protocol-bridge  # Multi-protocol authentication demo
 ```
 
+**MCP Enterprise-Managed Authorization:**
+```bash
+go run ./examples/mcp-ema  # ID-JAG issuer -> receiver -> mcp-google resource server, end to end
+```
+
 ## Documentation
 
 - **AAuth**: [Overview](./docs/aauth/overview.md) | [Getting Started](./docs/aauth/getting-started.md) | [Examples](./docs/aauth/examples.md)
@@ -224,10 +235,13 @@ go run ./demos/protocol-bridge  # Multi-protocol authentication demo
 - **AIMS**: [Overview](./docs/aims/overview.md) | [Getting Started](./docs/aims/getting-started.md)
 - **A2A**: [Overview](./docs/a2a/overview.md) | [Getting Started](./docs/a2a/getting-started.md)
 - **AuthZEN**: [Overview](./docs/authzen/overview.md) | [Getting Started](./docs/authzen/getting-started.md)
+- **SCIM Extension**: [Overview](./docs/scimext/overview.md) | [Getting Started](./docs/scimext/getting-started.md)
 - **AgentAuth**: See [plexusone/agentauth](https://github.com/plexusone/agentauth) for unified deployment
 - **Zitadel Adapter**: [Overview](./docs/adapters/zitadel/overview.md) | [Getting Started](./docs/adapters/zitadel/getting-started.md)
 - **SharkAuth Adapter**: [Overview](./docs/adapters/sharkauth/overview.md) | [Getting Started](./docs/adapters/sharkauth/getting-started.md)
 - **Ory Adapter**: [Overview](./docs/adapters/ory/overview.md) | [Getting Started](./docs/adapters/ory/getting-started.md)
+- **omniskill Adapter**: [Overview](./docs/adapters/omniskill/overview.md)
+- **Keycloak Adapter**: [Overview](./docs/adapters/keycloak/overview.md)
 - [API Reference](https://pkg.go.dev/github.com/aistandardsio/agent-protocols)
 - [Changelog](./CHANGELOG.md)
 - [Full Documentation](https://aistandards.io/agent-protocols/)

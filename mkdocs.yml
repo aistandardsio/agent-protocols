@@ -81,6 +81,12 @@ nav:
     - Examples: aims/examples.md
     - Diagrams: aims/diagrams.md
     - API Reference: aims/api-reference.md
+  - A2A:
+    - Overview: a2a/overview.md
+    - Getting Started: a2a/getting-started.md
+  - AuthZEN:
+    - Overview: authzen/overview.md
+    - Getting Started: authzen/getting-started.md
   - Bridge:
     - Overview: bridge/overview.md
     - Getting Started: bridge/getting-started.md
@@ -101,10 +107,15 @@ nav:
     - Ory:
       - Overview: adapters/ory/overview.md
       - Getting Started: adapters/ory/getting-started.md
+    - omniskill:
+      - Overview: adapters/omniskill/overview.md
+    - Keycloak:
+      - Overview: adapters/keycloak/overview.md
   - Guides:
     - OAuth to Agent Migration: guides/oauth-to-agent-migration.md
     - Hybrid Authentication: guides/hybrid-authentication.md
   - Releases:
+    - v0.7.0: releases/v0.7.0.md
     - v0.6.0: releases/v0.6.0.md
     - v0.5.0: releases/v0.5.0.md
     - v0.4.0: releases/v0.4.0.md
