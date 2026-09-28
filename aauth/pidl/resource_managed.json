@@ -35,6 +35,12 @@
       "name": "Person Server",
       "type": "authorization_server",
       "description": "Issues auth tokens on behalf of humans who authorized agents"
+    },
+    {
+      "id": "human",
+      "name": "Human",
+      "type": "user",
+      "description": "Person who approves the agent's request when the Person Server defers it for consent (see docs/aauth/pidl/aauth_consent_flow.pidl.json)"
     }
   ],
   "phases": [
@@ -109,6 +115,43 @@
     {
       "from": "person_server",
       "to": "agent",
+      "action": "pending_response",
+      "label": "202 Accepted (consent_uri, status_uri)",
+      "mode": "response",
+      "phase": "token_exchange",
+      "condition": "consent_required",
+      "description": "When the request needs the human's approval, the Person Server defers instead of issuing a token"
+    },
+    {
+      "from": "human",
+      "to": "person_server",
+      "action": "view_consent",
+      "label": "Open consent_uri and review the request",
+      "mode": "interactive",
+      "phase": "token_exchange",
+      "condition": "consent_required"
+    },
+    {
+      "from": "human",
+      "to": "person_server",
+      "action": "consent_decision",
+      "label": "Approve or deny",
+      "mode": "interactive",
+      "phase": "token_exchange",
+      "condition": "consent_required"
+    },
+    {
+      "from": "agent",
+      "to": "person_server",
+      "action": "poll_status",
+      "label": "GET status_uri (poll until approved, denied or expired)",
+      "mode": "request",
+      "phase": "token_exchange",
+      "condition": "consent_required"
+    },
+    {
+      "from": "person_server",
+      "to": "agent",
       "action": "auth_token",
       "label": "Auth Token (aa-auth+jwt with cnf claim)",
       "mode": "response",
@@ -117,6 +160,10 @@
         {
           "type": "security",
           "text": "Auth token bound to agent's public key via cnf claim"
+        },
+        {
+          "type": "info",
+          "text": "After deferred consent, the token is returned in the approved status response"
         }
       ]
     },
