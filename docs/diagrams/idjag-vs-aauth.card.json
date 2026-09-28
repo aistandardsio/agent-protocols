@@ -1,0 +1,325 @@
+{
+  "title": "ID-JAG vs AAuth: two ways to authorize an AI agent",
+  "artifacts": [
+    {
+      "id": "sso",
+      "label": "Sign-in",
+      "color": "#ffffff"
+    },
+    {
+      "id": "id-token",
+      "label": "ID token",
+      "color": "#60a5fa"
+    },
+    {
+      "id": "id-jag",
+      "label": "ID-JAG",
+      "color": "#fbbf24"
+    },
+    {
+      "id": "access-token",
+      "label": "Access token",
+      "color": "#34d399"
+    },
+    {
+      "id": "signed-request",
+      "label": "Signed request",
+      "color": "#f472b6"
+    },
+    {
+      "id": "challenge",
+      "label": "Challenge",
+      "color": "#fb923c"
+    },
+    {
+      "id": "consent",
+      "label": "Consent",
+      "color": "#a78bfa"
+    }
+  ],
+  "panels": [
+    {
+      "id": "overview",
+      "height": 190,
+      "ruleBelow": true,
+      "title": "ID-JAG vs AAuth",
+      "titleSize": 42,
+      "body": "Two ways to authorize an AI agent",
+      "textSide": "right",
+      "textWidth": 330,
+      "center": true,
+      "diagram": {
+        "nodes": [
+          {
+            "id": "idp",
+            "icon": "🏢",
+            "label": "Enterprise\nIdP",
+            "x": 55,
+            "y": 50
+          },
+          {
+            "id": "agent",
+            "icon": "🤖",
+            "label": "Agent",
+            "x": 196,
+            "y": 50
+          },
+          {
+            "id": "ps",
+            "icon": "🙋",
+            "label": "Person\nServer",
+            "x": 337,
+            "y": 50
+          },
+          {
+            "id": "res",
+            "icon": "🗄",
+            "label": "Resource",
+            "x": 196,
+            "y": 140
+          }
+        ],
+        "edges": [
+          {
+            "from": "idp",
+            "to": "agent",
+            "label": "ID-JAG",
+            "flow": {
+              "color": "#fbbf24",
+              "delay": 0.2
+            }
+          },
+          {
+            "from": "ps",
+            "to": "agent",
+            "label": "AAuth",
+            "flow": {
+              "color": "#f472b6",
+              "delay": 0.2
+            }
+          },
+          {
+            "from": "agent",
+            "to": "res",
+            "flow": {
+              "color": "#34d399",
+              "delay": 1.4
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "idjag",
+      "height": 255,
+      "title": "ID-JAG",
+      "body": "Enterprise-managed authorization. The IdP mints a short-lived grant for the user's agent, and the resource's auth server swaps it for an access token. Admins set policy once, at the IdP.",
+      "source": {
+        "pidl": "../../idjag/pidl/idjag_delegation.json",
+        "actors": [
+          {
+            "entity": "user",
+            "icon": "👤",
+            "label": "User",
+            "x": 55,
+            "y": 40
+          },
+          {
+            "entity": "idp_auth_server",
+            "icon": "🏢",
+            "label": "Enterprise\nIdP",
+            "x": 215,
+            "y": 40
+          },
+          {
+            "entity": "agent",
+            "icon": "🤖",
+            "label": "Agent",
+            "x": 55,
+            "y": 150
+          },
+          {
+            "entity": "resource_auth_server",
+            "icon": "🔐",
+            "label": "Resource\nAuth Server",
+            "x": 215,
+            "y": 205
+          },
+          {
+            "entity": "resource_server",
+            "icon": "🛠",
+            "label": "MCP Server",
+            "x": 340,
+            "y": 130
+          }
+        ],
+        "steps": [
+          {
+            "action": "authenticate",
+            "artifact": "sso",
+            "label": "SSO"
+          },
+          {
+            "action": "request_idjag",
+            "artifact": "id-token"
+          },
+          {
+            "action": "return_idjag",
+            "artifact": "id-jag"
+          },
+          {
+            "action": "jwt_bearer_request",
+            "artifact": "id-jag"
+          },
+          {
+            "action": "token_response",
+            "artifact": "access-token"
+          },
+          {
+            "action": "delegated_api_request",
+            "artifact": "access-token"
+          }
+        ],
+        "edges": [
+          {
+            "between": [
+              "agent",
+              "idp_auth_server"
+            ],
+            "bend": -20
+          },
+          {
+            "between": [
+              "agent",
+              "resource_auth_server"
+            ],
+            "bend": 20
+          }
+        ]
+      }
+    },
+    {
+      "id": "aauth",
+      "height": 255,
+      "title": "AAuth",
+      "body": "Agent-first authorization. The agent signs every request with its own key. When a resource wants more, a Person Server gets the human's consent and issues a token bound to that key.",
+      "source": {
+        "pidl": "../../aauth/pidl/resource_managed.json",
+        "actors": [
+          {
+            "entity": "agent",
+            "icon": "🤖",
+            "label": "Agent",
+            "x": 55,
+            "y": 110
+          },
+          {
+            "entity": "resource",
+            "icon": "🗄",
+            "label": "Resource\nServer",
+            "x": 340,
+            "y": 110
+          },
+          {
+            "entity": "person_server",
+            "icon": "🙋",
+            "label": "Person\nServer",
+            "x": 200,
+            "y": 205
+          },
+          {
+            "icon": "👤",
+            "label": "Human",
+            "x": 340,
+            "y": 205,
+            "entity": "human"
+          }
+        ],
+        "steps": [
+          {
+            "action": "initial_request",
+            "artifact": "signed-request"
+          },
+          {
+            "action": "challenge",
+            "artifact": "challenge"
+          },
+          {
+            "action": "token_exchange",
+            "artifact": "challenge"
+          },
+          {
+            "action": "consent_decision",
+            "artifact": "consent",
+            "label": "consent"
+          },
+          {
+            "action": "auth_token",
+            "artifact": "access-token"
+          },
+          {
+            "action": "authorized_request",
+            "artifact": "access-token"
+          }
+        ],
+        "edges": [
+          {
+            "between": [
+              "agent",
+              "person_server"
+            ],
+            "bend": 18
+          },
+          {
+            "between": [
+              "person_server",
+              "human"
+            ],
+            "style": "dashed"
+          }
+        ]
+      }
+    },
+    {
+      "id": "compare",
+      "kind": "table",
+      "height": 256,
+      "table": {
+        "columns": [
+          "",
+          "ID-JAG",
+          "AAuth"
+        ],
+        "columnColors": [
+          "#ffffff",
+          "#fbbf24",
+          "#f472b6"
+        ],
+        "fontSize": 14,
+        "rows": [
+          [
+            "Trust anchor",
+            "The enterprise IdP",
+            "The agent's own key, plus a Person Server"
+          ],
+          [
+            "Who approves",
+            "Admin policy, set once",
+            "The human, per task"
+          ],
+          [
+            "Agent proves itself with",
+            "A bearer access token",
+            "An HTTP signature and a key-bound token"
+          ],
+          [
+            "Spec status",
+            "IETF OAuth WG draft; MCP adopting",
+            "Individual draft; experimental"
+          ]
+        ]
+      }
+    }
+  ],
+  "footer": "agent-protocols"
+}
