@@ -1,28 +1,35 @@
-title: AAuth Pre-Authorization Flow {
+title: "AAuth Pre-Authorization Flow" {
   shape: text
   near: top-center
   style.font-size: 24
 }
 
-sequence: {
+sequence: "" {
   shape: sequence_diagram
 
-  agent: AI Agent
-  person_server: Person Server
-  resource_server: Resource Server
+  agent: "AI Agent"
+  person_server: "Person Server"
+  resource_server: "Resource Server"
 
-  authorization_request: Authorization Request {
-    seq1: agent -> person_server: POST /aauth/authorize
-    seq2: person_server -> person_server: Check Pre-Authorization
-    seq3: person_server -> person_server: Generate Access Token (JWT)
-    seq4: person_server <- agent: 200 OK (access_token)
+  authorization_request: "Authorization Request" {
+    agent -> person_server: "POST /aauth/authorize"
+    person_server -> person_server: "Check Pre-Authorization"
+    person_server -> person_server: "[preauth_covers_scope] Generate Access Token (JWT)"
+    person_server."No consent required - scope pre-authorized"
+    person_server -> agent: "200 OK (access_token)" {
+      style.stroke-dash: 3
+    }
   }
 
-  resource_access: Resource Access {
-    seq5: agent -> resource_server: Request + Bearer Token
-    seq6: resource_server -> person_server: GET /.well-known/jwks.json
-    seq7: person_server <- resource_server: JWKS
-    seq8: resource_server -> resource_server: Verify Token
-    seq9: resource_server <- agent: Protected Resource
+  resource_access: "Resource Access" {
+    agent -> resource_server: "Request + Bearer Token"
+    resource_server -> person_server: "[keys_not_cached] GET /.well-known/jwks.json"
+    person_server -> resource_server: "[keys_not_cached] JWKS" {
+      style.stroke-dash: 3
+    }
+    resource_server -> resource_server: "Verify Token"
+    resource_server -> agent: "Protected Resource" {
+      style.stroke-dash: 3
+    }
   }
 }
