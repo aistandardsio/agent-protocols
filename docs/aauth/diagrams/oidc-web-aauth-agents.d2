@@ -1,0 +1,62 @@
+# Using OIDC for the web app and AAuth for agents, side by side
+# https://github.com/aistandardsio/agent-protocols
+
+direction: down
+
+title: OIDC for the Web App, AAuth for the Agent {
+  shape: text
+  near: top-center
+  style.font-size: 24
+}
+
+person: Person {
+  shape: person
+}
+
+web: Web path (OAuth 2.0 / OIDC, unchanged) {
+  style.fill: "#fff3e0"
+  style.stroke: "#e65100"
+
+  app: Web App\n(OIDC relying party, OAuth client) {
+    style.fill: "#ffe0b2"
+  }
+  op: OpenID Provider +\nAuthorization Server {
+    style.fill: "#ffe0b2"
+  }
+
+  app -> op: authorization code + PKCE\nid_token, access_token
+}
+
+agent: Agent path (AAuth) {
+  style.fill: "#e3f2fd"
+  style.stroke: "#1565c0"
+
+  a: Agent\n(hosted or local, own key) {
+    style.fill: "#bbdefb"
+  }
+  ps: Person Server\n(consent card, tap, reply) {
+    style.fill: "#bbdefb"
+  }
+
+  a -> ps: person token, auth token\n(HTTP Sig with agent token)
+}
+
+api: Resource API {
+  style.fill: "#e8f5e9"
+  style.stroke: "#2e7d32"
+
+  oauth_v: OAuth verifier\n(Bearer or DPoP) {
+    style.fill: "#c8e6c9"
+  }
+  aauth_v: AAuth verifier\n(HTTP Sig + Signature-Key) {
+    style.fill: "#c8e6c9"
+  }
+}
+
+person -> web.app: signs in, uses the app
+person -> agent.a: delegates a task
+agent.ps -> web.op: PS delegates person\nauthentication to OIDC {
+  style.stroke-dash: 3
+}
+web.app -> api.oauth_v: Authorization = Bearer access_token
+agent.a -> api.aauth_v: signed request\nSignature-Key sig=jwt
