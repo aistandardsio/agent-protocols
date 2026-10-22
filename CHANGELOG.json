@@ -29,6 +29,7 @@
       ],
       "dependencies": [
         { "description": "`github.com/grokify/pidl` v0.9.0 added for the AAuth PIDL document test", "commit": "a23c015" },
+        { "description": "`github.com/grokify/oscompat` v0.8.0 added, so the test compares the walkthrough across line endings without platform-specific code", "commit": "966c4c3" },
         { "description": "`github.com/modelcontextprotocol/go-sdk` v1.7.0 -> v1.8.0", "commit": "f211db8" },
         { "description": "`go.opentelemetry.io/otel`, `otel/metric` and `otel/trace` v1.45.0 -> v1.47.0", "commit": "2cb3fc5" },
         { "description": "`golang.org/x/oauth2` v0.36.0 -> v0.37.0", "commit": "947ad70" },
