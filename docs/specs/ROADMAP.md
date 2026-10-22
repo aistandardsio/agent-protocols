@@ -589,7 +589,7 @@ require (
 
 ## Contributing
 
-See [CONTRIBUTING.md](../../CONTRIBUTING.md) for guidelines.
+To contribute, open an issue or a pull request at [github.com/aistandardsio/agent-protocols](https://github.com/aistandardsio/agent-protocols).
 
 ## References
 
