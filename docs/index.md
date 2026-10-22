@@ -266,6 +266,7 @@ Production-ready integrations with identity infrastructure.
 
 ### Releases
 
+- [v0.8.0](releases/v0.8.0.md) - AAuth Explorer, AAuth PIDL document, AAuth and OAuth 2.0 comparison (2026-10-22)
 - [v0.7.0](releases/v0.7.0.md) - A2A and AuthZEN clients, omniskill and Keycloak adapters (2026-08-09)
 - [v0.6.0](releases/v0.6.0.md) - Interface-based servers, SCIM extensions (2026-06-27)
 - [v0.3.0](releases/v0.3.0.md) - SharkAuth and Ory adapters (2026-05-11)
