@@ -6,6 +6,7 @@ require (
 	github.com/go-faster/errors v0.8.0
 	github.com/go-faster/jx v1.2.0
 	github.com/golang-jwt/jwt/v5 v5.3.1
+	github.com/grokify/oscompat v0.8.0
 	github.com/grokify/pidl v0.9.0
 	github.com/modelcontextprotocol/go-sdk v1.8.0
 	github.com/ogen-go/ogen v1.24.0
@@ -31,7 +32,6 @@ require (
 	github.com/google/jsonschema-go v0.4.3 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/grokify/mogo v0.75.0 // indirect
-	github.com/grokify/oscompat v0.8.0 // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.32.0 // indirect
 	github.com/huandu/xstrings v1.6.3 // indirect
 	github.com/mattn/go-colorable v0.1.16 // indirect

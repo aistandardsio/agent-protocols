@@ -3,11 +3,12 @@
 package pidl_test
 
 import (
-	"bytes"
 	"os"
 	"reflect"
+	"strings"
 	"testing"
 
+	oscfs "github.com/grokify/oscompat/fs"
 	"github.com/grokify/pidl"
 	"github.com/grokify/pidl/analyze"
 	"github.com/grokify/pidl/render"
@@ -71,7 +72,8 @@ func TestWalkthroughIsCurrent(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if !bytes.Equal(bytes.TrimSpace(got), bytes.TrimSpace([]byte(want))) {
+	// Compare as text: a checkout may have CRLF line endings.
+	if strings.TrimSpace(oscfs.NormalizeLineEndings(string(got))) != strings.TrimSpace(oscfs.NormalizeLineEndings(want)) {
 		t.Fatalf("%s is out of date; run docs/aauth/explorer/build.sh and commit it", walkthrough)
 	}
 }
