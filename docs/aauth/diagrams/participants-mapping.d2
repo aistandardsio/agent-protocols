@@ -1,0 +1,68 @@
+# OAuth 2.0 / OIDC participants mapped onto AAuth participants
+# Source: draft-hardt-oauth-aauth-protocol-11, Roles and Terminology
+# https://github.com/aistandardsio/agent-protocols
+
+direction: right
+
+title: Participants, OAuth 2.0 to AAuth {
+  shape: text
+  near: top-center
+  style.font-size: 24
+}
+
+oauth: OAuth 2.0 / OpenID Connect {
+  style.fill: "#fff3e0"
+  style.stroke: "#e65100"
+
+  owner: Resource Owner {
+    shape: person
+  }
+  client: Client\n(pre-registered, client_id per AS) {
+    style.fill: "#ffe0b2"
+  }
+  as: Authorization Server\n(run by the resource side) {
+    style.fill: "#ffe0b2"
+  }
+  op: OpenID Provider\n(login only) {
+    style.fill: "#ffe0b2"
+  }
+  rs: Resource Server\n(passive token consumer) {
+    style.fill: "#ffe0b2"
+  }
+}
+
+aauth: AAuth {
+  style.fill: "#e3f2fd"
+  style.stroke: "#1565c0"
+
+  person: Person {
+    shape: person
+  }
+  agent: Agent\n(own key, aauth:local@domain) {
+    style.fill: "#bbdefb"
+  }
+  ap: Agent Provider\n(issues agent tokens) {
+    style.fill: "#bbdefb"
+  }
+  ps: Person Server\n(chosen by the person) {
+    style.fill: "#bbdefb"
+  }
+  acs: Access Server\n(chosen by the resource, optional) {
+    style.fill: "#bbdefb"
+  }
+  resource: Resource\n(signs resource tokens) {
+    style.fill: "#bbdefb"
+  }
+}
+
+oauth.owner -> aauth.person: same person, now accountable\nfor an autonomous actor
+oauth.client -> aauth.agent: the client gains a portable identity
+oauth.client -> aauth.ap: registration moves to the agent's\nown provider, not each server {
+  style.stroke-dash: 3
+}
+oauth.as -> aauth.ps: the user-facing half of the AS,\nconsent and identity
+oauth.as -> aauth.acs: the resource-facing half of the AS,\npolicy
+oauth.op -> aauth.ps: a PS may delegate login to an OP {
+  style.stroke-dash: 3
+}
+oauth.rs -> aauth.resource: the resource now signs\nwhat it requires

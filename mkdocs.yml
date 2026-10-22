@@ -66,6 +66,7 @@ nav:
     - Getting Started: aauth/getting-started.md
     - Examples: aauth/examples.md
     - Diagrams: aauth/diagrams.md
+    - AAuth and OAuth: aauth/oauth-comparison.md
     - API Reference: aauth/api-reference.md
   - ID-JAG:
     - Overview: idjag/protocol-overview.md

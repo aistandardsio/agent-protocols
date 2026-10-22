@@ -1,0 +1,51 @@
+title: "OAuth 2.0 Authorization Code Grant with Bearer Token Use" {
+  shape: text
+  near: top-center
+  style.font-size: 24
+}
+
+sequence: "" {
+  shape: sequence_diagram
+
+  user: "Resource Owner"
+  client: "Client"
+  auth_server: "Authorization Server"
+  resource_server: "Resource Server"
+
+  registration: "Client Registration (one time)" {
+    client -> auth_server: "Register client_id, redirect_uri, client secret (out of band)"
+    auth_server."Identity is per authorization server. A client_id means nothing anywhere else."
+  }
+
+  authorization_grant: "Obtaining Authorization (RFC 6749 section 4.1)" {
+    user -> client: "Start sign-in or connect"
+    client -> user: "302 to /authorize with response_type=code, client_id, scope, state, code_challenge (redirect)"
+    user -> auth_server: "GET /authorize then login and consent screen"
+    auth_server."Consent is a standing grant of scopes. It carries no statement of why or for which task."
+    auth_server -> user: "302 to redirect_uri with code and state (redirect)"
+    user -> client: "GET redirect_uri with code (callback)"
+  }
+
+  token_issuance: "Issuing an Access Token (RFC 6749 section 5)" {
+    client -> auth_server: "POST /token with grant_type=authorization_code, code, code_verifier, client authentication"
+    auth_server -> client: "access_token (Bearer), refresh_token, expires_in, scope" {
+      style.stroke-dash: 3
+    }
+  }
+
+  resource_access: "Accessing Protected Resources (RFC 6749 section 7, RFC 6750)" {
+    client -> resource_server: "GET /api with Authorization = Bearer access_token"
+    resource_server."⚠️ SECURITY: Bearer means possession is authority. Anyone holding the token can use it unless DPoP or mTLS binding is added."
+    resource_server -> resource_server: "Validate token by JWT verification or introspection"
+    resource_server -> client: "200 OK" {
+      style.stroke-dash: 3
+    }
+  }
+
+  refresh: "Refreshing an Access Token (RFC 6749 section 6)" {
+    client -> auth_server: "POST /token with grant_type=refresh_token"
+    auth_server -> client: "new access_token" {
+      style.stroke-dash: 3
+    }
+  }
+}

@@ -1,0 +1,60 @@
+title: "AAuth PS Authorization Access (Three-Party)" {
+  shape: text
+  near: top-center
+  style.font-size: 24
+}
+
+sequence: "" {
+  shape: sequence_diagram
+
+  person: "Person"
+  agent: "Agent"
+  agent_provider: "Agent Provider"
+  person_server: "Person Server"
+  resource: "Resource"
+
+  bootstrap: "Agent Token (identity)" {
+    agent -> agent_provider: "Prove key possession (platform specific, see AAuth Bootstrap)"
+    agent_provider -> agent: "agent token (aa-agent+jwt) with cnf = agent key and ps = person server URL" {
+      style.stroke-dash: 3
+    }
+    agent."Portable identity. Verifiable by any resource from the agent provider's JWKS, with no registration at the resource."
+  }
+
+  person_token: "Person Token (who the agent acts for)" {
+    agent -> person_server: "POST person_token_endpoint with resource = URL, HTTP Sig with agent token"
+    person_server -> person: "First use of this resource? Show its metadata and ask (202 interaction, or a tap out of band)"
+    person -> person_server: "Approve"
+    person_server -> agent: "person token (aa-person+jwt) with aud = resource, directed sub, cnf = agent key" {
+      style.stroke-dash: 3
+    }
+    agent."⚠️ SECURITY: Identity only, no scope. The sub is directed per resource, so resources cannot correlate the person."
+  }
+
+  resource_token: "Resource Token (what the resource requires)" {
+    agent -> resource: "POST authorization_endpoint, or any call, HTTP Sig with person token"
+    resource -> agent: "401 or 200 with resource token (aa-resource+jwt) with aud = PS, ps, sub, presented_jti, scope" {
+      style.stroke-dash: 3
+    }
+    agent."The resource, not the client, authors and signs the authorization request. OAuth has no equivalent."
+  }
+
+  auth_token: "Auth Token (consent)" {
+    agent -> person_server: "POST auth_token_endpoint with resource_token and presented_token, HTTP Sig with agent token"
+    person_server -> person: "Consent card = resource metadata, resource-asserted scope, agent-asserted justification (202 interaction)"
+    person."Pending is a state, not an error. The agent polls the pending URL while the person decides."
+    person -> person_server: "Approve, deny, or ask the agent a clarification"
+    person_server -> agent: "auth token (aa-auth+jwt) with aud = resource, ps, sub, scope, cnf = agent key" {
+      style.stroke-dash: 3
+    }
+  }
+
+  resource_access: "Signed Resource Access" {
+    agent -> resource: "GET /api with Signature-Key sig=jwt and HTTP Message Signature"
+    resource."⚠️ SECURITY: Never bearer. A stolen token is useless without the agent's private key."
+    resource -> resource: "Verify signature, cnf matches signing key, aud, and the (iss, sub) record"
+    resource -> agent: "200 OK" {
+      style.stroke-dash: 3
+    }
+  }
+}
