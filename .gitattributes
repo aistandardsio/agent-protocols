@@ -1,0 +1,4 @@
+# Check out text files with LF on every platform. Generated files, such
+# as the AAuth Explorer's walkthrough, are compared byte for byte with
+# what the generator writes.
+* text=auto eol=lf
