@@ -1,0 +1,51 @@
+{
+  "$schema": "https://github.com/grokify/pidl/schema/pidl.schema.json",
+  "protocol": {
+    "id": "aauth-three-party",
+    "name": "AAuth PS Authorization Access (Three-Party)",
+    "version": "1.0",
+    "description": "The AAuth flow closest to OAuth authorization code: an agent with its own key obtains a person token, is challenged by the resource with a resource token, obtains an auth token from the person server, and signs every request. Aligned with draft-hardt-oauth-aauth-protocol-11.",
+    "category": "agent",
+    "references": [
+      { "name": "draft-hardt-oauth-aauth-protocol", "url": "https://datatracker.ietf.org/doc/draft-hardt-oauth-aauth-protocol/" },
+      { "name": "draft-hardt-httpbis-signature-key", "url": "https://datatracker.ietf.org/doc/draft-hardt-httpbis-signature-key/" },
+      { "name": "RFC 9421 - HTTP Message Signatures", "url": "https://www.rfc-editor.org/rfc/rfc9421" }
+    ]
+  },
+  "entities": [
+    { "id": "person", "name": "Person", "type": "user", "trust_level": "authoritative", "description": "The person the agent acts for. Approves at their own person server, on their own timeline" },
+    { "id": "agent", "name": "Agent", "type": "agent", "trust_level": "semi_trusted", "description": "Holds a signing key. Signs every request with it. Identified as aauth:local@domain" },
+    { "id": "agent_provider", "name": "Agent Provider", "type": "identity_provider", "trust_level": "trusted", "description": "Issues the agent token that binds the agent's key to its identifier" },
+    { "id": "person_server", "name": "Person Server", "type": "authorization_server", "trust_level": "trusted", "description": "Chosen by the person, not the resource. Issues person tokens and auth tokens, runs consent" },
+    { "id": "resource", "name": "Resource", "type": "resource_server", "trust_level": "trusted", "description": "Verifies signatures and tokens. Signs a resource token describing what it requires" }
+  ],
+  "phases": [
+    { "id": "bootstrap", "name": "Agent Token (identity)", "description": "The agent proves key possession to its agent provider and receives an agent token. No resource is involved" },
+    { "id": "person_token", "name": "Person Token (who the agent acts for)", "description": "The agent asks its person server for a token naming this resource" },
+    { "id": "resource_token", "name": "Resource Token (what the resource requires)", "description": "The resource signs a description of the access it needs before it will serve" },
+    { "id": "auth_token", "name": "Auth Token (consent)", "description": "The person server runs consent and issues the auth token bound to the agent's key" },
+    { "id": "resource_access", "name": "Signed Resource Access", "description": "Every request carries an HTTP Message Signature and the token in Signature-Key" }
+  ],
+  "flows": [
+    { "from": "agent", "to": "agent_provider", "action": "enroll", "label": "Prove key possession (platform specific, see AAuth Bootstrap)", "mode": "request", "phase": "bootstrap", "security": { "requirements": ["signature"] } },
+    { "from": "agent_provider", "to": "agent", "action": "agent_token", "label": "agent token (aa-agent+jwt) with cnf = agent key and ps = person server URL", "mode": "response", "phase": "bootstrap",
+      "annotations": [ { "type": "info", "text": "Portable identity. Verifiable by any resource from the agent provider's JWKS, with no registration at the resource." } ] },
+    { "from": "agent", "to": "person_server", "action": "person_token_request", "label": "POST person_token_endpoint with resource = URL, HTTP Sig with agent token", "mode": "request", "phase": "person_token", "security": { "requirements": ["signature"] } },
+    { "from": "person_server", "to": "person", "action": "first_use", "label": "First use of this resource? Show its metadata and ask (202 interaction, or a tap out of band)", "mode": "interactive", "phase": "person_token" },
+    { "from": "person", "to": "person_server", "action": "first_use_ok", "label": "Approve", "mode": "interactive", "phase": "person_token" },
+    { "from": "person_server", "to": "agent", "action": "person_token", "label": "person token (aa-person+jwt) with aud = resource, directed sub, cnf = agent key", "mode": "response", "phase": "person_token",
+      "annotations": [ { "type": "security", "text": "Identity only, no scope. The sub is directed per resource, so resources cannot correlate the person." } ] },
+    { "from": "agent", "to": "resource", "action": "authorization_request", "label": "POST authorization_endpoint, or any call, HTTP Sig with person token", "mode": "request", "phase": "resource_token", "security": { "requirements": ["signature"] } },
+    { "from": "resource", "to": "agent", "action": "resource_token", "label": "401 or 200 with resource token (aa-resource+jwt) with aud = PS, ps, sub, presented_jti, scope", "mode": "response", "phase": "resource_token",
+      "annotations": [ { "type": "info", "text": "The resource, not the client, authors and signs the authorization request. OAuth has no equivalent." } ] },
+    { "from": "agent", "to": "person_server", "action": "auth_token_request", "label": "POST auth_token_endpoint with resource_token and presented_token, HTTP Sig with agent token", "mode": "request", "phase": "auth_token", "security": { "requirements": ["signature"] } },
+    { "from": "person_server", "to": "person", "action": "consent", "label": "Consent card = resource metadata, resource-asserted scope, agent-asserted justification (202 interaction)", "mode": "interactive", "phase": "auth_token",
+      "annotations": [ { "type": "info", "text": "Pending is a state, not an error. The agent polls the pending URL while the person decides." } ] },
+    { "from": "person", "to": "person_server", "action": "approve", "label": "Approve, deny, or ask the agent a clarification", "mode": "interactive", "phase": "auth_token" },
+    { "from": "person_server", "to": "agent", "action": "auth_token", "label": "auth token (aa-auth+jwt) with aud = resource, ps, sub, scope, cnf = agent key", "mode": "response", "phase": "auth_token" },
+    { "from": "agent", "to": "resource", "action": "api_call", "label": "GET /api with Signature-Key sig=jwt and HTTP Message Signature", "mode": "request", "phase": "resource_access", "security": { "requirements": ["signature", "token"] },
+      "annotations": [ { "type": "security", "text": "Never bearer. A stolen token is useless without the agent's private key." } ] },
+    { "from": "resource", "to": "resource", "action": "verify", "label": "Verify signature, cnf matches signing key, aud, and the (iss, sub) record", "mode": "request", "phase": "resource_access" },
+    { "from": "resource", "to": "agent", "action": "api_response", "label": "200 OK", "mode": "response", "phase": "resource_access" }
+  ]
+}

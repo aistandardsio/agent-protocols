@@ -13,6 +13,10 @@
         <link rel="canonical" href="https://aistandards.io/agent-protocols/aauth/oauth-comparison/">
       
       
+        <link rel="prev" href="../diagrams/">
+      
+      
+        <link rel="next" href="../api-reference/">
       
       
         
@@ -23,7 +27,7 @@
     
     
       
-        <title>AAuth vs OAuth: Understanding the Difference - agent-protocols</title>
+        <title>AAuth and OAuth - agent-protocols</title>
       
     
     
@@ -76,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#aauth-vs-oauth-understanding-the-difference" class="md-skip">
+        <a href="#aauth-and-oauth-20" class="md-skip">
           Skip to content
         </a>
       
@@ -165,7 +169,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              AAuth vs OAuth: Understanding the Difference
+              AAuth and OAuth
             
           </span>
         </div>
@@ -336,8 +340,10 @@
       
   
   
+    
   
   
+  
     
     
     
@@ -348,13 +354,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
         
           
           <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
@@ -375,7 +379,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             
@@ -493,6 +497,330 @@
   
 
       </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AAuth and OAuth
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AAuth and OAuth
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#goals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Goals
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#participants" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Participants
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#flows" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flows
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Flows">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-oauth-names" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The OAuth names
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-aauth-names" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The AAuth names
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-same-journey-in-both" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The same journey in both
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-the-pieces-map" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How the pieces map
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="How the pieces map">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tokens" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tokens
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#endpoints-and-discovery" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Endpoints and discovery
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#headers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Headers
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-new-in-aauth" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What is new in AAuth
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-oauth-can-gain-through-drafts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What OAuth can gain through drafts
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-extensions-are-not-enough" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why extensions are not enough
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-them-together" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Using them together
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Using them together">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#oidc-for-the-web-app-aauth-for-the-agent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OIDC for the web app, AAuth for the agent
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a-resource-wraps-its-existing-oauth" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A resource wraps its existing OAuth
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a-person-server-delegates-login-to-oidc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A Person Server delegates login to OIDC
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#id-jag-inside-aauth-across" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ID-JAG inside, AAuth across
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#which-one-when" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Which one, when
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#regenerating-the-diagrams" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Regenerating the diagrams
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        References
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -2583,10 +2911,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#the-core-difference" class="md-nav__link">
+  <a href="#goals" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The Core Difference
+        Goals
       
     </span>
   </a>
@@ -2594,22 +2922,33 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#why-oauth-isnt-enough-for-ai-agents" class="md-nav__link">
+  <a href="#participants" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Why OAuth Isn't Enough for AI Agents
+        Participants
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Why OAuth Isn&#39;t Enough for AI Agents">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#flows" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flows
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Flows">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#1-agents-act-autonomously" class="md-nav__link">
+  <a href="#the-oauth-names" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. Agents Act Autonomously
+        The OAuth names
       
     </span>
   </a>
@@ -2617,10 +2956,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#2-dynamic-scope-requirements" class="md-nav__link">
+  <a href="#the-aauth-names" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Dynamic Scope Requirements
+        The AAuth names
       
     </span>
   </a>
@@ -2628,21 +2967,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#3-no-mission-context" class="md-nav__link">
+  <a href="#the-same-journey-in-both" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. No Mission Context
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#4-trust-model-differences" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4. Trust Model Differences
+        The same journey in both
       
     </span>
   </a>
@@ -2655,22 +2983,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#protocol-comparison" class="md-nav__link">
+  <a href="#how-the-pieces-map" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Protocol Comparison
+        How the pieces map
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Protocol Comparison">
+    <nav class="md-nav" aria-label="How the pieces map">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#oauth-20-authorization-code-flow" class="md-nav__link">
+  <a href="#tokens" class="md-nav__link">
     <span class="md-ellipsis">
       
-        OAuth 2.0 Authorization Code Flow
+        Tokens
       
     </span>
   </a>
@@ -2678,10 +3006,21 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#aauth-human-consent-flow" class="md-nav__link">
+  <a href="#endpoints-and-discovery" class="md-nav__link">
     <span class="md-ellipsis">
       
-        AAuth Human Consent Flow
+        Endpoints and discovery
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#headers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Headers
       
     </span>
   </a>
@@ -2694,22 +3033,55 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#token-comparison" class="md-nav__link">
+  <a href="#what-is-new-in-aauth" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Token Comparison
+        What is new in AAuth
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Token Comparison">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-oauth-can-gain-through-drafts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What OAuth can gain through drafts
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-extensions-are-not-enough" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why extensions are not enough
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-them-together" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Using them together
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Using them together">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#oauth-access-token" class="md-nav__link">
+  <a href="#oidc-for-the-web-app-aauth-for-the-agent" class="md-nav__link">
     <span class="md-ellipsis">
       
-        OAuth Access Token
+        OIDC for the web app, AAuth for the agent
       
     </span>
   </a>
@@ -2717,10 +3089,43 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#aauth-access-token" class="md-nav__link">
+  <a href="#a-resource-wraps-its-existing-oauth" class="md-nav__link">
     <span class="md-ellipsis">
       
-        AAuth Access Token
+        A resource wraps its existing OAuth
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a-person-server-delegates-login-to-oidc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A Person Server delegates login to OIDC
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#id-jag-inside-aauth-across" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ID-JAG inside, AAuth across
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#which-one-when" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Which one, when
       
     </span>
   </a>
@@ -2733,49 +3138,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#consent-screen-comparison" class="md-nav__link">
+  <a href="#regenerating-the-diagrams" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Consent Screen Comparison
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Consent Screen Comparison">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#oauth-consent" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        OAuth Consent
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#aauth-consent" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        AAuth Consent
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#when-to-use-which" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        When to Use Which
+        Regenerating the diagrams
       
     </span>
   </a>
@@ -2783,32 +3149,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#aauth-builds-on-oauth" class="md-nav__link">
+  <a href="#references" class="md-nav__link">
     <span class="md-ellipsis">
       
-        AAuth Builds on OAuth
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#migration-path" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Migration Path
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#further-reading" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Further Reading
+        References
       
     </span>
   </a>
@@ -2835,354 +3179,548 @@
   
 
 
-<h1 id="aauth-vs-oauth-understanding-the-difference">AAuth vs OAuth: Understanding the Difference<a class="headerlink" href="#aauth-vs-oauth-understanding-the-difference" title="Permanent link">&para;</a></h1>
-<p>If you're familiar with OAuth 2.0, this guide explains what AAuth adds and why it's needed for AI agents.</p>
-<h2 id="the-core-difference">The Core Difference<a class="headerlink" href="#the-core-difference" title="Permanent link">&para;</a></h2>
-<p><strong>OAuth 2.0</strong>: "I authorize <em>this application</em> to access my data"</p>
-<p><strong>AAuth</strong>: "I authorize <em>this AI agent</em> to perform <em>this specific mission</em> on my behalf"</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>OAuth:  Human → Authorizes → App → Accesses → Resource
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>                 (once)      (trusted, registered)
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>AAuth:  Human → Authorizes → Agent → Performs Mission → Resource
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>                (per-task)   (may be autonomous)
-</span></code></pre></div>
-<h2 id="why-oauth-isnt-enough-for-ai-agents">Why OAuth Isn't Enough for AI Agents<a class="headerlink" href="#why-oauth-isnt-enough-for-ai-agents" title="Permanent link">&para;</a></h2>
-<h3 id="1-agents-act-autonomously">1. Agents Act Autonomously<a class="headerlink" href="#1-agents-act-autonomously" title="Permanent link">&para;</a></h3>
-<p>OAuth assumes the application acts on direct user input—you click a button, the app makes an API call. AI agents make independent decisions:</p>
+<h1 id="aauth-and-oauth-20">AAuth and OAuth 2.0<a class="headerlink" href="#aauth-and-oauth-20" title="Permanent link">&para;</a></h1>
+<p>AAuth is not an OAuth profile and not an OAuth replacement. It is a separate protocol for the same problem OAuth solves, delegated access to an HTTP resource, built for a client that OAuth never anticipated: an agent that assembles its own tool chain at runtime, meets services it was never registered with, and needs a human decision in the middle of a task. This page sets the two side by side. It covers the goals, the participants, the two halves of each flow, how the pieces map, what AAuth adds, what the OAuth working group is adding through drafts, and how to run both at once.</p>
+<div class="admonition note">
+<p class="admonition-title">Spec revision</p>
+<p>This page tracks <code>draft-hardt-oauth-aauth-protocol-11</code> (25 September 2026), an individual Internet-Draft. Earlier drafts used different claim names (<code>act</code>, <code>mission</code>, <code>token_endpoint</code>), and older pages on this site may still show them. The diagrams here are generated from PIDL and D2 sources in <code>docs/aauth/diagrams/</code>.</p>
+</div>
+<h2 id="goals">Goals<a class="headerlink" href="#goals" title="Permanent link">&para;</a></h2>
+<p>Both protocols let a person grant a piece of software access to their data at a server they do not operate. They differ in what they assume about that software.</p>
 <table>
 <thead>
 <tr>
-<th>OAuth App</th>
-<th>AI Agent</th>
+<th></th>
+<th>OAuth 2.0</th>
+<th>AAuth</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>User clicks "Send Email"</td>
-<td>Agent decides to send email</td>
+<td>Client</td>
+<td>An application a developer wrote, registered once, shipped</td>
+<td>An agent that picks tools live, one call at a time</td>
 </tr>
 <tr>
-<td>User selects files to upload</td>
-<td>Agent chooses which files</td>
+<td>Client identity</td>
+<td>Issued per authorization server, meaningless elsewhere</td>
+<td>Self-contained, verifiable by any party</td>
 </tr>
 <tr>
-<td>User initiates each action</td>
-<td>Agent chains multiple actions</td>
+<td>Credential model</td>
+<td>Bearer by default; sender-constraining is an add-on</td>
+<td>Every request signed; every token bound to the signing key</td>
+</tr>
+<tr>
+<td>Who runs consent</td>
+<td>The resource side's authorization server</td>
+<td>The person's own server, chosen by the person</td>
+</tr>
+<tr>
+<td>What consent means</td>
+<td>A standing grant of scopes</td>
+<td>Identity first, then scope, optionally bounded by a mission</td>
+</tr>
+<tr>
+<td>Trust domain</td>
+<td>One authorization server per resource</td>
+<td>Federation between the person's server and the resource's</td>
+</tr>
+<tr>
+<td>Waiting on a human</td>
+<td>A failure</td>
+<td>A <code>202</code> state the agent polls</td>
+</tr>
+<tr>
+<td>Resource's role</td>
+<td>Passive consumer of tokens</td>
+<td>Signs what it requires before it serves</td>
+</tr>
+<tr>
+<td>Adoption</td>
+<td>All parties use one authorization server</td>
+<td>Each party adopts independently; five access modes form a ladder</td>
 </tr>
 </tbody>
 </table>
-<p><strong>AAuth addresses this</strong> with mission-based consent: the user approves a specific task, not open-ended access.</p>
-<h3 id="2-dynamic-scope-requirements">2. Dynamic Scope Requirements<a class="headerlink" href="#2-dynamic-scope-requirements" title="Permanent link">&para;</a></h3>
-<p>OAuth apps request fixed scopes at registration time. AI agents need different permissions for different tasks:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Task 1: &quot;Schedule a meeting&quot;     → calendar:write
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>Task 2: &quot;Summarize my emails&quot;    → mail:read
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>Task 3: &quot;Update my bio&quot;          → profile:write
-</span></code></pre></div>
-<p><strong>AAuth addresses this</strong> with per-mission scope requests. The agent requests only what's needed for each task.</p>
-<h3 id="3-no-mission-context">3. No Mission Context<a class="headerlink" href="#3-no-mission-context" title="Permanent link">&para;</a></h3>
-<p>OAuth tells you <em>what</em> access is requested, not <em>why</em>:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>OAuth consent screen:
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>  &quot;App wants to access your calendar&quot;
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>AAuth consent screen:
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>  &quot;Agent wants to schedule a meeting with John
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>   for the project review you discussed&quot;
-</span></code></pre></div>
-<p><strong>AAuth addresses this</strong> with mission metadata: name, description, and interaction type.</p>
-<h3 id="4-trust-model-differences">4. Trust Model Differences<a class="headerlink" href="#4-trust-model-differences" title="Permanent link">&para;</a></h3>
+<p>OAuth's goal was to stop password sharing between web sites. AAuth's goal is to give an HTTP client the kind of identity a server already has from TLS: portable, provable, and usable at a first contact with no prior relationship.</p>
+<h2 id="participants">Participants<a class="headerlink" href="#participants" title="Permanent link">&para;</a></h2>
+<p><img alt="Participants, OAuth 2.0 to AAuth" src="../diagrams/participants-mapping.svg" /></p>
+<p>The OAuth roles come from RFC 6749 section 1.1. The AAuth roles come from the Terminology and Roles sections of the protocol draft.</p>
 <table>
 <thead>
 <tr>
-<th>Aspect</th>
+<th>OAuth role</th>
+<th>AAuth role</th>
+<th>What moved</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Resource owner</td>
+<td>Person</td>
+<td>The same person, now accountable for an actor that makes its own decisions</td>
+</tr>
+<tr>
+<td>Client</td>
+<td>Agent</td>
+<td>Gains an identifier (<code>aauth:local@domain</code>), a signing key, and an agent token that travels with it</td>
+</tr>
+<tr>
+<td>Client registration at each AS</td>
+<td>Agent Provider</td>
+<td>Registration happens once, with the party that issued the agent's key binding, not with each server</td>
+</tr>
+<tr>
+<td>Authorization server, user-facing half</td>
+<td>Person Server (PS)</td>
+<td>Login, consent, identity assertion, and governance. The person picks it</td>
+</tr>
+<tr>
+<td>Authorization server, resource-facing half</td>
+<td>Access Server (AS)</td>
+<td>Resource policy. The resource picks it. Optional: a PS can assert directly to a resource</td>
+</tr>
+<tr>
+<td>OpenID Provider</td>
+<td>Absorbed by the PS</td>
+<td>A PS asserts who the person is. It may delegate the login itself to an OIDC provider</td>
+</tr>
+<tr>
+<td>Resource server</td>
+<td>Resource</td>
+<td>Still enforces access, but now also issues a signed resource token describing what it needs</td>
+</tr>
+</tbody>
+</table>
+<p>The split of the authorization server is the structural change. In OAuth there is one authorization server and it belongs to the resource side. AAuth separates the half that knows the person from the half that knows the resource's policy, lets each side choose its own, and defines how they federate. OAuth has no name for this because it never needed one.</p>
+<h2 id="flows">Flows<a class="headerlink" href="#flows" title="Permanent link">&para;</a></h2>
+<h3 id="the-oauth-names">The OAuth names<a class="headerlink" href="#the-oauth-names" title="Permanent link">&para;</a></h3>
+<p>OAuth has two halves with their own names.</p>
+<ul>
+<li><strong>Obtaining authorization</strong> is an <em>authorization grant</em>. RFC 6749 defines the authorization code, implicit, resource owner password, and client credentials grants plus the refresh token grant. Extension grants added device authorization (RFC 8628), JWT bearer (RFC 7523), and token exchange (RFC 8693). The client uses the <em>authorization endpoint</em> for the user's consent and the <em>token endpoint</em> to redeem the grant.</li>
+<li><strong>Accessing protected resources</strong> is RFC 6749 section 7 and, in practice, RFC 6750 bearer token usage: <code>Authorization: Bearer &lt;token&gt;</code>. DPoP (RFC 9449) and mutual TLS (RFC 8705) add sender-constraining as options.</li>
+</ul>
+<p><img alt="OAuth 2.0 authorization code grant with bearer token use" src="../diagrams/oauth-authorization-code.svg" /></p>
+<h3 id="the-aauth-names">The AAuth names<a class="headerlink" href="#the-aauth-names" title="Permanent link">&para;</a></h3>
+<p>AAuth has no grant-type taxonomy. Its organising axis is the <em>resource access mode</em>, which classifies by what the resource ends up knowing and which party established it, not by how a credential was obtained.</p>
+<table>
+<thead>
+<tr>
+<th>Mode</th>
+<th>Resource knows</th>
+<th>Established by</th>
+<th>Parties</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Agent identity</td>
+<td>Which agent</td>
+<td>Agent Provider</td>
+<td>Agent, Resource</td>
+</tr>
+<tr>
+<td>Resource-managed (two-party)</td>
+<td>Which person</td>
+<td>The resource's own flow</td>
+<td>Agent, Resource</td>
+</tr>
+<tr>
+<td>Person identity</td>
+<td>Which person</td>
+<td>Person Server</td>
+<td>Agent, Resource, PS</td>
+</tr>
+<tr>
+<td>PS authorization (three-party)</td>
+<td>Person and consented scope</td>
+<td>Person Server</td>
+<td>Agent, Resource, PS</td>
+</tr>
+<tr>
+<td>Federated authorization (four-party)</td>
+<td>Person and policy verdict</td>
+<td>Access Server</td>
+<td>Agent, Resource, PS, AS</td>
+</tr>
+</tbody>
+</table>
+<p>The acquisition and use halves are not sequential in AAuth. The agent runs one loop: make a signed request, read the <code>AAuth-Requirement</code> header the resource answers with, satisfy it, and retry. The requirement names the token the resource wants (<code>agent-token</code>, <code>person-token</code>, <code>auth-token</code>), an <code>interaction</code> the person must complete, or <code>claims</code> the PS must supply. The three-party flow below is the one closest to OAuth's authorization code grant.</p>
+<p><img alt="AAuth PS authorization access, three-party" src="../diagrams/aauth-three-party.svg" /></p>
+<h3 id="the-same-journey-in-both">The same journey in both<a class="headerlink" href="#the-same-journey-in-both" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>OAuth 2.0</th>
+<th>AAuth</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Before anything</td>
+<td>Register the client, store <code>client_id</code> and secret</td>
+<td>Agent proves key possession to its Agent Provider, receives an agent token</td>
+</tr>
+<tr>
+<td>Say who is asking</td>
+<td><code>client_id</code> in the authorization request</td>
+<td>Every request signed; the agent token is in <code>Signature-Key</code></td>
+</tr>
+<tr>
+<td>Say what is wanted</td>
+<td>Client lists <code>scope</code> in the authorization request</td>
+<td>Resource issues a signed resource token naming what it requires</td>
+</tr>
+<tr>
+<td>Find out who the user is</td>
+<td>AS login, or an OIDC <code>id_token</code></td>
+<td>PS issues a person token for this resource, with a directed <code>sub</code></td>
+</tr>
+<tr>
+<td>Get consent</td>
+<td>User approves scopes at the AS consent page</td>
+<td>PS shows the resource's own description and the agent's justification; the person approves, denies, or asks a clarification</td>
+</tr>
+<tr>
+<td>Receive the credential</td>
+<td><code>access_token</code> from the token endpoint</td>
+<td><code>auth token</code> from the PS <code>auth_token_endpoint</code> (or from the AS via the PS)</td>
+</tr>
+<tr>
+<td>Use it</td>
+<td><code>Authorization: Bearer</code></td>
+<td>HTTP Message Signature with the token in <code>Signature-Key</code></td>
+</tr>
+<tr>
+<td>Renew it</td>
+<td>Refresh token grant</td>
+<td>Re-run the loop before expiry; there is no refresh token</td>
+</tr>
+<tr>
+<td>Hand it on</td>
+<td>Token exchange (RFC 8693), actor claim</td>
+<td>Call chaining with <code>upstream_token</code>; the PS records the chain</td>
+</tr>
+<tr>
+<td>Take it back</td>
+<td>Revocation endpoint (RFC 7009)</td>
+<td>Revocation endpoint with cascade across PS, AS, and resource</td>
+</tr>
+</tbody>
+</table>
+<h2 id="how-the-pieces-map">How the pieces map<a class="headerlink" href="#how-the-pieces-map" title="Permanent link">&para;</a></h2>
+<h3 id="tokens">Tokens<a class="headerlink" href="#tokens" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>OAuth artifact</th>
+<th>AAuth artifact</th>
+<th>Difference</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>client_id</code> and secret</td>
+<td>Agent token (<code>aa-agent+jwt</code>)</td>
+<td>Issued by the agent's own provider. Binds an identifier to a key with <code>cnf</code>. Carries <code>ps</code> naming the agent's Person Server</td>
+</tr>
+<tr>
+<td>ID token (OIDC)</td>
+<td>Person token (<code>aa-person+jwt</code>)</td>
+<td>Audience is one resource. <code>sub</code> is directed per resource so resources cannot correlate. Carries no scope</td>
+</tr>
+<tr>
+<td>Authorization request parameters</td>
+<td>Resource token (<code>aa-resource+jwt</code>)</td>
+<td>Authored and signed by the resource, not the client. Names the PS or AS as audience, and the token the agent presented via <code>presented_jti</code></td>
+</tr>
+<tr>
+<td>Access token</td>
+<td>Auth token (<code>aa-auth+jwt</code>)</td>
+<td>Always key-bound. Carries <code>ps</code>, <code>sub</code>, <code>scope</code>, and <code>mission_s256</code> when under a mission</td>
+</tr>
+<tr>
+<td>Access token, legacy</td>
+<td>Session token in <code>AAuth-Access</code>, presented as <code>Authorization: AAuth</code></td>
+<td>Opaque. How a resource wraps its existing OAuth tokens without changing them</td>
+</tr>
+<tr>
+<td>Refresh token</td>
+<td>None</td>
+<td>Short lifetimes and re-authorization with a refresh margin</td>
+</tr>
+</tbody>
+</table>
+<h3 id="endpoints-and-discovery">Endpoints and discovery<a class="headerlink" href="#endpoints-and-discovery" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
 <th>OAuth</th>
 <th>AAuth</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Client identity</td>
-<td>Pre-registered with IdP</td>
-<td>May be dynamic/unknown</td>
+<td>Authorization server metadata (RFC 8414) at <code>/.well-known/oauth-authorization-server</code></td>
+<td>Per-role metadata: <code>aauth-agent.json</code>, <code>aauth-person.json</code>, <code>aauth-access.json</code>, <code>aauth-resource.json</code></td>
 </tr>
 <tr>
-<td>Client secrets</td>
-<td>Shared secret or PKCE</td>
-<td>Cryptographic identity</td>
+<td>Protected resource metadata (RFC 9728)</td>
+<td>Resource metadata with <code>access_mode</code>, <code>authorization_endpoint</code>, and an R3 vocabulary (OpenAPI, MCP, gRPC, and others)</td>
 </tr>
 <tr>
-<td>Consent duration</td>
-<td>Until revoked</td>
-<td>Per-mission, time-limited</td>
+<td>Authorization endpoint at the AS</td>
+<td><code>authorization_endpoint</code> at the resource, or a <code>401</code> carrying a resource token</td>
 </tr>
 <tr>
-<td>Revocation</td>
-<td>User revokes app</td>
-<td>User can cancel mid-mission</td>
+<td>Token endpoint at the AS</td>
+<td><code>person_token_endpoint</code> and <code>auth_token_endpoint</code> at the PS; <code>auth_token_endpoint</code> at the AS for federation</td>
+</tr>
+<tr>
+<td>Device authorization endpoint, CIBA</td>
+<td><code>202</code> with <code>requirement=interaction</code>, a URL, a code, and a pending URL to poll; optional <code>interaction_endpoint</code> at the PS to relay</td>
+</tr>
+<tr>
+<td>Introspection (RFC 7662)</td>
+<td>None. All tokens are JWTs verified from the issuer's JWKS</td>
+</tr>
+<tr>
+<td>Revocation (RFC 7009)</td>
+<td><code>revocation_endpoint</code> at the PS and AS, with a cascade</td>
+</tr>
+<tr>
+<td>Dynamic client registration (RFC 7591)</td>
+<td>None needed. The first signed call is the registration</td>
 </tr>
 </tbody>
 </table>
-<h2 id="protocol-comparison">Protocol Comparison<a class="headerlink" href="#protocol-comparison" title="Permanent link">&para;</a></h2>
-<h3 id="oauth-20-authorization-code-flow">OAuth 2.0 Authorization Code Flow<a class="headerlink" href="#oauth-20-authorization-code-flow" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>┌──────┐     ┌─────┐     ┌──────────┐     ┌──────────┐
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>│ User │     │ App │     │   IdP    │     │ Resource │
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>└──┬───┘     └──┬──┘     └────┬─────┘     └────┬─────┘
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>   │            │             │                │
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>   │  Click     │             │                │
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>   │  &quot;Login&quot;   │             │                │
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>   │───────────&gt;│             │                │
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>   │            │             │                │
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>   │            │  Redirect   │                │
-</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>   │&lt;───────────│─────────────&gt;                │
-</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>   │            │             │                │
-</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>   │  Login +   │             │                │
-</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>   │  Consent   │             │                │
-</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>   │────────────────────────-&gt;│                │
-</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a>   │            │             │                │
-</span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a>   │  Redirect  │  Code       │                │
-</span><span id="__span-3-17"><a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a>   │&lt;────────────────────────-│                │
-</span><span id="__span-3-18"><a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a>   │            │             │                │
-</span><span id="__span-3-19"><a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a>   │            │  Exchange   │                │
-</span><span id="__span-3-20"><a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a>   │            │  Code       │                │
-</span><span id="__span-3-21"><a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a>   │            │────────────&gt;│                │
-</span><span id="__span-3-22"><a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a>   │            │             │                │
-</span><span id="__span-3-23"><a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a>   │            │  Token      │                │
-</span><span id="__span-3-24"><a id="__codelineno-3-24" name="__codelineno-3-24" href="#__codelineno-3-24"></a>   │            │&lt;────────────│                │
-</span><span id="__span-3-25"><a id="__codelineno-3-25" name="__codelineno-3-25" href="#__codelineno-3-25"></a>   │            │             │                │
-</span><span id="__span-3-26"><a id="__codelineno-3-26" name="__codelineno-3-26" href="#__codelineno-3-26"></a>   │            │  API Call   │                │
-</span><span id="__span-3-27"><a id="__codelineno-3-27" name="__codelineno-3-27" href="#__codelineno-3-27"></a>   │            │─────────────────────────────&gt;│
-</span><span id="__span-3-28"><a id="__codelineno-3-28" name="__codelineno-3-28" href="#__codelineno-3-28"></a>   │            │             │                │
-</span><span id="__span-3-29"><a id="__codelineno-3-29" name="__codelineno-3-29" href="#__codelineno-3-29"></a>   │            │  Response   │                │
-</span><span id="__span-3-30"><a id="__codelineno-3-30" name="__codelineno-3-30" href="#__codelineno-3-30"></a>   │            │&lt;─────────────────────────────│
-</span></code></pre></div>
-<p><strong>Key characteristics:</strong>
-- One-time consent during login
-- App is pre-registered with IdP
-- Token valid until expiry/revocation
-- No mission context</p>
-<h3 id="aauth-human-consent-flow">AAuth Human Consent Flow<a class="headerlink" href="#aauth-human-consent-flow" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>┌───────┐     ┌───────┐     ┌────────────┐     ┌──────────┐
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>│ Agent │     │  PS   │     │   Human    │     │ Resource │
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>└───┬───┘     └───┬───┘     └─────┬──────┘     └────┬─────┘
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>    │             │               │                 │
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>    │ POST        │               │                 │
-</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>    │ /authorize  │               │                 │
-</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>    │ (mission)   │               │                 │
-</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>    │────────────&gt;│               │                 │
-</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>    │             │               │                 │
-</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>    │ 202         │               │                 │
-</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>    │ consent_uri │               │                 │
-</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>    │&lt;────────────│               │                 │
-</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>    │             │               │                 │
-</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>    │             │  Open         │                 │
-</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>    │             │  consent_uri  │                 │
-</span><span id="__span-4-16"><a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>    │             │&lt;──────────────│                 │
-</span><span id="__span-4-17"><a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>    │             │               │                 │
-</span><span id="__span-4-18"><a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a>    │             │  Mission      │                 │
-</span><span id="__span-4-19"><a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a>    │             │  details      │                 │
-</span><span id="__span-4-20"><a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a>    │             │──────────────&gt;│                 │
-</span><span id="__span-4-21"><a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a>    │             │               │                 │
-</span><span id="__span-4-22"><a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a>    │             │  Approve      │                 │
-</span><span id="__span-4-23"><a id="__codelineno-4-23" name="__codelineno-4-23" href="#__codelineno-4-23"></a>    │             │&lt;──────────────│                 │
-</span><span id="__span-4-24"><a id="__codelineno-4-24" name="__codelineno-4-24" href="#__codelineno-4-24"></a>    │             │               │                 │
-</span><span id="__span-4-25"><a id="__codelineno-4-25" name="__codelineno-4-25" href="#__codelineno-4-25"></a>    │ Poll        │               │                 │
-</span><span id="__span-4-26"><a id="__codelineno-4-26" name="__codelineno-4-26" href="#__codelineno-4-26"></a>    │ status_uri  │               │                 │
-</span><span id="__span-4-27"><a id="__codelineno-4-27" name="__codelineno-4-27" href="#__codelineno-4-27"></a>    │────────────&gt;│               │                 │
-</span><span id="__span-4-28"><a id="__codelineno-4-28" name="__codelineno-4-28" href="#__codelineno-4-28"></a>    │             │               │                 │
-</span><span id="__span-4-29"><a id="__codelineno-4-29" name="__codelineno-4-29" href="#__codelineno-4-29"></a>    │ Token       │               │                 │
-</span><span id="__span-4-30"><a id="__codelineno-4-30" name="__codelineno-4-30" href="#__codelineno-4-30"></a>    │&lt;────────────│               │                 │
-</span><span id="__span-4-31"><a id="__codelineno-4-31" name="__codelineno-4-31" href="#__codelineno-4-31"></a>    │             │               │                 │
-</span><span id="__span-4-32"><a id="__codelineno-4-32" name="__codelineno-4-32" href="#__codelineno-4-32"></a>    │ API Call    │               │                 │
-</span><span id="__span-4-33"><a id="__codelineno-4-33" name="__codelineno-4-33" href="#__codelineno-4-33"></a>    │ + Token     │               │                 │
-</span><span id="__span-4-34"><a id="__codelineno-4-34" name="__codelineno-4-34" href="#__codelineno-4-34"></a>    │─────────────────────────────────────────────&gt;│
-</span><span id="__span-4-35"><a id="__codelineno-4-35" name="__codelineno-4-35" href="#__codelineno-4-35"></a>    │             │               │                 │
-</span><span id="__span-4-36"><a id="__codelineno-4-36" name="__codelineno-4-36" href="#__codelineno-4-36"></a>    │ Response    │               │                 │
-</span><span id="__span-4-37"><a id="__codelineno-4-37" name="__codelineno-4-37" href="#__codelineno-4-37"></a>    │&lt;─────────────────────────────────────────────│
-</span></code></pre></div>
-<p><strong>Key characteristics:</strong>
-- Per-mission consent
-- Mission context (name, description, scopes)
-- Agent identity via cryptographic keys
-- Human can revoke mid-mission
-- Token scoped to specific mission</p>
-<h2 id="token-comparison">Token Comparison<a class="headerlink" href="#token-comparison" title="Permanent link">&para;</a></h2>
-<h3 id="oauth-access-token">OAuth Access Token<a class="headerlink" href="#oauth-access-token" title="Permanent link">&para;</a></h3>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="p">{</span>
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span><span class="nt">&quot;iss&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://idp.example.com&quot;</span><span class="p">,</span>
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">  </span><span class="nt">&quot;sub&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;user-123&quot;</span><span class="p">,</span>
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">  </span><span class="nt">&quot;aud&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;app-456&quot;</span><span class="p">,</span>
-</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">  </span><span class="nt">&quot;scope&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;read write&quot;</span><span class="p">,</span>
-</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">  </span><span class="nt">&quot;exp&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1234567890</span><span class="p">,</span>
-</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">  </span><span class="nt">&quot;iat&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1234564290</span>
-</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="p">}</span>
-</span></code></pre></div>
-<p>The token represents the <strong>user's</strong> authorization to the <strong>app</strong>.</p>
-<h3 id="aauth-access-token">AAuth Access Token<a class="headerlink" href="#aauth-access-token" title="Permanent link">&para;</a></h3>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="p">{</span>
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">  </span><span class="nt">&quot;iss&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://personserver.example.com&quot;</span><span class="p">,</span>
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">  </span><span class="nt">&quot;sub&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;agent-456&quot;</span><span class="p">,</span>
-</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">  </span><span class="nt">&quot;aud&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://resource.example.com&quot;</span><span class="p">,</span>
-</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">  </span><span class="nt">&quot;scope&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;write:profile&quot;</span><span class="p">,</span>
-</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">  </span><span class="nt">&quot;exp&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1234567890</span><span class="p">,</span>
-</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">  </span><span class="nt">&quot;iat&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1234564290</span><span class="p">,</span>
-</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="w">  </span><span class="nt">&quot;act&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="w">    </span><span class="nt">&quot;sub&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;user-123&quot;</span>
-</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="w">  </span><span class="p">},</span>
-</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="w">  </span><span class="nt">&quot;mission_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;mission-789&quot;</span><span class="p">,</span>
-</span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="w">  </span><span class="nt">&quot;interaction_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;supervised&quot;</span>
-</span><span id="__span-6-13"><a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a><span class="p">}</span>
-</span></code></pre></div>
-<p>The token represents the <strong>agent's</strong> authorization to act <strong>on behalf of</strong> the user for a <strong>specific mission</strong>.</p>
-<p>Key additions:</p>
+<h3 id="headers">Headers<a class="headerlink" href="#headers" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
 <tr>
-<th>Claim</th>
-<th>Purpose</th>
+<th>OAuth</th>
+<th>AAuth</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>act.sub</code></td>
-<td>The human who authorized this action</td>
+<td><code>Authorization: Bearer</code></td>
+<td><code>Signature-Key: sig=jwt;jwt="&lt;token&gt;"</code> plus <code>Signature</code> and <code>Signature-Input</code> (RFC 9421)</td>
 </tr>
 <tr>
-<td><code>mission_id</code></td>
-<td>Links to the specific approved mission</td>
+<td><code>WWW-Authenticate</code> challenge</td>
+<td><code>AAuth-Requirement</code> on <code>401</code> or <code>202</code>; <code>Accept-Signature-Scheme</code> for the signing scheme. Both coexist with <code>WWW-Authenticate</code></td>
 </tr>
 <tr>
-<td><code>interaction_type</code></td>
-<td>How the agent operates (autonomous, supervised, etc.)</td>
+<td><code>DPoP</code> header</td>
+<td>Not needed. Signing is the base layer, not an add-on</td>
+</tr>
+<tr>
+<td>None</td>
+<td><code>AAuth-Access</code> (session token issuance), <code>AAuth-Capabilities</code> (what the agent can do for the user), <code>AAuth-Budget</code> (metered spend)</td>
 </tr>
 </tbody>
 </table>
-<h2 id="consent-screen-comparison">Consent Screen Comparison<a class="headerlink" href="#consent-screen-comparison" title="Permanent link">&para;</a></h2>
-<h3 id="oauth-consent">OAuth Consent<a class="headerlink" href="#oauth-consent" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>┌─────────────────────────────────────┐
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>│  &quot;Calendar App&quot; wants to:           │
-</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>│                                     │
-</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>│  ☑ View your calendar               │
-</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>│  ☑ Create and edit events           │
-</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>│  ☑ Access your contacts             │
-</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>│                                     │
-</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>│  [Allow]  [Deny]                    │
-</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>└─────────────────────────────────────┘
-</span></code></pre></div>
-<h3 id="aauth-consent">AAuth Consent<a class="headerlink" href="#aauth-consent" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>┌─────────────────────────────────────┐
-</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>│  Mission: Schedule Project Review   │
-</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>│                                     │
-</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>│  Agent: TaskBot                     │
-</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>│  Requested by: You (via chat)       │
-</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>│                                     │
-</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>│  &quot;Schedule a 30-minute meeting      │
-</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>│   with John for the Q3 review       │
-</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>│   you discussed earlier&quot;            │
-</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>│                                     │
-</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>│  Permissions needed:                │
-</span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a>│  ☑ calendar:write                   │
-</span><span id="__span-8-13"><a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a>│                                     │
-</span><span id="__span-8-14"><a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a>│  Duration: 1 hour                   │
-</span><span id="__span-8-15"><a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a>│  Mode: Supervised                   │
-</span><span id="__span-8-16"><a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a>│                                     │
-</span><span id="__span-8-17"><a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a>│  [Approve]  [Deny]                  │
-</span><span id="__span-8-18"><a id="__codelineno-8-18" name="__codelineno-8-18" href="#__codelineno-8-18"></a>└─────────────────────────────────────┘
-</span></code></pre></div>
-<h2 id="when-to-use-which">When to Use Which<a class="headerlink" href="#when-to-use-which" title="Permanent link">&para;</a></h2>
-<table>
-<thead>
-<tr>
-<th>Scenario</th>
-<th>Protocol</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>User logs into a web app</td>
-<td>OAuth/OIDC</td>
-</tr>
-<tr>
-<td>App syncs user's files in background</td>
-<td>OAuth</td>
-</tr>
-<tr>
-<td>User explicitly clicks "share to Twitter"</td>
-<td>OAuth</td>
-</tr>
-<tr>
-<td>AI agent books meetings autonomously</td>
-<td><strong>AAuth</strong></td>
-</tr>
-<tr>
-<td>AI agent sends emails on user's behalf</td>
-<td><strong>AAuth</strong></td>
-</tr>
-<tr>
-<td>AI agent modifies user's documents</td>
-<td><strong>AAuth</strong></td>
-</tr>
-<tr>
-<td>Chatbot performs actions user requests</td>
-<td><strong>AAuth</strong></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Rule of thumb</strong>: If an AI is making decisions about <em>what</em> to do (not just <em>how</em> to do it), use AAuth.</p>
-<h2 id="aauth-builds-on-oauth">AAuth Builds on OAuth<a class="headerlink" href="#aauth-builds-on-oauth" title="Permanent link">&para;</a></h2>
-<p>AAuth isn't a replacement—it extends OAuth:</p>
-<table>
-<thead>
-<tr>
-<th>Component</th>
-<th>Standard</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Token format</td>
-<td>JWT (RFC 7519)</td>
-</tr>
-<tr>
-<td>Token exchange</td>
-<td>RFC 8693</td>
-</tr>
-<tr>
-<td>Key distribution</td>
-<td>JWKS (RFC 7517)</td>
-</tr>
-<tr>
-<td>Proof of possession</td>
-<td><code>cnf</code> claim (RFC 7800)</td>
-</tr>
-<tr>
-<td>Key thumbprint</td>
-<td>RFC 7638</td>
-</tr>
-</tbody>
-</table>
-<p>AAuth adds:</p>
+<h2 id="what-is-new-in-aauth">What is new in AAuth<a class="headerlink" href="#what-is-new-in-aauth" title="Permanent link">&para;</a></h2>
+<p>These have no OAuth equivalent, with or without extensions.</p>
 <ul>
-<li><strong>Mission semantics</strong>: Why access is needed</li>
-<li><strong>Agent identity</strong>: Cryptographic identity for agents</li>
-<li><strong>Human-in-the-loop consent</strong>: Per-task approval</li>
-<li><strong>Interaction types</strong>: Autonomous, supervised, collaborative</li>
+<li><strong>Portable client identity.</strong> <code>aauth:local@domain</code> with an agent token any party can verify from the provider's JWKS. A client_id is local to one authorization server by design.</li>
+<li><strong>Signing as the floor, not the ceiling.</strong> The identity-only access mode replaces API keys with a signature and nothing else. Every later mode keeps the same signature and adds a token to it.</li>
+<li><strong>The resource authors the request.</strong> A resource token is the resource saying, in signed form, what it needs before it serves. OAuth's authorization request is written by the client and the resource server never sees it.</li>
+<li><strong>Directed identifiers by default.</strong> A person token's <code>sub</code> is unique per resource. OIDC has pairwise subject identifiers as an option; AAuth makes it the rule.</li>
+<li><strong>A person server the person chooses.</strong> The user-facing half of authorization is decoupled from the resource and federates with the resource's access server without bilateral setup.</li>
+<li><strong>Pending as a protocol state.</strong> A <code>202 Accepted</code> with <code>requirement=interaction</code> and a pending URL. The person can answer hours later, from a tap on a notification, with no consent page visited.</li>
+<li><strong>Interaction chaining.</strong> When a downstream resource needs the person, the requirement propagates back through intermediaries to the agent that can reach them.</li>
+<li><strong>Governance.</strong> Missions (an approved Markdown statement of intent, hashed and referenced by every token under it), a permission endpoint for actions no resource governs, an audit endpoint, and a clarification chat during consent.</li>
+<li><strong>Content-addressed authorization detail (R3).</strong> The resource's description of an operation lives in a document the PS and AS fetch and hash into the token. The agent carries a hash it cannot resolve. RAR carries the detail inline where the client can read it.</li>
+<li><strong>Budgets and events.</strong> Companion drafts add spending ceilings for metered resources and event delivery to agents through their provider.</li>
+<li><strong>A ladder, not a cliff.</strong> A resource that only verifies signatures is already in the protocol. Adding a PS, then an AS, is additive and needs no coordination with the agent side.</li>
 </ul>
-<h2 id="migration-path">Migration Path<a class="headerlink" href="#migration-path" title="Permanent link">&para;</a></h2>
-<p>If you have an OAuth-based system and want to add AI agent support:</p>
+<h2 id="what-oauth-can-gain-through-drafts">What OAuth can gain through drafts<a class="headerlink" href="#what-oauth-can-gain-through-drafts" title="Permanent link">&para;</a></h2>
+<p>Most of the individual mismatches have an OAuth-side answer in an RFC or a draft. The table lists them with what each covers and what stays missing. The AAuth draft itself is filed in the OAuth working group's namespace, so the two tracks are in the same room.</p>
+<table>
+<thead>
+<tr>
+<th>Gap</th>
+<th>OAuth answer</th>
+<th>Status</th>
+<th>What it covers</th>
+<th>What stays missing</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Bearer tokens</td>
+<td>DPoP (RFC 9449), mutual TLS (RFC 8705)</td>
+<td>RFC</td>
+<td>Binds an existing token to a key</td>
+<td>Needs a token first; cannot identify a client at first contact</td>
+</tr>
+<tr>
+<td>No client identity at a new server</td>
+<td>Dynamic Client Registration (RFC 7591); Client ID Metadata Document (<code>draft-ietf-oauth-client-id-metadata-document</code>)</td>
+<td>RFC; Internet-Draft</td>
+<td>Register on the fly; use a URL as <code>client_id</code> with metadata behind it</td>
+<td>A different <code>client_id</code> per server, or a URL that still needs a registration step and a secret</td>
+</tr>
+<tr>
+<td>Client authenticity</td>
+<td>Attestation-Based Client Authentication (<code>draft-ietf-oauth-attestation-based-client-auth</code>)</td>
+<td>Internet-Draft</td>
+<td>A client proves which software it is through an attester</td>
+<td>Per-AS trust in the attester; no portable identifier</td>
+</tr>
+<tr>
+<td>Signed requests</td>
+<td>HTTP Message Signatures (RFC 9421); Signature-Key header (<code>draft-hardt-httpbis-signature-key</code>)</td>
+<td>RFC; Internet-Draft</td>
+<td>Sign any HTTP request with a conveyed key</td>
+<td>OAuth does not use it; AAuth is built on it</td>
+</tr>
+<tr>
+<td>Rich authorization detail</td>
+<td>Rich Authorization Requests (RFC 9396); Transaction Authorization Challenge (<code>draft-rosomakho-oauth-txn-challenge</code>)</td>
+<td>RFC; Internet-Draft</td>
+<td>Structured detail; the resource can author it in a challenge</td>
+<td>Inline and readable by the client; no content addressing, no size limit beyond the token</td>
+</tr>
+<tr>
+<td>Step-up mid-session</td>
+<td>Step-up Authentication Challenge (RFC 9470)</td>
+<td>RFC</td>
+<td>Resource asks for a stronger authentication</td>
+<td>Authentication only, not consent, and not deferred</td>
+</tr>
+<tr>
+<td>Waiting on the user</td>
+<td>Device Authorization Grant (RFC 8628); CIBA (OpenID)</td>
+<td>RFC; OpenID spec</td>
+<td>Out-of-band approval with polling</td>
+<td>Only at the token endpoint, not from a resource mid-call</td>
+</tr>
+<tr>
+<td>Acting on behalf of</td>
+<td>Token Exchange (RFC 8693); On-Behalf-Of User Authorization for AI Agents (<code>draft-oauth-ai-agents-on-behalf-of-user</code>)</td>
+<td>RFC; Internet-Draft</td>
+<td><code>act</code> chains; a <code>requested_actor</code> and <code>actor_token</code> for agents</td>
+<td>Still bearer; still per-AS registration; no path for a downstream consent to reach the user</td>
+</tr>
+<tr>
+<td>Workload to API within an org</td>
+<td>Identity Assertion Authorization Grant, ID-JAG (<code>draft-ietf-oauth-identity-assertion-authz-grant</code>); Transaction Tokens (<code>draft-ietf-oauth-transaction-tokens</code>)</td>
+<td>Internet-Drafts</td>
+<td>Exchange an identity assertion for an access token; carry context across services</td>
+<td>Single enterprise trust domain; the IdP is the one authorization server</td>
+</tr>
+<tr>
+<td>Agent-specific profiles</td>
+<td>Agent Authorization Profile (<code>draft-aap-oauth-profile</code>); Agents Native Authorization via Structured Elicitation (<code>draft-embesozzi-oauth-agent-native-authorization</code>); AI Agent Authentication and Authorization (<code>draft-klrc-aiagent-auth</code>)</td>
+<td>Internet-Drafts</td>
+<td>Profiles and gap analyses applying OAuth to agents</td>
+<td>Each keeps the OAuth trust topology: the resource side's AS, pre-registered clients</td>
+</tr>
+<tr>
+<td>Resource discovery</td>
+<td>Protected Resource Metadata (RFC 9728)</td>
+<td>RFC</td>
+<td>Where the AS is and what scopes exist</td>
+<td>No access mode, no operation vocabulary, no resource signing key</td>
+</tr>
+<tr>
+<td>A fresh start</td>
+<td>GNAP (RFC 9635)</td>
+<td>RFC</td>
+<td>Proof-of-possession by default, no pre-registration, async authorization</td>
+<td>Resource is still a passive consumer; continuation is single-client; the client talks to each AS directly</td>
+</tr>
+</tbody>
+</table>
+<p>Taken together these close the per-token holes. They do not change the topology: one authorization server, owned by the resource side, with clients registered to it. That topology is what the next section is about.</p>
+<p>See the <a href="../../idjag/protocol-overview/">ID-JAG section</a> for the enterprise-internal case, where a single IdP is exactly what you want.</p>
+<h2 id="why-extensions-are-not-enough">Why extensions are not enough<a class="headerlink" href="#why-extensions-are-not-enough" title="Permanent link">&para;</a></h2>
+<p>The protocol draft's own rationale section lists six assumptions it would have to break to extend OAuth. Each is a foundation, not a parameter.</p>
 <ol>
-<li><strong>Keep OAuth</strong> for traditional app authentication</li>
-<li><strong>Add AAuth</strong> for AI agent authorization</li>
-<li><strong>Use policy routing</strong> to direct requests:</li>
-<li>Low-risk scopes → OAuth/ID-JAG (automated)</li>
-<li>High-risk scopes → AAuth (human consent)</li>
+<li><strong>Client identity is not portable.</strong> A <code>client_id</code> is issued by one authorization server and means nothing elsewhere. Dynamic registration gives the agent a new identity at every server, which is the problem restated.</li>
+<li><strong>Pre-registration precedes the first call.</strong> An agent calls resources it has never heard of. Any scheme that needs a registration step before the first request forces every agent to register with every server.</li>
+<li><strong>Tokens are bearer.</strong> DPoP binds a token, but the first credential the client presents is still a shared secret or nothing. AAuth starts from a signature, so there is no unbound credential at any point.</li>
+<li><strong>The resource has no identity.</strong> OAuth never asks the resource server to sign anything. A signed resource token, which lets the resource state what it needs and lets the PS verify who asked, has no place in the OAuth message set.</li>
+<li><strong>There is no governance layer.</strong> Missions, permission checks, audit, and interaction relay would each be a separate extension with no shared model of who the person is or what they approved.</li>
+<li><strong>The authorization server belongs to the resource.</strong> OAuth cannot express a person-chosen server that federates with a resource-chosen one. GNAP shares several of AAuth's goals and still keeps this topology.</li>
 </ol>
-<p>See the <a href="../agentauth/overview.md">AgentAuth hybrid documentation</a> for implementing both protocols together.</p>
-<h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">&para;</a></h2>
+<p>Two further points come from how agents behave rather than from the protocol text. Consent lands on human timelines, and in OAuth a request either succeeds or fails, so pending is an error. And scope is standing permission (<code>mail.read</code> for any reason until expiry) while an agent operates under intent, which is what a mission encodes and a scope cannot.</p>
+<h2 id="using-them-together">Using them together<a class="headerlink" href="#using-them-together" title="Permanent link">&para;</a></h2>
+<p>AAuth does not ask you to retire OAuth. Four patterns cover most deployments. They compose.</p>
+<h3 id="oidc-for-the-web-app-aauth-for-the-agent">OIDC for the web app, AAuth for the agent<a class="headerlink" href="#oidc-for-the-web-app-aauth-for-the-agent" title="Permanent link">&para;</a></h3>
+<p><img alt="OIDC for the web app, AAuth for the agent" src="../diagrams/oidc-web-aauth-agents.svg" /></p>
+<p>The person uses a web app and also delegates tasks to an agent. The web app stays an OIDC relying party and OAuth client, unchanged. The agent carries its own key and talks to the person's Person Server. The resource API accepts both: an OAuth verifier for bearer or DPoP tokens, and an AAuth verifier for signed requests. Both verifiers resolve to one canonical identity that the handler reasons about. The <a href="../../guides/hybrid-authentication/">Hybrid Authentication guide</a> shows the <code>bridge</code> package doing exactly this in Go.</p>
+<p>The link between the two paths is the Person Server. A PS has to know who the person is, and the protocol says nothing about how. Delegating that to an OpenID Provider, often the same one the web app already uses, means one login, one account, and an agent identity bound to it.</p>
+<h3 id="a-resource-wraps-its-existing-oauth">A resource wraps its existing OAuth<a class="headerlink" href="#a-resource-wraps-its-existing-oauth" title="Permanent link">&para;</a></h3>
+<p>The resource-managed access mode exists for this. The resource keeps its consent screens, its authorization server, and its access tokens. When an agent calls, the resource runs its existing flow behind a <code>202</code> interaction, then returns the token it would have issued anyway, opaquely, in the <code>AAuth-Access</code> header. The agent presents it back as <code>Authorization: AAuth</code>, and because the request is also signed, the token can no longer be replayed as a bare bearer credential. No PS and no AS are involved. This is the first step on the resource adoption ladder and needs nothing from the identity side.</p>
+<h3 id="a-person-server-delegates-login-to-oidc">A Person Server delegates login to OIDC<a class="headerlink" href="#a-person-server-delegates-login-to-oidc" title="Permanent link">&para;</a></h3>
+<p>The AAuth draft defines what a PS serves to agents, not how it authenticates the person. A production PS is usually an OpenID Provider as well, or sits behind one. The person token's <code>sub</code> is then a directed identifier derived from the OIDC account, and the person approves agent requests with the same session they use everywhere else. The protocol's <code>login_hint</code> and <code>account</code> parameters exist so an agent can say which account it means when the PS fronts several.</p>
+<h3 id="id-jag-inside-aauth-across">ID-JAG inside, AAuth across<a class="headerlink" href="#id-jag-inside-aauth-across" title="Permanent link">&para;</a></h3>
+<p>Inside one organisation, a workload that needs an API on behalf of a user is well served by ID-JAG: the enterprise IdP is the one authorization server, and an identity assertion is exchanged for an access token. The trust-domain edge is where that stops. An agent that leaves the organisation, or one that was never inside it, needs the four-party AAuth flow: the person's PS federates with the resource's AS. The <code>bridge</code> package verifies both and the <a href="../../guides/oauth-to-agent-migration/">migration guide</a> covers routing by risk.</p>
+<h3 id="which-one-when">Which one, when<a class="headerlink" href="#which-one-when" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Situation</th>
+<th>Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A person signs in to a web or mobile app</td>
+<td>OIDC</td>
+</tr>
+<tr>
+<td>An app calls an API on the user's behalf after an explicit click</td>
+<td>OAuth 2.0, with DPoP if the token leaves the server</td>
+</tr>
+<tr>
+<td>A workload calls an internal API for a signed-in user, one IdP</td>
+<td>ID-JAG or transaction tokens</td>
+</tr>
+<tr>
+<td>A client needs a per-instance identity instead of an API key</td>
+<td>AAuth agent identity access</td>
+</tr>
+<tr>
+<td>An agent decides what to call, at services it was not registered with</td>
+<td>AAuth person identity or three-party access</td>
+</tr>
+<tr>
+<td>An agent crosses an organisational boundary</td>
+<td>AAuth four-party access</td>
+</tr>
+<tr>
+<td>The user must approve something mid-task, maybe hours later</td>
+<td>AAuth interaction, or a resource-managed <code>202</code></td>
+</tr>
+<tr>
+<td>The resource wants to describe an operation the user is approving</td>
+<td>AAuth R3; RAR if staying in OAuth</td>
+</tr>
+</tbody>
+</table>
+<h2 id="regenerating-the-diagrams">Regenerating the diagrams<a class="headerlink" href="#regenerating-the-diagrams" title="Permanent link">&para;</a></h2>
+<p>The sequence diagrams are PIDL sources compiled to D2, then to SVG. The architecture diagrams are hand-written D2. Both themes are embedded in each SVG so they follow the site's light and dark modes.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nb">cd</span><span class="w"> </span>docs/aauth/diagrams
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>./build.sh
+</span></code></pre></div>
+<p>The script requires <code>pidl</code> v0.7.0 or later and <code>d2</code>.</p>
+<h2 id="references">References<a class="headerlink" href="#references" title="Permanent link">&para;</a></h2>
 <ul>
-<li><a href="https://datatracker.ietf.org/doc/draft-hardt-oauth-aauth-protocol/">AAuth Protocol Draft</a></li>
-<li><a href="https://www.rfc-editor.org/rfc/rfc8693">RFC 8693 - Token Exchange</a></li>
-<li><a href="https://www.rfc-editor.org/rfc/rfc7800">RFC 7800 - Proof of Possession</a></li>
-<li><a href="../overview/">AAuth Overview</a></li>
-<li><a href="../getting-started/">Getting Started</a></li>
+<li><a href="https://datatracker.ietf.org/doc/draft-hardt-oauth-aauth-protocol/">AAuth Protocol</a>, <code>draft-hardt-oauth-aauth-protocol</code></li>
+<li><a href="https://datatracker.ietf.org/doc/draft-hardt-httpbis-signature-key/">HTTP Signature Keys</a>, <code>draft-hardt-httpbis-signature-key</code></li>
+<li><a href="https://datatracker.ietf.org/doc/draft-hardt-aauth-r3/">AAuth R3</a>, <a href="https://datatracker.ietf.org/doc/draft-hardt-aauth-bootstrap/">Bootstrap</a>, <a href="https://datatracker.ietf.org/doc/draft-hardt-aauth-budgets/">Budgets</a>, <a href="https://datatracker.ietf.org/doc/draft-hardt-aauth-events/">Events</a></li>
+<li><a href="https://www.rfc-editor.org/rfc/rfc6749">RFC 6749</a> OAuth 2.0, <a href="https://www.rfc-editor.org/rfc/rfc6750">RFC 6750</a> Bearer Token Usage, <a href="https://www.rfc-editor.org/rfc/rfc7636">RFC 7636</a> PKCE</li>
+<li><a href="https://www.rfc-editor.org/rfc/rfc8693">RFC 8693</a> Token Exchange, <a href="https://www.rfc-editor.org/rfc/rfc9396">RFC 9396</a> RAR, <a href="https://www.rfc-editor.org/rfc/rfc9449">RFC 9449</a> DPoP, <a href="https://www.rfc-editor.org/rfc/rfc9470">RFC 9470</a> Step-up, <a href="https://www.rfc-editor.org/rfc/rfc9728">RFC 9728</a> Protected Resource Metadata</li>
+<li><a href="https://www.rfc-editor.org/rfc/rfc9421">RFC 9421</a> HTTP Message Signatures, <a href="https://www.rfc-editor.org/rfc/rfc9635">RFC 9635</a> GNAP</li>
+<li><a href="https://datatracker.ietf.org/doc/draft-ietf-oauth-identity-assertion-authz-grant/">Identity Assertion Authorization Grant</a>, <a href="https://datatracker.ietf.org/doc/draft-ietf-oauth-client-id-metadata-document/">Client ID Metadata Document</a>, <a href="https://datatracker.ietf.org/doc/draft-ietf-oauth-transaction-tokens/">Transaction Tokens</a>, <a href="https://datatracker.ietf.org/doc/draft-oauth-ai-agents-on-behalf-of-user/">On-Behalf-Of User Authorization for AI Agents</a></li>
+<li><a href="../overview/">AAuth Overview</a>, <a href="../getting-started/">Getting Started</a>, <a href="../../guides/hybrid-authentication/">Hybrid Authentication</a></li>
 </ul>
 
 

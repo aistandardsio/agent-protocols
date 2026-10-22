@@ -1,0 +1,47 @@
+{
+  "$schema": "https://github.com/grokify/pidl/schema/pidl.schema.json",
+  "protocol": {
+    "id": "oauth-authorization-code",
+    "name": "OAuth 2.0 Authorization Code Grant with Bearer Token Use",
+    "version": "1.0",
+    "description": "The reference OAuth 2.0 flow: a pre-registered client obtains an access token through the authorization code grant (with PKCE) and presents it as a bearer token to a resource server.",
+    "category": "auth",
+    "references": [
+      { "name": "RFC 6749 - The OAuth 2.0 Authorization Framework", "url": "https://www.rfc-editor.org/rfc/rfc6749" },
+      { "name": "RFC 6750 - Bearer Token Usage", "url": "https://www.rfc-editor.org/rfc/rfc6750" },
+      { "name": "RFC 7636 - PKCE", "url": "https://www.rfc-editor.org/rfc/rfc7636" }
+    ]
+  },
+  "entities": [
+    { "id": "user", "name": "Resource Owner", "type": "user", "trust_level": "authoritative", "description": "The person who owns the protected data and grants consent" },
+    { "id": "client", "name": "Client", "type": "client", "trust_level": "semi_trusted", "description": "A pre-registered application acting on the resource owner's behalf" },
+    { "id": "auth_server", "name": "Authorization Server", "type": "authorization_server", "trust_level": "trusted", "description": "Operated by the resource side. Authenticates the user, records consent, issues tokens" },
+    { "id": "resource_server", "name": "Resource Server", "type": "resource_server", "trust_level": "trusted", "description": "Hosts the protected API and accepts access tokens" }
+  ],
+  "phases": [
+    { "id": "registration", "name": "Client Registration (one time)", "description": "The client is registered with this authorization server before any flow runs" },
+    { "id": "authorization_grant", "name": "Obtaining Authorization (RFC 6749 section 4.1)", "description": "The user authenticates and consents at the authorization server" },
+    { "id": "token_issuance", "name": "Issuing an Access Token (RFC 6749 section 5)", "description": "The client redeems the authorization code at the token endpoint" },
+    { "id": "resource_access", "name": "Accessing Protected Resources (RFC 6749 section 7, RFC 6750)", "description": "The client presents the access token as a bearer credential" },
+    { "id": "refresh", "name": "Refreshing an Access Token (RFC 6749 section 6)", "description": "The client obtains a new access token without user involvement" }
+  ],
+  "flows": [
+    { "from": "client", "to": "auth_server", "action": "register", "label": "Register client_id, redirect_uri, client secret (out of band)", "mode": "request", "phase": "registration",
+      "annotations": [ { "type": "info", "text": "Identity is per authorization server. A client_id means nothing anywhere else." } ] },
+    { "from": "user", "to": "client", "action": "start", "label": "Start sign-in or connect", "mode": "interactive", "phase": "authorization_grant" },
+    { "from": "client", "to": "user", "action": "redirect_authorize", "label": "302 to /authorize with response_type=code, client_id, scope, state, code_challenge", "mode": "redirect", "phase": "authorization_grant" },
+    { "from": "user", "to": "auth_server", "action": "login_consent", "label": "GET /authorize then login and consent screen", "mode": "interactive", "phase": "authorization_grant",
+      "annotations": [ { "type": "info", "text": "Consent is a standing grant of scopes. It carries no statement of why or for which task." } ] },
+    { "from": "auth_server", "to": "user", "action": "redirect_back", "label": "302 to redirect_uri with code and state", "mode": "redirect", "phase": "authorization_grant" },
+    { "from": "user", "to": "client", "action": "callback", "label": "GET redirect_uri with code", "mode": "callback", "phase": "authorization_grant" },
+    { "from": "client", "to": "auth_server", "action": "token_request", "label": "POST /token with grant_type=authorization_code, code, code_verifier, client authentication", "mode": "request", "phase": "token_issuance",
+      "security": { "requirements": ["token"] } },
+    { "from": "auth_server", "to": "client", "action": "token_response", "label": "access_token (Bearer), refresh_token, expires_in, scope", "mode": "response", "phase": "token_issuance" },
+    { "from": "client", "to": "resource_server", "action": "api_call", "label": "GET /api with Authorization = Bearer access_token", "mode": "request", "phase": "resource_access",
+      "annotations": [ { "type": "security", "text": "Bearer means possession is authority. Anyone holding the token can use it unless DPoP or mTLS binding is added." } ] },
+    { "from": "resource_server", "to": "resource_server", "action": "validate", "label": "Validate token by JWT verification or introspection", "mode": "request", "phase": "resource_access" },
+    { "from": "resource_server", "to": "client", "action": "api_response", "label": "200 OK", "mode": "response", "phase": "resource_access" },
+    { "from": "client", "to": "auth_server", "action": "refresh_request", "label": "POST /token with grant_type=refresh_token", "mode": "request", "phase": "refresh" },
+    { "from": "auth_server", "to": "client", "action": "refresh_response", "label": "new access_token", "mode": "response", "phase": "refresh" }
+  ]
+}
