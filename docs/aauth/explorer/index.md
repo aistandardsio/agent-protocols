@@ -11,6 +11,8 @@ Step through each AAuth access mode one message at a time: the sequence diagram 
 
 The walkthrough is generated from [`aauth/pidl/aauth_protocol.json`](https://github.com/aistandardsio/agent-protocols/blob/main/aauth/pidl/aauth_protocol.json), which follows `draft-hardt-oauth-aauth-protocol-11`.
 
+To see your own deployment's messages beside these steps, see [Comparing an AAuth Run with the Protocol](../../guides/aauth-observed-runs.md).
+
 <style>
   .md-main__inner.md-grid, .md-content { max-width: none; }
   #aauth-walkthrough { height: 85vh; min-height: 640px; }
