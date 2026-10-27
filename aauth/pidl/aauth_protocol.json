@@ -1937,6 +1937,543 @@
       ]
     },
     {
+      "id": "ps-authorization-challenge",
+      "name": "PS Authorization, Challenged on the API Call",
+      "variant_of": "ps-authorization",
+      "variant_label": "Challenged on the API call",
+      "description": "The same authorization as PS Authorization, for a resource that challenges on the API call itself instead of offering an authorization endpoint. The agent calls the API with its agent token; the resource answers 401 asking for a person token, then 401 asking for an auth token and carrying a resource token; the agent gets the auth token from the person server, with the person's consent, and repeats the call.",
+      "flows": [
+        {
+          "include": "agent-token"
+        },
+        {
+          "id": "request",
+          "from": "agent",
+          "to": "resource",
+          "action": "signed_request",
+          "label": "HTTP Sig w/ agent_token",
+          "description": "The agent calls the API directly, signing the request with its agent token, without first asking the resource what the call needs.",
+          "security": {
+            "requires": [
+              "signature"
+            ],
+            "token": "agent_token",
+            "verifies": [
+              "agent_token"
+            ]
+          },
+          "example": {
+            "source": "draft-11 §5.3.2, §11.3.3",
+            "kind": "derived",
+            "request": {
+              "method": "GET",
+              "url": "https://resource.example/api/documents",
+              "headers": [
+                {
+                  "name": "Signature-Input",
+                  "value": "sig=(\"@method\" \"@authority\" \"@path\" \"signature-key\");created=1730217610"
+                },
+                {
+                  "name": "Signature",
+                  "value": "sig=:SIGNATURE-PLACEHOLDER:"
+                },
+                {
+                  "name": "Signature-Key",
+                  "value": "sig=jwt;jwt=\"eyJhbGciOiJFZDI1NTE5IiwidHlwIjoiYWEtYWdlbnQrand0Iiwia2lkIjoiYXAta2V5LTEifQ.eyJpc3MiOi…\""
+                }
+              ]
+            },
+            "tokens": [
+              {
+                "token": "agent_token",
+                "label": "Signature-Key header",
+                "header": {
+                  "alg": "Ed25519",
+                  "typ": "aa-agent+jwt",
+                  "kid": "ap-key-1"
+                },
+                "payload": {
+                  "iss": "https://agent.example",
+                  "dwk": "aauth-agent.json",
+                  "sub": "aauth:assistant@agent.example",
+                  "ps": "https://ps.example",
+                  "cnf": {
+                    "jwk": {
+                      "kty": "OKP",
+                      "crv": "Ed25519",
+                      "x": "11qYAYKxCrfVS_7TyWQHOg7hcvPapiMlrwIaaPcHURo",
+                      "alg": "Ed25519"
+                    }
+                  },
+                  "jti": "at-1c2d3e",
+                  "iat": 1730217000,
+                  "exp": 1730303400
+                }
+              }
+            ],
+            "note": "The agent signs every request with the key in the token's cnf; the verifier checks the signature against that key."
+          }
+        },
+        {
+          "id": "person-token-required",
+          "from": "resource",
+          "to": "agent",
+          "action": "challenge",
+          "label": "401 requirement=person-token",
+          "mode": "response",
+          "description": "The resource needs to know the person behind the agent before it will decide anything. It refuses the call with 401 and an AAuth-Requirement header naming the person token it needs. The agent gets one from the person server named in its agent token.",
+          "example": {
+            "source": "draft-11 §6.4, §11.6.2",
+            "kind": "derived",
+            "response": {
+              "status": 401,
+              "headers": [
+                {
+                  "name": "AAuth-Requirement",
+                  "value": "requirement=person-token"
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "no-store"
+                }
+              ]
+            },
+            "note": "The challenge comes on the API call itself, so the agent needs no endpoint other than the API to learn what it must present."
+          }
+        },
+        {
+          "include": "person-token"
+        },
+        {
+          "id": "request-person",
+          "from": "agent",
+          "to": "resource",
+          "action": "signed_request",
+          "label": "HTTP Sig w/ person_token",
+          "description": "The agent repeats the same API call, now presenting the person token.",
+          "security": {
+            "requires": [
+              "signature"
+            ],
+            "token": "person_token",
+            "verifies": [
+              "person_token"
+            ]
+          },
+          "example": {
+            "source": "draft-11 §7.1.3",
+            "kind": "derived",
+            "request": {
+              "method": "GET",
+              "url": "https://resource.example/api/documents",
+              "headers": [
+                {
+                  "name": "Signature-Input",
+                  "value": "sig=(\"@method\" \"@authority\" \"@path\" \"signature-key\");created=1730217610"
+                },
+                {
+                  "name": "Signature",
+                  "value": "sig=:SIGNATURE-PLACEHOLDER:"
+                },
+                {
+                  "name": "Signature-Key",
+                  "value": "sig=jwt;jwt=\"eyJhbGciOiJFZDI1NTE5IiwidHlwIjoiYWEtcGVyc29uK2p3dCIsImtpZCI6InBzLWtleS0xIn0.eyJpc3MiOi…\""
+                }
+              ]
+            },
+            "tokens": [
+              {
+                "token": "person_token",
+                "label": "Signature-Key header",
+                "header": {
+                  "alg": "Ed25519",
+                  "typ": "aa-person+jwt",
+                  "kid": "ps-key-1"
+                },
+                "payload": {
+                  "iss": "https://ps.example",
+                  "dwk": "aauth-person.json",
+                  "aud": "https://resource.example",
+                  "sub": "8f14e45fceea167a5a36dedd4bea2543",
+                  "cnf": {
+                    "jwk": {
+                      "kty": "OKP",
+                      "crv": "Ed25519",
+                      "x": "11qYAYKxCrfVS_7TyWQHOg7hcvPapiMlrwIaaPcHURo",
+                      "alg": "Ed25519"
+                    }
+                  },
+                  "jti": "pt-3ab910",
+                  "iat": 1730217600,
+                  "exp": 1730221200
+                }
+              }
+            ],
+            "note": "The person token replaces the agent token in Signature-Key. Its cnf is the same key that signs, so verification works as before."
+          }
+        },
+        {
+          "id": "auth-token-required",
+          "from": "resource",
+          "to": "agent",
+          "action": "challenge",
+          "label": "401 requirement=auth-token, with resource_token",
+          "mode": "response",
+          "description": "The person is known, but this call needs the person's consent or the person server's policy for a scope. The resource refuses again with 401, and its AAuth-Requirement header carries a resource token addressed to the person server that issued the person token.",
+          "security": {
+            "issues": [
+              "resource_token"
+            ]
+          },
+          "example": {
+            "source": "draft-11 §6.5, §11.6.2",
+            "kind": "derived",
+            "response": {
+              "status": 401,
+              "headers": [
+                {
+                  "name": "AAuth-Requirement",
+                  "value": "requirement=auth-token; resource-token=\"eyJhbGciOiJFZDI1NTE5IiwidHlwIjoiYWEtcmVzb3VyY2Urand0Iiwia2lkIjoicmVzb3VyY2Uta2V5LTEifQ.eyJpc3MiOiJodHRwczovL3Jlc291cmNlLmV4YW1wbGUiLCJkd2siOiJhYXV0aC1yZXNvdXJjZS5qc29uIiwiYXVkIjoiaHR0cHM6Ly9wcy5leGFtcGxlIiwicHMiOiJodHRwczovL3BzLmV4YW1wbGUiLCJzdWIiOiI4ZjE0ZTQ1ZmNlZWExNjdhNWEzNmRlZGQ0YmVhMjU0MyIsInByZXNlbnRlZF9qdGkiOiJwdC0zYWI5MTAiLCJhZ2VudF9qa3QiOiJrUHJLX3FteFZXYVlWQTl3d0JGNkl1bzN2Vnp6N1R4SENUd1hCeWdyUzRrIiwic2NvcGUiOiJkYXRhLnJlYWQgZGF0YS53cml0ZSIsImp0aSI6InJ0LTVmNmE3YiIsImlhdCI6MTczMDIxNzY2MCwiZXhwIjoxNzMwMjE3OTYwfQ.SIGNATURE\""
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "no-store"
+                }
+              ]
+            },
+            "tokens": [
+              {
+                "token": "resource_token",
+                "label": "AAuth-Requirement header (resource-token parameter)",
+                "header": {
+                  "alg": "Ed25519",
+                  "typ": "aa-resource+jwt",
+                  "kid": "resource-key-1"
+                },
+                "payload": {
+                  "iss": "https://resource.example",
+                  "dwk": "aauth-resource.json",
+                  "aud": "https://ps.example",
+                  "ps": "https://ps.example",
+                  "sub": "8f14e45fceea167a5a36dedd4bea2543",
+                  "presented_jti": "pt-3ab910",
+                  "agent_jkt": "kPrK_qmxVWaYVA9wwBF6Iuo3vVzz7TxHCTwXBygrS4k",
+                  "scope": "data.read data.write",
+                  "jti": "rt-5f6a7b",
+                  "iat": 1730217660,
+                  "exp": 1730217960
+                }
+              }
+            ],
+            "note": "This delivers the same resource token that the authorization-endpoint scenario returns in a response body, inside the challenge instead."
+          }
+        },
+        {
+          "id": "auth-token-request",
+          "from": "agent",
+          "to": "ps",
+          "action": "auth_token_request",
+          "label": "POST auth_token_endpoint w/ resource_token + presented_token",
+          "description": "The agent brings the resource token to its PS, along with the person token it presented to the resource and a short justification. The PS checks that agent_jkt matches the key that signed this request and that the presented token matches the resource token.",
+          "security": {
+            "requires": [
+              "signature"
+            ],
+            "token": "agent_token",
+            "verifies": [
+              "agent_token",
+              "resource_token"
+            ]
+          },
+          "example": {
+            "source": "draft-11 §7.2.1, §11.3.3.1",
+            "kind": "draft",
+            "request": {
+              "method": "POST",
+              "url": "https://ps.example/token",
+              "headers": [
+                {
+                  "name": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "name": "Content-Digest",
+                  "value": "sha-256=:ZulrBDNVbKjvJQg1Zm/ltb6Xm9ty90G4w3LQ6V+UrTI=:"
+                },
+                {
+                  "name": "Prefer",
+                  "value": "wait=45"
+                },
+                {
+                  "name": "Signature-Input",
+                  "value": "sig=(\"@method\" \"@authority\" \"@path\" \"signature-key\" \"content-digest\" \"content-type\");created=1730217700"
+                },
+                {
+                  "name": "Signature",
+                  "value": "sig=:SIGNATURE-PLACEHOLDER:"
+                },
+                {
+                  "name": "Signature-Key",
+                  "value": "sig=jwt;jwt=\"eyJhbGciOiJFZDI1NTE5IiwidHlwIjoiYWEtYWdlbnQrand0Iiwia2lkIjoiYXAta2V5LTEifQ.eyJpc3MiOi…\""
+                }
+              ],
+              "body": {
+                "resource_token": "eyJhbGciOiJFZDI1NTE5IiwidHlwIjoiYWEtcmVzb3VyY2Urand0Iiwia2lkIjoicmVzb3VyY2Uta2V5LTEifQ.eyJpc3MiOiJodHRwczovL3Jlc291cmNlLmV4YW1wbGUiLCJkd2siOiJhYXV0aC1yZXNvdXJjZS5qc29uIiwiYXVkIjoiaHR0cHM6Ly9wcy5leGFtcGxlIiwicHMiOiJodHRwczovL3BzLmV4YW1wbGUiLCJzdWIiOiI4ZjE0ZTQ1ZmNlZWExNjdhNWEzNmRlZGQ0YmVhMjU0MyIsInByZXNlbnRlZF9qdGkiOiJwdC0zYWI5MTAiLCJhZ2VudF9qa3QiOiJrUHJLX3FteFZXYVlWQTl3d0JGNkl1bzN2Vnp6N1R4SENUd1hCeWdyUzRrIiwic2NvcGUiOiJkYXRhLnJlYWQgZGF0YS53cml0ZSIsImp0aSI6InJ0LTVmNmE3YiIsImlhdCI6MTczMDIxNzY2MCwiZXhwIjoxNzMwMjE3OTYwfQ.SIGNATURE",
+                "presented_token": "eyJhbGciOiJFZDI1NTE5IiwidHlwIjoiYWEtcGVyc29uK2p3dCIsImtpZCI6InBzLWtleS0xIn0.eyJpc3MiOiJodHRwczovL3BzLmV4YW1wbGUiLCJkd2siOiJhYXV0aC1wZXJzb24uanNvbiIsImF1ZCI6Imh0dHBzOi8vcmVzb3VyY2UuZXhhbXBsZSIsInN1YiI6IjhmMTRlNDVmY2VlYTE2N2E1YTM2ZGVkZDRiZWEyNTQzIiwiY25mIjp7Imp3ayI6eyJrdHkiOiJPS1AiLCJjcnYiOiJFZDI1NTE5IiwieCI6IjExcVlBWUt4Q3JmVlNfN1R5V1FIT2c3aGN2UGFwaU1scndJYWFQY0hVUm8iLCJhbGciOiJFZDI1NTE5In19LCJqdGkiOiJwdC0zYWI5MTAiLCJpYXQiOjE3MzAyMTc2MDAsImV4cCI6MTczMDIyMTIwMH0.SIGNATURE",
+                "justification": "Summarize this quarter's planning documents"
+              }
+            },
+            "tokens": [
+              {
+                "token": "agent_token",
+                "label": "Signature-Key header",
+                "header": {
+                  "alg": "Ed25519",
+                  "typ": "aa-agent+jwt",
+                  "kid": "ap-key-1"
+                },
+                "payload": {
+                  "iss": "https://agent.example",
+                  "dwk": "aauth-agent.json",
+                  "sub": "aauth:assistant@agent.example",
+                  "ps": "https://ps.example",
+                  "cnf": {
+                    "jwk": {
+                      "kty": "OKP",
+                      "crv": "Ed25519",
+                      "x": "11qYAYKxCrfVS_7TyWQHOg7hcvPapiMlrwIaaPcHURo",
+                      "alg": "Ed25519"
+                    }
+                  },
+                  "jti": "at-1c2d3e",
+                  "iat": 1730217000,
+                  "exp": 1730303400
+                }
+              },
+              {
+                "token": "resource_token",
+                "label": "request body",
+                "header": {
+                  "alg": "Ed25519",
+                  "typ": "aa-resource+jwt",
+                  "kid": "resource-key-1"
+                },
+                "payload": {
+                  "iss": "https://resource.example",
+                  "dwk": "aauth-resource.json",
+                  "aud": "https://ps.example",
+                  "ps": "https://ps.example",
+                  "sub": "8f14e45fceea167a5a36dedd4bea2543",
+                  "presented_jti": "pt-3ab910",
+                  "agent_jkt": "kPrK_qmxVWaYVA9wwBF6Iuo3vVzz7TxHCTwXBygrS4k",
+                  "scope": "data.read data.write",
+                  "jti": "rt-5f6a7b",
+                  "iat": 1730217660,
+                  "exp": 1730217960
+                }
+              },
+              {
+                "token": "person_token",
+                "label": "request body, as presented_token",
+                "header": {
+                  "alg": "Ed25519",
+                  "typ": "aa-person+jwt",
+                  "kid": "ps-key-1"
+                },
+                "payload": {
+                  "iss": "https://ps.example",
+                  "dwk": "aauth-person.json",
+                  "aud": "https://resource.example",
+                  "sub": "8f14e45fceea167a5a36dedd4bea2543",
+                  "cnf": {
+                    "jwk": {
+                      "kty": "OKP",
+                      "crv": "Ed25519",
+                      "x": "11qYAYKxCrfVS_7TyWQHOg7hcvPapiMlrwIaaPcHURo",
+                      "alg": "Ed25519"
+                    }
+                  },
+                  "jti": "pt-3ab910",
+                  "iat": 1730217600,
+                  "exp": 1730221200
+                }
+              }
+            ],
+            "note": "The PS checks agent_jkt against the key that signed this request (the agent's), and checks presented_token against the resource token's presented_jti, ps and sub."
+          }
+        },
+        {
+          "include": "consent"
+        },
+        {
+          "id": "auth-token",
+          "from": "ps",
+          "to": "agent",
+          "action": "auth_token",
+          "label": "auth_token",
+          "mode": "response",
+          "description": "With consent given, the PS issues the auth token itself: audience the resource, the person's identifier, the granted scope, and the agent's key. It cannot outlive the person token it was issued against.",
+          "security": {
+            "issues": [
+              "auth_token"
+            ]
+          },
+          "example": {
+            "source": "draft-11 §7.2.2, §9.4.1",
+            "kind": "draft",
+            "response": {
+              "status": 200,
+              "headers": [
+                {
+                  "name": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": {
+                "auth_token": "eyJhbGciOiJFZDI1NTE5IiwidHlwIjoiYWEtYXV0aCtqd3QiLCJraWQiOiJwcy1rZXktMSJ9.eyJpc3MiOiJodHRwczovL3BzLmV4YW1wbGUiLCJkd2siOiJhYXV0aC1wZXJzb24uanNvbiIsImF1ZCI6Imh0dHBzOi8vcmVzb3VyY2UuZXhhbXBsZSIsInBzIjoiaHR0cHM6Ly9wcy5leGFtcGxlIiwic3ViIjoiOGYxNGU0NWZjZWVhMTY3YTVhMzZkZWRkNGJlYTI1NDMiLCJzY29wZSI6ImRhdGEucmVhZCBkYXRhLndyaXRlIiwiY25mIjp7Imp3ayI6eyJrdHkiOiJPS1AiLCJjcnYiOiJFZDI1NTE5IiwieCI6IjExcVlBWUt4Q3JmVlNfN1R5V1FIT2c3aGN2UGFwaU1scndJYWFQY0hVUm8iLCJhbGciOiJFZDI1NTE5In19LCJqdGkiOiJhdXRoLTlkOGM3YiIsImlhdCI6MTczMDIxNzcyMCwiZXhwIjoxNzMwMjIxMjAwfQ.SIGNATURE",
+                "expires_in": 3480
+              }
+            },
+            "tokens": [
+              {
+                "token": "auth_token",
+                "label": "response body",
+                "header": {
+                  "alg": "Ed25519",
+                  "typ": "aa-auth+jwt",
+                  "kid": "ps-key-1"
+                },
+                "payload": {
+                  "iss": "https://ps.example",
+                  "dwk": "aauth-person.json",
+                  "aud": "https://resource.example",
+                  "ps": "https://ps.example",
+                  "sub": "8f14e45fceea167a5a36dedd4bea2543",
+                  "scope": "data.read data.write",
+                  "cnf": {
+                    "jwk": {
+                      "kty": "OKP",
+                      "crv": "Ed25519",
+                      "x": "11qYAYKxCrfVS_7TyWQHOg7hcvPapiMlrwIaaPcHURo",
+                      "alg": "Ed25519"
+                    }
+                  },
+                  "jti": "auth-9d8c7b",
+                  "iat": 1730217720,
+                  "exp": 1730221200
+                }
+              }
+            ],
+            "note": "The PS issues the auth token itself (dwk aauth-person.json). Its exp does not exceed the person token's, so expires_in is shorter than an hour."
+          }
+        },
+        {
+          "id": "api-request",
+          "from": "agent",
+          "to": "resource",
+          "action": "api_request",
+          "label": "GET /api/documents (HTTP Sig w/ auth_token)",
+          "description": "The agent calls the API presenting the auth token, signed with the same key.",
+          "security": {
+            "requires": [
+              "signature"
+            ],
+            "token": "auth_token",
+            "verifies": [
+              "auth_token"
+            ]
+          },
+          "example": {
+            "source": "draft-11 §9.4.2",
+            "kind": "derived",
+            "request": {
+              "method": "GET",
+              "url": "https://resource.example/api/documents",
+              "headers": [
+                {
+                  "name": "Signature-Input",
+                  "value": "sig=(\"@method\" \"@authority\" \"@path\" \"signature-key\");created=1730217730"
+                },
+                {
+                  "name": "Signature",
+                  "value": "sig=:SIGNATURE-PLACEHOLDER:"
+                },
+                {
+                  "name": "Signature-Key",
+                  "value": "sig=jwt;jwt=\"eyJhbGciOiJFZDI1NTE5IiwidHlwIjoiYWEtYXV0aCtqd3QiLCJraWQiOiJwcy1rZXktMSJ9.eyJpc3MiOi…\""
+                }
+              ]
+            },
+            "tokens": [
+              {
+                "token": "auth_token",
+                "label": "Signature-Key header",
+                "header": {
+                  "alg": "Ed25519",
+                  "typ": "aa-auth+jwt",
+                  "kid": "ps-key-1"
+                },
+                "payload": {
+                  "iss": "https://ps.example",
+                  "dwk": "aauth-person.json",
+                  "aud": "https://resource.example",
+                  "ps": "https://ps.example",
+                  "sub": "8f14e45fceea167a5a36dedd4bea2543",
+                  "scope": "data.read data.write",
+                  "cnf": {
+                    "jwk": {
+                      "kty": "OKP",
+                      "crv": "Ed25519",
+                      "x": "11qYAYKxCrfVS_7TyWQHOg7hcvPapiMlrwIaaPcHURo",
+                      "alg": "Ed25519"
+                    }
+                  },
+                  "jti": "auth-9d8c7b",
+                  "iat": 1730217720,
+                  "exp": 1730221200
+                }
+              }
+            ],
+            "note": "The resource checks iss, aud, cnf against the signing key, sub and scope."
+          }
+        },
+        {
+          "id": "ok",
+          "from": "resource",
+          "to": "agent",
+          "action": "ok",
+          "label": "200 OK",
+          "mode": "response",
+          "description": "The resource verifies the auth token: issuer, audience, the key binding against the request signature, the person's identifier and the scope. Then it serves the request.",
+          "example": {
+            "source": "draft-11 §4.2.4",
+            "kind": "derived",
+            "response": {
+              "status": 200,
+              "headers": [
+                {
+                  "name": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": {
+                "documents": [
+                  {
+                    "id": "doc-1",
+                    "title": "Q3 planning"
+                  },
+                  {
+                    "id": "doc-2",
+                    "title": "Team offsite"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
       "id": "agent-token",
       "name": "Obtain agent token",
       "fragment": true,

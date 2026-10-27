@@ -37,7 +37,8 @@ func protocol(t *testing.T) *pidl.Protocol {
 func TestAAuthProtocol(t *testing.T) {
 	p := protocol(t)
 	if got := p.ScenarioIDs(false); !reflect.DeepEqual(got, []string{
-		"agent-identity", "resource-managed", "person-identity", "ps-authorization", "federated-authorization",
+		"agent-identity", "resource-managed", "person-identity", "ps-authorization", "ps-authorization-challenge",
+		"federated-authorization",
 	}) {
 		t.Errorf("main scenarios = %v", got)
 	}
