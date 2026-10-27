@@ -2412,6 +2412,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/aauth-observed-runs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Comparing an AAuth Run
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -2472,6 +2500,34 @@
 
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../releases/v0.9.0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    v0.9.0
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
             
               
                 
@@ -2768,14 +2824,15 @@
 <h1 id="aauth-explorer">AAuth Explorer<a class="headerlink" href="#aauth-explorer" title="Permanent link">&para;</a></h1>
 <p>Step through each AAuth access mode one message at a time: the sequence diagram highlights the roles and the message, and the panels beside it show the request and response as HTTP or as a <code>curl</code> command, with each token decoded. Pick a scenario at the top; use → and ← (click the viewer first), or the buttons under the diagram.</p>
 <p>The walkthrough is generated from <a href="https://github.com/aistandardsio/agent-protocols/blob/main/aauth/pidl/aauth_protocol.json"><code>aauth/pidl/aauth_protocol.json</code></a>, which follows <code>draft-hardt-oauth-aauth-protocol-11</code>.</p>
+<p>To see your own deployment's messages beside these steps, see <a href="../../guides/aauth-observed-runs/">Comparing an AAuth Run with the Protocol</a>.</p>
 <style>
   .md-main__inner.md-grid, .md-content { max-width: none; }
   #aauth-walkthrough { height: 85vh; min-height: 640px; }
 </style>
 
 <div id="aauth-walkthrough"></div>
-<script src="https://cdn.jsdelivr.net/npm/@grokify/pidl-viewer@0.9.0/dist-lib/pidl-viewer.js"
-        integrity="sha384-LdxcShWogEyPfyA6wBOBDm2XohJP8NahS9JI3SFxjRn5+8aMbml8NxLwjwPQqH6a"
+<script src="https://cdn.jsdelivr.net/npm/@grokify/pidl-viewer@0.10.0/dist-lib/pidl-viewer.js"
+        integrity="sha384-WU8aZ0An2VClqAx+6i5/1P482oJkkWQcn3T/lbAyLaYW9w+VYFMPI1q+8rpjcCD6"
         crossorigin="anonymous"
         data-pidl-target="#aauth-walkthrough"
         data-pidl-src="aauth.walkthrough.json"></script>
@@ -2783,7 +2840,7 @@
 <h2 id="regenerating">Regenerating<a class="headerlink" href="#regenerating" title="Permanent link">&para;</a></h2>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>docs/aauth/explorer/build.sh
 </span></code></pre></div>
-<p>The script validates the PIDL document and writes <code>aauth.walkthrough.json</code> beside this page. It needs <a href="https://github.com/grokify/pidl">pidl</a> v0.9.0 or later. The viewer is <a href="https://www.npmjs.com/package/@grokify/pidl-viewer"><code>@grokify/pidl-viewer</code></a>, loaded from jsDelivr at a fixed version and checked against its hash.</p>
+<p>The script validates the PIDL document and writes <code>aauth.walkthrough.json</code> beside this page. It needs <a href="https://github.com/grokify/pidl">pidl</a> v0.10.0 or later. The viewer is <a href="https://www.npmjs.com/package/@grokify/pidl-viewer"><code>@grokify/pidl-viewer</code></a>, loaded from jsDelivr at a fixed version and checked against its hash.</p>
 
 
 
