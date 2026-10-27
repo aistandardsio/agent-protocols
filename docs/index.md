@@ -266,6 +266,7 @@ Production-ready integrations with identity infrastructure.
 
 ### Releases
 
+- [v0.9.0](releases/v0.9.0.md) - PS Authorization challenged on the API call, AAuth document rules for matching real runs (2026-10-27)
 - [v0.8.0](releases/v0.8.0.md) - AAuth Explorer, AAuth PIDL document, AAuth and OAuth 2.0 comparison (2026-10-22)
 - [v0.7.0](releases/v0.7.0.md) - A2A and AuthZEN clients, omniskill and Keycloak adapters (2026-08-09)
 - [v0.6.0](releases/v0.6.0.md) - Interface-based servers, SCIM extensions (2026-06-27)

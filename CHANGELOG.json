@@ -7,6 +7,29 @@
   "maintainers": ["grokify"],
   "releases": [
     {
+      "version": "v0.9.0",
+      "date": "2026-10-27",
+      "highlights": [
+        { "description": "Challenge on the API call: a PS Authorization variant for a resource with no authorization endpoint, which answers the agent's call with 401 challenges for a person token and then an auth token (draft-11 §6.4, §6.5, §11.6.2)" },
+        { "description": "Real runs beside the protocol: the AAuth document says where each token travels and how the polls are matched, so pidl v0.10.0 can show a deployment's own messages beside each step" }
+      ],
+      "added": [
+        { "description": "`ps-authorization-challenge` in `aauth/pidl/aauth_protocol.json`: the agent calls the API with its agent token, receives 401 with `requirement=person-token`, then 401 with `requirement=auth-token` and a resource token in `AAuth-Requirement`, obtains the auth token from the person server and repeats the call; shown in the AAuth Explorer", "commit": "326446b" },
+        { "description": "Token carriage in the AAuth document: each JWT names where it travels (the `Signature-Key` `jwt` parameter, the `AAuth-Requirement` `resource-token` parameter, or a body member) and its `typ`, so tokens in a real run are found and told apart", "commit": "3f7e2b1" },
+        { "description": "Match rules for the consent and resource-managed polls: any `/pending/{id}` URL, repeated, so every poll in a run matches the one step", "commit": "3f7e2b1" }
+      ],
+      "documentation": [
+        { "description": "Comparing an AAuth Run with the Protocol: a guide to showing a deployment's messages beside the walkthrough with pidl, and trying it against the aauth-go sandbox with aauth-postman", "commit": "9221dcc" },
+        { "description": "The AAuth Explorer loads `@grokify/pidl-viewer` 0.10.0 and links the new guide; regenerating its walkthrough needs pidl v0.10.0", "commit": "8def863" }
+      ],
+      "dependencies": [
+        { "description": "`github.com/grokify/pidl` v0.9.0 → v0.10.0, which validates the document's match rules and token carriage", "commit": "a869c59" },
+        { "description": "`github.com/grokify/oscompat` v0.8.0 → v0.9.0", "commit": "0709382" },
+        { "description": "`github.com/plexusone/omniobserve` v0.12.0 → v0.12.1", "commit": "696a956" },
+        { "description": "Indirect dependencies updated, including `google.golang.org/grpc` v1.84.0 → v1.85.0", "commit": "f2e6d55" }
+      ]
+    },
+    {
       "version": "v0.8.0",
       "date": "2026-10-22",
       "highlights": [
