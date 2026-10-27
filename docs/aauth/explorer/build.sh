@@ -2,7 +2,7 @@
 # Regenerate aauth.walkthrough.json, the walkthrough the AAuth Explorer
 # page shows, from the AAuth PIDL document.
 #
-# Requires pidl v0.9.0 or later
+# Requires pidl v0.10.0 or later
 # (go install github.com/grokify/pidl/cmd/pidl@latest).
 set -euo pipefail
 cd "$(dirname "$0")"

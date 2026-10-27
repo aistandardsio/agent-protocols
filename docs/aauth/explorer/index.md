@@ -19,8 +19,8 @@ To see your own deployment's messages beside these steps, see [Comparing an AAut
 </style>
 
 <div id="aauth-walkthrough"></div>
-<script src="https://cdn.jsdelivr.net/npm/@grokify/pidl-viewer@0.9.0/dist-lib/pidl-viewer.js"
-        integrity="sha384-LdxcShWogEyPfyA6wBOBDm2XohJP8NahS9JI3SFxjRn5+8aMbml8NxLwjwPQqH6a"
+<script src="https://cdn.jsdelivr.net/npm/@grokify/pidl-viewer@0.10.0/dist-lib/pidl-viewer.js"
+        integrity="sha384-WU8aZ0An2VClqAx+6i5/1P482oJkkWQcn3T/lbAyLaYW9w+VYFMPI1q+8rpjcCD6"
         crossorigin="anonymous"
         data-pidl-target="#aauth-walkthrough"
         data-pidl-src="aauth.walkthrough.json"></script>
@@ -31,4 +31,4 @@ To see your own deployment's messages beside these steps, see [Comparing an AAut
 docs/aauth/explorer/build.sh
 ```
 
-The script validates the PIDL document and writes `aauth.walkthrough.json` beside this page. It needs [pidl](https://github.com/grokify/pidl) v0.9.0 or later. The viewer is [`@grokify/pidl-viewer`](https://www.npmjs.com/package/@grokify/pidl-viewer), loaded from jsDelivr at a fixed version and checked against its hash.
+The script validates the PIDL document and writes `aauth.walkthrough.json` beside this page. It needs [pidl](https://github.com/grokify/pidl) v0.10.0 or later. The viewer is [`@grokify/pidl-viewer`](https://www.npmjs.com/package/@grokify/pidl-viewer), loaded from jsDelivr at a fixed version and checked against its hash.
