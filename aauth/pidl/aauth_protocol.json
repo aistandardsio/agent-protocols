@@ -119,6 +119,14 @@
             ],
             "description": "The delegation is short-lived"
           }
+        ],
+        "carried_in": [
+          {
+            "in": "header",
+            "name": "Signature-Key",
+            "param": "jwt",
+            "typ": "jkt-s256+jwt"
+          }
         ]
       },
       {
@@ -148,6 +156,24 @@
               "ps"
             ],
             "description": "The agent's public key; must match the key that signed the request"
+          }
+        ],
+        "carried_in": [
+          {
+            "in": "header",
+            "name": "Signature-Key",
+            "param": "jwt",
+            "typ": "aa-agent+jwt"
+          },
+          {
+            "in": "body",
+            "path": "/agent_token",
+            "typ": "aa-agent+jwt"
+          },
+          {
+            "in": "body",
+            "path": "/presented_token",
+            "typ": "aa-agent+jwt"
           }
         ]
       },
@@ -183,6 +209,24 @@
               "resource"
             ],
             "description": "The agent's public key"
+          }
+        ],
+        "carried_in": [
+          {
+            "in": "header",
+            "name": "Signature-Key",
+            "param": "jwt",
+            "typ": "aa-person+jwt"
+          },
+          {
+            "in": "body",
+            "path": "/person_token",
+            "typ": "aa-person+jwt"
+          },
+          {
+            "in": "body",
+            "path": "/presented_token",
+            "typ": "aa-person+jwt"
           }
         ]
       },
@@ -230,6 +274,19 @@
             ],
             "description": "sub of the token the request carried"
           }
+        ],
+        "carried_in": [
+          {
+            "in": "header",
+            "name": "AAuth-Requirement",
+            "param": "resource-token",
+            "typ": "aa-resource+jwt"
+          },
+          {
+            "in": "body",
+            "path": "/resource_token",
+            "typ": "aa-resource+jwt"
+          }
         ]
       },
       {
@@ -271,6 +328,19 @@
               "resource"
             ],
             "description": "The agent's public key"
+          }
+        ],
+        "carried_in": [
+          {
+            "in": "header",
+            "name": "Signature-Key",
+            "param": "jwt",
+            "typ": "aa-auth+jwt"
+          },
+          {
+            "in": "body",
+            "path": "/auth_token",
+            "typ": "aa-auth+jwt"
           }
         ]
       },
@@ -590,6 +660,10 @@
                 }
               }
             ]
+          },
+          "match": {
+            "path": "/pending/{id}",
+            "repeat": true
           }
         },
         {
@@ -2903,6 +2977,10 @@
               }
             ],
             "note": "Polling switches to GET on the Location URL and does not resend the original body. Prefer: wait asks the PS to hold the response until it can answer."
+          },
+          "match": {
+            "path": "/pending/{id}",
+            "repeat": true
           }
         }
       ]
